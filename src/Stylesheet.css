@@ -1,0 +1,37 @@
+{
+    dark-primary-color: #616161;
+    default-primary-color: #9E9E9E;
+    light-primary-color: #F5F5F5;
+    text-primary-color: #212121;
+    accent-color: #607D8B;
+    primary-text-color: #212121;
+    secondary-text-color: #757575;
+    divider-color: #BDBDBD;
+}
+
+#anchor {
+    -fx-background-color: default-primary-color;
+}
+
+#button {
+    -fx-font-size: 14px;
+    -fx-padding: 8;
+    -fx-pref-height: 40;
+    -fx-pref-width: 80;
+}
+
+#label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+
+}
+
+#textfield {
+    -fx-font-style: italic;
+    -fx-font-size: 14px;
+}
+
+#passwordfield {
+    -fx-font-style: italic;
+    -fx-font-size: 14px;
+}
