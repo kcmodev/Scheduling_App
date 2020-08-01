@@ -22,6 +22,7 @@ public class WindowManager{
             newWindow.setTitle(windowTitle);
             newWindow.show();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Failed to load new window");
             System.exit(-1);
         }

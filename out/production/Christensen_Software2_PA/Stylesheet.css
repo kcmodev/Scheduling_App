@@ -9,6 +9,10 @@
     divider-color: #BDBDBD;
 }
 
+.root {
+    -fx-background-color: default-primary-color;
+}
+
 #anchor {
     -fx-background-color: default-primary-color;
 }
@@ -34,4 +38,10 @@
 #passwordfield {
     -fx-font-style: italic;
     -fx-font-size: 14px;
+}
+
+#rectangle {
+    -fx-fill: default-primary-color;
+    -fx-stroke-type: outside;
+    -fx-stroke-line-cap: round;
 }

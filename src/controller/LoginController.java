@@ -29,14 +29,14 @@ public class LoginController {
      * handles clicking log in button
      * @param event
      */
-    public void logInHandler(ActionEvent event) throws SQLException {
+    public void logInHandler(ActionEvent event)  {
         System.out.println("log in button clicked");
         userName = userNameTextField.getText();
         password = passwordTextField.getText();
 
-        DBQuery.setStatement(conn);
-        Statement statement = DBQuery.getStatement();
-        
+//        DBQuery.setStatement(conn);
+//        Statement statement = DBQuery.getStatement();
+
 //        checkUser = "";
 //        checkPass = "";
 
