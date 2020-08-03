@@ -4,17 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnection {
+public class ConnectionHandler {
+
     /**
      * set each part of URL for database
+     * and concat vars for full url
      */
     private static final String PROTOCOL = "jdbc";
     private static final String VENDOR = ":mysql:";
     private static final String ADDRESS = "//wgudb.ucertify.com/U07Rzg";
-
-    /**
-     * concat vars for full url
-     */
     private static final String URL = PROTOCOL + VENDOR + ADDRESS;
 
     /**

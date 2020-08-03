@@ -7,28 +7,27 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0"
-            stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<AnchorPane id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
       <Rectangle id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="387.0" layoutX="8.0" layoutY="6.0" stroke="BLACK" strokeType="INSIDE" width="386.0" />
       <AnchorPane layoutX="135.0" layoutY="287.0" prefHeight="57.0" prefWidth="203.0">
          <children>
             <Button id="button" layoutX="14.0" layoutY="7.0" mnemonicParsing="false" onAction="#logInHandler" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Log In" />
-            <Button id="button" layoutX="109.0" layoutY="7.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Exit" />
+            <Button id="button" layoutX="109.0" layoutY="7.0" mnemonicParsing="false" onAction="#exitHandler" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Exit" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="62.0" layoutY="165.0" prefHeight="89.0" prefWidth="276.0">
          <children>
             <PasswordField id="passwordfield" fx:id="passwordTextField" layoutY="61.0" prefHeight="40.0" prefWidth="270.0" promptText="Enter password" stylesheets="@../Stylesheet.css" />
-            <Label id="label" layoutY="21.0" prefHeight="40.0" prefWidth="111.0" stylesheets="@../Stylesheet.css" text="Password:" />
+            <Label id="label" fx:id="loginPasswordLabel" layoutY="21.0" prefHeight="40.0" prefWidth="246.0" stylesheets="@../Stylesheet.css" text="Password:" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="62.0" layoutY="76.0" prefHeight="89.0" prefWidth="276.0">
          <children>
-            <Label id="label" layoutX="-1.0" layoutY="5.0" prefHeight="40.0" prefWidth="111.0" stylesheets="@../Stylesheet.css" text="Username:" />
+            <Label id="label" fx:id="loginUserLabel" layoutX="-1.0" layoutY="5.0" prefHeight="40.0" prefWidth="246.0" stylesheets="@../Stylesheet.css" text="Username:" />
             <TextField id="textfield" fx:id="userNameTextField" layoutX="-1.0" layoutY="45.0" prefHeight="40.0" prefWidth="270.0" promptText="Enter user name" stylesheets="@../Stylesheet.css" />
          </children>
       </AnchorPane>
-      <Label id="label" layoutX="26.0" layoutY="19.0" prefHeight="40.0" prefWidth="128.0" stylesheets="@../Stylesheet.css" text="Please log in" />
+      <Label id="label" fx:id="loginTitleLabel" layoutX="26.0" layoutY="19.0" prefHeight="40.0" prefWidth="235.0" stylesheets="@../Stylesheet.css" text="Please log in" />
    </children>
 </AnchorPane>
