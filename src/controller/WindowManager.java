@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class WindowManager{
 
@@ -27,5 +28,36 @@ public class WindowManager{
             System.exit(-1);
         }
     }
+//
+//    public void windowWithDataController(ActionEvent, String fileName, String windowTitle) {
+//
+//    }
+
+//    private static WindowManager _instance;
+//
+//    public static WindowManager create(Stage stage, ResourceBundle bundle) throws IOException {
+//        _instance = new WindowManager(stage, bundle);
+//        return getInstance();
+//    }
+//
+//    public static WindowManager getInstance() {
+//        return _instance;
+//    }
+//
+//    private WindowManager(Stage stage, ResourceBundle bundle) throws IOException {
+//        // private constructor called only once
+//        this.loadScene(“loginController”);
+//    }
+//
+//
+//    public void loadScene(String name) throws IOException {
+//        FXMLLoader loader = new FXMLLoader();
+//
+//        loader.setLocation(getClass().getClassLoader().getResource(String.format("ui/%s.fxml", name)));
+//        loader.setResources(this.bundle);
+//        Scene scene = new Scene(loader.load());
+//        Controller ctrlr = loader.getController();
+//        this.scenes.put(name, new SceneInfo(scene, ctrlr));
+//    }
 
 }

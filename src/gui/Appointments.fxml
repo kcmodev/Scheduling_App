@@ -13,13 +13,11 @@
       <Label id="label" fx:id="appointmentLabel" layoutX="36.0" layoutY="29.0" prefHeight="41.0" prefWidth="401.0" stylesheets="@../Stylesheet.css" text="Scheduled Appointments" />
       <TableView layoutX="71.0" layoutY="113.0" prefHeight="287.0" prefWidth="659.0">
         <columns>
-            <TableColumn prefWidth="87.0" text="Customer ID" />
-          <TableColumn prefWidth="100.0" text="Name" />
-          <TableColumn prefWidth="103.0" text="Address" />
-            <TableColumn prefWidth="86.0" text="Phone" />
-            <TableColumn prefWidth="95.0" text="City" />
-            <TableColumn prefWidth="87.0" text="Time" />
-            <TableColumn prefWidth="99.0" text="Type" />
+            <TableColumn fx:id="customerIDCol" prefWidth="102.0" text="Customer ID" />
+          <TableColumn fx:id="customerNameCol" prefWidth="152.0" text="Name" />
+          <TableColumn fx:id="customerAddressCol" prefWidth="185.0" text="Address" />
+            <TableColumn fx:id="customerPhoneCol" minWidth="0.0" prefWidth="105.0" text="Phone" />
+            <TableColumn fx:id="appointmentTimeCol" prefWidth="114.0" text="Time" />
         </columns>
       </TableView>
       <AnchorPane layoutX="71.0" layoutY="418.0" prefHeight="40.0" prefWidth="659.0">

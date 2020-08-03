@@ -30,7 +30,7 @@ public class ConnectionHandler {
 
     /**
      * handles opening new connection
-     * @return
+     * @return connection
      */
     public static Connection startConnection(){
         try {
