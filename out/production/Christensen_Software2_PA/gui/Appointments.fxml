@@ -28,7 +28,7 @@
             <Button id="button" mnemonicParsing="false" onAction="#setAddClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Add" />
             <Button id="button" layoutX="110.0" mnemonicParsing="false" onAction="#setUpdateClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Update" />
             <Button id="button" layoutX="220.0" mnemonicParsing="false" onAction="#deleteClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Delete" />
-            <Button id="button" layoutX="579.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Quit" />
+            <Button id="button" layoutX="579.0" mnemonicParsing="false" onAction="#setLogOutClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Log Out" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="71.0" layoutY="49.0" prefHeight="49.0" prefWidth="446.0">

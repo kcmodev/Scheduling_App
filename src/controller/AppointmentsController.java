@@ -12,7 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import models.Customer;
 
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -21,6 +20,7 @@ import java.util.ResourceBundle;
 public class AppointmentsController implements Initializable {
     public static final String APPOINTMENT_WINDOW_TITLE = "Main Screen";
     private String sqlStatement;
+    WindowManager window = new WindowManager();
 
     @FXML private Label appointmentLabel;
 
@@ -46,8 +46,16 @@ public class AppointmentsController implements Initializable {
         appointmentLabel.setText(label);
     }
 
+    public void setAddClicked(ActionEvent event){
+        System.out.println("add button clicked");
+    }
+
+    public void setUpdateClicked(ActionEvent event){
+        System.out.println("update button clicked");
+    }
+
     /**
-     * method handles delete buttong being clicked
+     * method handles delete button being clicked
      * removes selected customer from the database
      * returns an error if null
      */
@@ -57,7 +65,7 @@ public class AppointmentsController implements Initializable {
         try {
             String name = customerTableView.getSelectionModel().getSelectedItem().getName();
             sqlStatement = "SELECT customerName FROM customer\n" +
-                            "WHERE customerName = ?;";
+                    "WHERE customerName = ?;";
             System.out.println("attempting to delete: \"" + name + "\"");
             System.out.println("sql statement being passed in: " + sqlStatement);
 
@@ -66,9 +74,15 @@ public class AppointmentsController implements Initializable {
             ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
 
             if (set.next()) {
-                set.deleteRow();
+                sqlStatement = "DELETE FROM customer WHERE customerName = ?;";
+                System.out.println("new sql statement: \"" + sqlStatement + "\"");
+                StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+                StatementHandler.getPreparedStatement().setString(1, name);
+//                StatementHandler.getPreparedStatement().execute();
+
                 for (Customer customer : CustomerDAO.getAllCustomers()){
                     if (customer.getName().equals(name)){
+                        System.out.println("deleting: " + customer.getName());
                         CustomerDAO.deleteCustomer(customer);
                         break;
                     }
@@ -76,6 +90,8 @@ public class AppointmentsController implements Initializable {
             }
 
             setFilterSelection();
+            customerTableView.refresh();
+            customerTableView.getSelectionModel().clearSelection();
 
         } catch (NullPointerException | SQLException e) {
             e.printStackTrace();
@@ -83,12 +99,10 @@ public class AppointmentsController implements Initializable {
         }
     }
 
-    public void setUpdateClicked(ActionEvent event){
-        System.out.println("update button clicked");
-    }
-
-    public void setAddClicked(ActionEvent event){
-        System.out.println("add button clicked");
+    public void setLogOutClicked(ActionEvent event) {
+        if (PopupHandlers.confirmationAlert("log out")){
+            window.windowController(event, "/gui/Login.fxml", LoginController.LOGIN_SCREEN_TITLE);
+        }
     }
 
     public void setFilterSelection(){

@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 
 
 public class LoginController implements Initializable {
+    public static final String LOGIN_SCREEN_TITLE = "Christensen Software 2 PA - Login Screen";
 
     @FXML private TextField userNameTextField;
     @FXML private PasswordField passwordTextField;
@@ -35,7 +36,6 @@ public class LoginController implements Initializable {
      * instantiates window manager and connection to database
      */
     WindowManager window = new WindowManager();
-//    Connection connection = ConnectionHandler.startConnection();
 
     /**
      * handles clicking log in button
@@ -47,13 +47,12 @@ public class LoginController implements Initializable {
         String enteredPassword = passwordTextField.getText();
         System.out.println("User name entered: \"" + enteredUserName + "\"");
         System.out.println("Password entered: \"" + enteredPassword + "\"");
-
-        CustomerDAO.buildCustomerData();
+        
         window.windowController(event, "/gui/Appointments.fxml", AppointmentsController.APPOINTMENT_WINDOW_TITLE);
 
-//        /**
-//         * checks to make sure user name and/or password are not left blank
-//         */
+        /**
+         * checks to make sure user name and/or password are not left blank
+         */
 //        if (enteredUserName.equals("") || enteredPassword.equals("")){
 //            System.out.println("found a blank field");
 //            PopupHandlers.errorAlert(2, "Please enter a user name and password");
@@ -64,7 +63,7 @@ public class LoginController implements Initializable {
 //            if (enteredUserName.matches("^[a-zA-Z0-9]*$")) {
 //
 //                System.out.println("entered if statement");
-//                StatementHandler.setPreparedStatement(connection, "SELECT * FROM user");
+//                StatementHandler.setPreparedStatement(ConnectionHandler.startConnection(), "SELECT * FROM user");
 //                System.out.println("sql statement running");
 //                PreparedStatement checkCreds = StatementHandler.getPreparedStatement();
 //                ResultSet userList = checkCreds.executeQuery();
@@ -99,12 +98,18 @@ public class LoginController implements Initializable {
 //                            }
 //                        }
 //                        if (!isValidPassword) {
-//                            System.out.println("password does not match");
+//                            ConnectionHandler.closeConnection();
+//                            PopupHandlers.errorAlert(1, "Username and password do not match");
+//                            break;
 //                        }
+//                    } else {
+//                        ConnectionHandler.closeConnection();
+//                        PopupHandlers.errorAlert(1, "Invalid username");
+//                        break;
 //                    }
 //                }
 //            } else {
-//                System.out.println("input not alphanumeric");
+//                PopupHandlers.errorAlert(1, "Input must be alphanumeric");
 //            }
 //        }
     }

@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Customer;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,7 @@ public class CustomerDAO {
 
 
     public static void buildCustomerData() throws SQLException {
-//        Connection connection = ConnectionHandler.startConnection();
+        System.out.println("building customer object array");
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, "SELECT * FROM customer");
         PreparedStatement getCustList = StatementHandler.getPreparedStatement();
         ResultSet rs = getCustList.executeQuery();
@@ -33,6 +32,7 @@ public class CustomerDAO {
         for (Customer cust : allCustomers){
             System.out.println(cust.getName());
         }
+        System.out.println();
     }
 
     public static ObservableList<Customer> getAllCustomers(){ return allCustomers; }
