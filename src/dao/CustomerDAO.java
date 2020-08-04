@@ -22,7 +22,7 @@ public class CustomerDAO {
         while (rs.next()){
             String name = rs.getString("customerName");
             int customerID = rs.getInt("customerID");
-            int addressID = rs.getInt("addressID");
+            int addressID = rs.getInt("addressId");
             int active = rs.getInt("active");
 
             Customer customer = new Customer(name, customerID, addressID, active);
@@ -31,10 +31,10 @@ public class CustomerDAO {
 
         System.out.println("Customer List: ");
         for (Customer cust : allCustomers){
-            System.out.print(cust.getName() + "|");
+            System.out.println(cust.getName());
         }
-
-        ConnectionHandler.closeConnection();
     }
+
+    public static ObservableList<Customer> getAllCustomers(){ return allCustomers; }
 
 }

@@ -47,8 +47,9 @@ public class LoginController implements Initializable {
         String enteredPassword = passwordTextField.getText();
         System.out.println("User name entered: \"" + enteredUserName + "\"");
         System.out.println("Password entered: \"" + enteredPassword + "\"");
-        window.windowController(event, "/gui/Appointments.fxml", AppointmentsController.APPOINTMENT_WINDOW_TITLE);
+
         CustomerDAO.buildCustomerData();
+        window.windowController(event, "/gui/Appointments.fxml", AppointmentsController.APPOINTMENT_WINDOW_TITLE);
 
 //        /**
 //         * checks to make sure user name and/or password are not left blank
