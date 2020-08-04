@@ -35,7 +35,7 @@ public class LoginController implements Initializable {
      * instantiates window manager and connection to database
      */
     WindowManager window = new WindowManager();
-    Connection connection = ConnectionHandler.startConnection();
+//    Connection connection = ConnectionHandler.startConnection();
 
     /**
      * handles clicking log in button
@@ -138,6 +138,5 @@ public class LoginController implements Initializable {
         loginTitleLabel.setText(languageSetting.getString("titleLabel"));
         loginUserLabel.setText(languageSetting.getString("userNameLabel"));
         loginPasswordLabel.setText(languageSetting.getString("passwordLabel"));
-
     }
 }

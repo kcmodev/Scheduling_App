@@ -10,6 +10,7 @@ public class Customer{
     private int customerId;
     private int addressId;
     private int isActive;
+    private String sqlStatement;
 
     public Customer(String name, int customerId, int addressID, int isActive) {
         this.name = name;
@@ -41,26 +42,18 @@ public class Customer{
      * @throws SQLException
      */
     public String getAddress() throws SQLException {
-//        Connection connection = ConnectionHandler.startConnection();
-        StatementHandler.setPreparedStatement(ConnectionHandler.startConnection(), "SELECT addressId, address FROM address;");
-//        PreparedStatement ps = StatementHandler.getPreparedStatement();
-        ResultSet addressList = StatementHandler.getPreparedStatement().executeQuery();
+        sqlStatement = "SELECT c.customerId, c.customerName, a.address FROM customer c\n" +
+                         "JOIN address a on a.addressId = c.addressId\n" +
+                         "WHERE c.customerId = ?;";
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+        StatementHandler.getPreparedStatement().setInt(1, this.customerId);
+        ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
 
-        while (addressList.next()){
-            System.out.println("ID of address being checked: " + addressList.getInt("addressId") + " | looking for: " + this.addressId);
-            if (this.addressId == addressList.getInt(1)){
-                System.out.println("found the matched ID, returning \"" + addressList.getString("address") + "\"");
-                return addressList.getString("address");
-            }
-        }
+        if (set.next())
+            return set.getString("address");
+
         return "";
     }
-
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
-    }
-
-    public int getAddressId() { return this.addressId; }
 
     /**
      * method queries database and compares customer ID from customer table
@@ -69,16 +62,16 @@ public class Customer{
      * @throws SQLException
      */
     public String getPhone() throws SQLException {
-        StatementHandler.setPreparedStatement(ConnectionHandler.startConnection(), "SELECT addressId, phone FROM address;");
-        ResultSet phoneList = StatementHandler.getPreparedStatement().executeQuery();
+        sqlStatement = "SELECT c.customerId, a.phone from customer c\n" +
+                        "JOIN address a on c.addressId = a.addressId\n" +
+                        "WHERE c.customerId = ?;";
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+        StatementHandler.getPreparedStatement().setInt(1, this.customerId);
+        ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
 
-        while (phoneList.next()){
-            System.out.println("ID of address being checked: " + phoneList.getInt("addressId") + " | looking for: " + this.addressId);
-            if (this.addressId == phoneList.getInt(1)){
-                System.out.println("found the matched ID, returning \"" + phoneList.getString("phone") + "\"");
-                return phoneList.getString("phone");
-            }
-        }
+        if (set.next())
+            return set.getString("phone");
+
         return "";
     }
 
@@ -89,19 +82,17 @@ public class Customer{
      * @throws SQLException
      */
     public String getAppointmentTime() throws SQLException {
-        StatementHandler.setPreparedStatement(ConnectionHandler.startConnection(),
-                                                                 "SELECT c.customerId, a.start " +
-                                                                            "FROM appointment a " +
-                                                                            "RIGHT JOIN customer c on c.customerId = a.customerId;");
-        ResultSet apptList = StatementHandler.getPreparedStatement().executeQuery();
+        sqlStatement = "SELECT c.customerId, app.start FROM customer c\n" +
+                            "JOIN appointment app ON c.customerId = app.customerId\n" +
+                            "WHERE c.customerId = ?;";
 
-        while (apptList.next()){
-            System.out.println("ID of customer being checked: " + apptList.getInt("customerId") + " | looking for: " + this.customerId);
-            if (this.customerId == apptList.getInt(1)) {
-                System.out.println("found the matched ID, returning \"" + apptList.getString("start") + "\"");
-                return apptList.getString("start");
-            }
-        }
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+        StatementHandler.getPreparedStatement().setInt(1, this.customerId);
+        ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
+
+        if (set.next())
+            return set.getString("start");
+
         return "";
     }
 
@@ -113,4 +104,9 @@ public class Customer{
         this.isActive = isActive;
     }
 
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
+    }
+
+    public int getAddressId() { return this.addressId; }
 }

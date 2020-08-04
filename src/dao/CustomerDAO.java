@@ -14,8 +14,8 @@ public class CustomerDAO {
 
 
     public static void buildCustomerData() throws SQLException {
-        Connection connection = ConnectionHandler.startConnection();
-        StatementHandler.setPreparedStatement(connection, "SELECT * FROM customer");
+//        Connection connection = ConnectionHandler.startConnection();
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, "SELECT * FROM customer");
         PreparedStatement getCustList = StatementHandler.getPreparedStatement();
         ResultSet rs = getCustList.executeQuery();
 
@@ -36,5 +36,7 @@ public class CustomerDAO {
     }
 
     public static ObservableList<Customer> getAllCustomers(){ return allCustomers; }
+
+    public static void deleteCustomer (Customer customer){ allCustomers.remove(customer); }
 
 }

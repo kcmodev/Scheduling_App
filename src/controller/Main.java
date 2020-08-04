@@ -21,7 +21,10 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws SQLException {
+        ConnectionHandler.startConnection();
+
         launch(args);
+        
         ConnectionHandler.closeConnection(); // closes connection when program is closed
     }
 }

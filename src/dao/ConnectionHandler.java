@@ -26,7 +26,7 @@ public class ConnectionHandler {
      */
     private static final String SQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
-    private static Connection connection = null;
+    public static Connection connection = null;
 
     /**
      * handles opening new connection

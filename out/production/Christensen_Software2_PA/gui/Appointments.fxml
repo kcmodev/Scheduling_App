@@ -2,15 +2,18 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="anchor" prefHeight="500.0" prefWidth="800.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
    <children>
       <Rectangle id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="477.0" layoutX="14.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="775.0" />
-      <Label id="label" fx:id="appointmentLabel" layoutX="36.0" layoutY="29.0" prefHeight="41.0" prefWidth="401.0" stylesheets="@../Stylesheet.css" text="Scheduled Appointments" />
+      <Label id="label" fx:id="appointmentLabel" layoutX="30.0" layoutY="35.0" prefHeight="41.0" prefWidth="401.0" stylesheets="@../Stylesheet.css" text="Scheduled Appointments" />
       <TableView fx:id="customerTableView" layoutX="71.0" layoutY="113.0" prefHeight="287.0" prefWidth="659.0">
         <columns>
             <TableColumn fx:id="customerIDCol" prefWidth="102.0" text="Customer ID" />
@@ -22,10 +25,37 @@
       </TableView>
       <AnchorPane layoutX="71.0" layoutY="418.0" prefHeight="40.0" prefWidth="659.0">
          <children>
-            <Button id="button" mnemonicParsing="false" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Add" />
-            <Button id="button" layoutX="110.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Update" />
-            <Button id="button" layoutX="220.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Delete" />
+            <Button id="button" mnemonicParsing="false" onAction="#setAddClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Add" />
+            <Button id="button" layoutX="110.0" mnemonicParsing="false" onAction="#setUpdateClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Update" />
+            <Button id="button" layoutX="220.0" mnemonicParsing="false" onAction="#deleteClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Delete" />
             <Button id="button" layoutX="579.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Quit" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="71.0" layoutY="49.0" prefHeight="49.0" prefWidth="446.0">
+         <children>
+            <RadioButton fx:id="all" layoutX="78.0" layoutY="35.0" mnemonicParsing="false" onAction="#setViewAll" selected="true" text="All">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="filterSelection" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="week" layoutX="140.0" layoutY="35.0" mnemonicParsing="false" onAction="#setViewWeek" text="Week" toggleGroup="$filterSelection">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="month" layoutX="223.0" layoutY="35.0" mnemonicParsing="false" onAction="#setViewMonth" text="Month" toggleGroup="$filterSelection">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
+            <Label layoutY="32.0" prefHeight="23.0" prefWidth="87.0" text="Filter By:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>
