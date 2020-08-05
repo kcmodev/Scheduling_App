@@ -11,9 +11,12 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class WindowManager{
+    public static final String LOGIN_SCREEN_TITLE = "Christensen Software 2 PA - Login Screen";
+    public static final String APPOINTMENT_WINDOW_TITLE = "Scheduled appointments";
+    public static final String ADD_CUSTOMER_TITLE = "Add new customer";
 
     public void windowController(ActionEvent event, String fileName, String windowTitle) {
-        try {
+        try 
             Parent parent = FXMLLoader.load(getClass().getResource(fileName));
             Scene scene = new Scene(parent);
             Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -18,7 +18,6 @@ import java.sql.Time;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
-    public static final String APPOINTMENT_WINDOW_TITLE = "Main Screen";
     private String sqlStatement;
     WindowManager window = new WindowManager();
 
@@ -48,6 +47,7 @@ public class AppointmentsController implements Initializable {
 
     public void setAddClicked(ActionEvent event){
         System.out.println("add button clicked");
+        window.windowController(event, "/gui/AddCustomer.fxml", WindowManager.ADD_CUSTOMER_TITLE);
     }
 
     public void setUpdateClicked(ActionEvent event){
@@ -101,7 +101,7 @@ public class AppointmentsController implements Initializable {
 
     public void setLogOutClicked(ActionEvent event) {
         if (PopupHandlers.confirmationAlert("log out")){
-            window.windowController(event, "/gui/Login.fxml", LoginController.LOGIN_SCREEN_TITLE);
+            window.windowController(event, "/gui/Login.fxml", WindowManager.LOGIN_SCREEN_TITLE);
         }
     }
 

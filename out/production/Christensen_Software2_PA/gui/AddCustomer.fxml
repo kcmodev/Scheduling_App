@@ -5,15 +5,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
-<AnchorPane id="anchor" prefHeight="600.0" prefWidth="450.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AddCustomerController">
+<AnchorPane id="anchor" prefHeight="600.0" prefWidth="450.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.AddCustomerController">
    <children>
       <Rectangle id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="585.0" layoutX="3.0" layoutY="6.0" stroke="BLACK" strokeType="INSIDE" width="442.0" />
-      <Label id="label" layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="137.0" stylesheets="@../Stylesheet.css" text="Add Customer" />
+      <Label id="label" layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="164.0" stylesheets="@../Stylesheet.css" text="Add Customer" />
       <AnchorPane layoutX="248.0" layoutY="537.0" prefHeight="49.0" prefWidth="188.0">
          <children>
-            <Button id="button" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@../Stylesheet.css" text="Exit" />
-            <Button id="button" layoutX="14.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@../Stylesheet.css" text="Save" />
+            <Button id="button" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" onAction="#setCancelClicked" stylesheets="@../Stylesheet.css" text="Cancel" />
+            <Button id="button" layoutX="14.0" layoutY="5.0" mnemonicParsing="false" onAction="#setSaveClicked" stylesheets="@../Stylesheet.css" text="Save" />
          </children>
       </AnchorPane>
    </children>

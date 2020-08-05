@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 
 
 public class LoginController implements Initializable {
-    public static final String LOGIN_SCREEN_TITLE = "Christensen Software 2 PA - Login Screen";
 
     @FXML private TextField userNameTextField;
     @FXML private PasswordField passwordTextField;
@@ -47,8 +46,8 @@ public class LoginController implements Initializable {
         String enteredPassword = passwordTextField.getText();
         System.out.println("User name entered: \"" + enteredUserName + "\"");
         System.out.println("Password entered: \"" + enteredPassword + "\"");
-        
-        window.windowController(event, "/gui/Appointments.fxml", AppointmentsController.APPOINTMENT_WINDOW_TITLE);
+
+        window.windowController(event, "/gui/Appointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
 
         /**
          * checks to make sure user name and/or password are not left blank
