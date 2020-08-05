@@ -17,7 +17,7 @@
             <Button id="button" layoutX="14.0" layoutY="5.0" mnemonicParsing="false" onAction="#setSaveClicked" stylesheets="@../Stylesheet.css" text="Save" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="51.0" layoutY="115.0" prefHeight="361.0" prefWidth="349.0">
+      <AnchorPane layoutX="51.0" layoutY="115.0" prefHeight="422.0" prefWidth="349.0">
          <children>
             <AnchorPane prefHeight="59.0" prefWidth="349.0">
                <children>
@@ -39,16 +39,6 @@
                   <TextField id="textfield" fx:id="address" layoutX="85.0" layoutY="14.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Address" stylesheets="@../Stylesheet.css" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="295.0" prefHeight="59.0" prefWidth="349.0">
-               <children>
-                  <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Phone:">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField id="textfield" fx:id="phone" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="(555) 555-5555" stylesheets="@../Stylesheet.css" />
-               </children>
-            </AnchorPane>
             <AnchorPane layoutY="118.0" prefHeight="59.0" prefWidth="349.0">
                <children>
                   <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="City:">
@@ -61,6 +51,16 @@
             </AnchorPane>
             <AnchorPane layoutY="177.0" prefHeight="59.0" prefWidth="349.0">
                <children>
+                  <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="State:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textfield" fx:id="state" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer State" stylesheets="@../Stylesheet.css" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutY="231.0" prefHeight="59.0" prefWidth="349.0">
+               <children>
                   <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Zip:">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -69,7 +69,7 @@
                   <TextField id="textfield" fx:id="zip" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Zip Code" stylesheets="@../Stylesheet.css" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="236.0" prefHeight="59.0" prefWidth="349.0">
+            <AnchorPane layoutY="290.0" prefHeight="59.0" prefWidth="349.0">
                <children>
                   <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Country:">
                      <font>
@@ -77,6 +77,16 @@
                      </font>
                   </Label>
                   <TextField id="textfield" fx:id="country" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Country" stylesheets="@../Stylesheet.css" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutY="349.0" prefHeight="59.0" prefWidth="349.0">
+               <children>
+                  <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Phone:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textfield" fx:id="phone" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="(555) 555-5555" stylesheets="@../Stylesheet.css" />
                </children>
             </AnchorPane>
          </children>
