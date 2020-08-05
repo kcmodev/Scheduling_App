@@ -28,21 +28,21 @@ public class AddCustomerController {
 
         if (!isValidInput(name)) {
             PopupHandlers.errorAlert(2, "Invalid name");
-        }else if (!address.matches("^[0-9a-zA-Z_ ]*$") || address.isEmpty()){
+        }else if (!address.matches("^[0-9a-zA-Z_ ]*$")){
             PopupHandlers.errorAlert(2, "Invalid address");
         }else if (!isValidInput(city)) {
             PopupHandlers.errorAlert(2, "Invalid city");
         }else if (!isValidInput(state)){
             PopupHandlers.errorAlert(2, "Invalid state");
-        }else if (!zip.matches("^[0-9]*$") || zip.isEmpty()) {
+        }else if (!zip.matches("^[0-9]*$")) {
             PopupHandlers.errorAlert(2, "Invalid zip");
         }else if (zip.length() > 5 || zip.isEmpty()){
             PopupHandlers.errorAlert(2, "Valid zip code is 5 digits or less");
         }else if (!isValidInput(country)) {
             PopupHandlers.errorAlert(2, "Invalid country");
-        }else if (!phone.matches("^[0-9]*$") || phone.isEmpty()) {
+        }else if (!phone.matches("^[0-9]*$")) {
             PopupHandlers.errorAlert(2, "Invalid phone number. Numbers only");
-        } else if (phone.length() != 10 || phone.isEmpty()){
+        } else if (phone.length() != 10){
             PopupHandlers.errorAlert(2, "Phone number must be 10 digits. Numbers only.");
         }
         System.out.println("input successfully validated");
@@ -55,7 +55,7 @@ public class AddCustomerController {
     }
 
     public boolean isValidInput(String input){
-        if (input.matches("^[a-zA-Z0-9 _]*$") && !input.equals(null)){ return true; }
+        if (input.matches("^[a-zA-Z0-9 _]*$") && !input.isEmpty()){ return true; }
         return false;
     }
 }
