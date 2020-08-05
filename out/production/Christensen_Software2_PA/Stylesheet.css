@@ -45,3 +45,8 @@
     -fx-stroke-type: outside;
     -fx-stroke-line-cap: round;
 }
+
+#subLabel {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
