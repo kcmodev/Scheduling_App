@@ -32,9 +32,9 @@ public class AddCustomerController {
         String phone = this.phone.getText();
 
         sqlStatement = "SELECT c.customerName, c.customerId, c.addressId, a.address, a.addressId, a.cityId, a.postalCode, cty.cityId, cty.city, cty.countryId, cntry.countryId, cntry.country FROM address a\n" +
-                "    JOIN customer c ON a.addressId = c.addressId\n" +
-                "    JOIN city cty ON a.cityId = cty.cityId\n" +
-                "    JOIN country cntry ON cty.countryId = cntry.countryId;";
+                "JOIN customer c ON a.addressId = c.addressId\n" +
+                "JOIN city cty ON a.cityId = cty.cityId\n" +
+                "JOIN country cntry ON cty.countryId = cntry.countryId;";
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
         ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
 
@@ -72,8 +72,8 @@ public class AddCustomerController {
            else { isValidCustomer = true; }
         }
 
-        if (isValidCustomer) {
-            System.out.println("customer \"" + name + "\" being added ");
+//        if (isValidCustomer) {
+//            System.out.println("customer \"" + name + "\" being added ");
 //
 //            /**
 //             * add country to db if duplicate doesn't exist
@@ -110,9 +110,9 @@ public class AddCustomerController {
 //            StatementHandler.getPreparedStatement().setString(2, name;
 
 
-            System.out.println("returning to main screen");
-            window.windowController(event, "/gui/Appointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
-        }
+//            System.out.println("returning to main screen");
+//            window.windowController(event, "/gui/Appointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
+//        }
 
     }
 
