@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class AppointmentsController implements Initializable {
     private String sqlStatement;
@@ -94,8 +95,7 @@ public class AppointmentsController implements Initializable {
             customerTableView.getSelectionModel().clearSelection();
 
         } catch (NullPointerException | SQLException e) {
-            e.printStackTrace();
-            PopupHandlers.errorAlert(1, "catching a weird error");
+            PopupHandlers.errorAlert(1, "You Must make a selection.");
         }
     }
 
