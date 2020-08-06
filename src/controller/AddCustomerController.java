@@ -5,7 +5,6 @@ import dao.StatementHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import models.Customer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -111,14 +110,17 @@ public class AddCustomerController {
 
 
 //            System.out.println("returning to main screen");
-//            window.windowController(event, "/gui/Appointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
+//            window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
 //        }
 
     }
 
     public void setCancelClicked(ActionEvent event){
         System.out.println("cancel button clicked");
-        window.windowController(event, "/gui/Appointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
+
+        if (PopupHandlers.confirmationAlert("quit and discard unsaved changes")) {
+            window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        }
     }
 
     public boolean isValidInput(String input){

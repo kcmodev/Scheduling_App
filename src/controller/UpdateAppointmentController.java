@@ -2,11 +2,11 @@ package controller;
 
 import javafx.event.ActionEvent;
 
-public class AddAppointmentController {
+public class UpdateAppointmentController {
 
     WindowManager window = new WindowManager();
 
-    public void setSaveClicked(ActionEvent event) {
+    public void setSaveClicked(ActionEvent event){
         System.out.println("save button clicked");
     }
 

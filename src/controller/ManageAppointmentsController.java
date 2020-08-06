@@ -16,9 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
-public class AppointmentsController implements Initializable {
+public class ManageAppointmentsController implements Initializable {
     private String sqlStatement;
     WindowManager window = new WindowManager();
 
@@ -48,11 +47,12 @@ public class AppointmentsController implements Initializable {
 
     public void setAddClicked(ActionEvent event){
         System.out.println("add button clicked");
-        window.windowController(event, "/gui/AddCustomer.fxml", WindowManager.ADD_CUSTOMER_TITLE);
+        window.windowController(event, "/gui/AddAppointment.fxml", WindowManager.ADD_APPOINTMENT_TITLE);
     }
 
     public void setUpdateClicked(ActionEvent event){
         System.out.println("update button clicked");
+        window.windowController(event, "/gui/UpdateAppointment.fxml", WindowManager.UPDATE_APPOINTMENT_TITLE);
     }
 
     /**
@@ -132,6 +132,11 @@ public class AppointmentsController implements Initializable {
 
     public void setViewMonth(){
         System.out.println("filter set to \"filter by month\"");
+    }
+
+    public void manageCustomersClicked(ActionEvent event){
+        System.out.println("manage customers button clicked");
+        window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
     }
 
     @Override

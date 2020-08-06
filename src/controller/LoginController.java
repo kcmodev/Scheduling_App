@@ -1,21 +1,13 @@
 package controller;
 
 import dao.ConnectionHandler;
-import dao.CustomerDAO;
-import dao.StatementHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Locale;
@@ -47,7 +39,7 @@ public class LoginController implements Initializable {
         System.out.println("User name entered: \"" + enteredUserName + "\"");
         System.out.println("Password entered: \"" + enteredPassword + "\"");
 
-        window.windowController(event, "/gui/Appointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
+        window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
 
         /**
          * checks to make sure user name and/or password are not left blank
@@ -80,7 +72,7 @@ public class LoginController implements Initializable {
 //                            System.out.println("password matches. log in successful");
 //                            try {
 //                                FXMLLoader loader = new FXMLLoader();
-//                                loader.setLocation(getClass().getResource("/gui/Appointments.fxml"));
+//                                loader.setLocation(getClass().getResource("/gui/ManageAppointments.fxml"));
 //                                Parent parent= loader.load();
 //                                Scene appointmentsScene = new Scene(parent);
 //
