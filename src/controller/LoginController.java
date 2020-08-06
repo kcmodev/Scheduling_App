@@ -123,13 +123,14 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Locale currentLoc = Locale.getDefault();
+//        Locale currentLoc = new Locale("es_CL"); // set to spanish to check locale settings
         System.out.println("Current locale: " + currentLoc);
 
         ResourceBundle languageSetting;
         if (currentLoc.toString().equals("en_US")){
-            languageSetting = ResourceBundle.getBundle("English");
+            languageSetting = ResourceBundle.getBundle("resources/English");
         } else {
-            languageSetting = ResourceBundle.getBundle("Spanish");
+            languageSetting = ResourceBundle.getBundle("resources/Spanish");
         }
         loginTitleLabel.setText(languageSetting.getString("titleLabel"));
         loginUserLabel.setText(languageSetting.getString("userNameLabel"));
