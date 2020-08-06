@@ -22,6 +22,10 @@ public class ManageCustomersController {
 
     public void setCancelClicked(ActionEvent event){
         System.out.println("cancel button clicked");
-        window.windowController(event, "gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+    }
+
+    public void setSearchClicked(ActionEvent event){
+        System.out.println("search clicked");
     }
 }

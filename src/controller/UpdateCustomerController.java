@@ -14,7 +14,7 @@ public class UpdateCustomerController {
         System.out.println("cancel button clicked");
 
         if (PopupHandlers.confirmationAlert("quit and discard unsaved changes")){
-            window.windowController(event, "gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
+            window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
         }
     }
 }

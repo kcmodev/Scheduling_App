@@ -119,7 +119,7 @@ public class AddCustomerController {
         System.out.println("cancel button clicked");
 
         if (PopupHandlers.confirmationAlert("quit and discard unsaved changes")) {
-            window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+            window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
         }
     }
 

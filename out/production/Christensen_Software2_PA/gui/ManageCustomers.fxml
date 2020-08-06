@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane id="anchor" prefHeight="500.0" prefWidth="800.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.ManageCustomersController">
+<AnchorPane id="anchor" prefHeight="500.0" prefWidth="800.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageCustomersController">
     <children>
         <Rectangle id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="477.0" layoutX="14.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="775.0" />
         <Label id="label" fx:id="appointmentLabel" layoutX="24.0" layoutY="21.0" prefHeight="41.0" prefWidth="215.0" stylesheets="@../Stylesheet.css" text="Manage Customer Data" />
@@ -37,7 +36,7 @@
         </AnchorPane>
       <AnchorPane layoutX="416.0" layoutY="62.0" prefHeight="41.0" prefWidth="314.0" stylesheets="@../Stylesheet.css">
          <children>
-            <Button layoutX="245.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Search" />
+            <Button layoutX="245.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setSearchClicked" prefHeight="30.0" prefWidth="70.0" text="Search" />
             <TextField id="textfield" layoutX="63.0" layoutY="7.0" prefHeight="30.0" prefWidth="175.0" promptText="Search by name" stylesheets="@../Stylesheet.css" />
          </children>
       </AnchorPane>
