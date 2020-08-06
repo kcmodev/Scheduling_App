@@ -13,34 +13,40 @@ import java.sql.SQLException;
 public class AddCustomerController {
     WindowManager window = new WindowManager();
     private String sqlStatement;
+    private boolean isValidCustomer = true;
 
     @FXML private TextField name;
     @FXML private TextField address;
     @FXML private TextField city;
-    @FXML private TextField state;
     @FXML private TextField zip;
     @FXML private TextField country;
     @FXML private TextField phone;
 
-    public void setSaveClicked() throws SQLException {
+    public void setSaveClicked(ActionEvent event) throws SQLException {
         System.out.println("save button clicked");
         String name = this.name.getText();
         String address = this.address.getText();
         String city = this.city.getText();
-        String state = this.state.getText();
         String zip = this.zip.getText();
         String country = this.country.getText();
         String phone = this.phone.getText();
 
+        sqlStatement = "SELECT c.customerName, c.customerId, c.addressId, a.address, a.addressId, a.cityId, a.postalCode, cty.cityId, cty.city, cty.countryId, cntry.countryId, cntry.country FROM address a\n" +
+                "    JOIN customer c ON a.addressId = c.addressId\n" +
+                "    JOIN city cty ON a.cityId = cty.cityId\n" +
+                "    JOIN country cntry ON cty.countryId = cntry.countryId;";
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+        ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
 
+        /**
+         * checks all input fields for valid input
+         */
         if (!isValidInput(name)) {
             PopupHandlers.errorAlert(2, "Invalid name");
-        }else if (!address.matches("^[0-9a-zA-Z_ ]*$")){
+        }else if (!isValidInput(address)){
             PopupHandlers.errorAlert(2, "Invalid address");
         }else if (!isValidInput(city)) {
             PopupHandlers.errorAlert(2, "Invalid city");
-        }else if (!isValidInput(state)){
-            PopupHandlers.errorAlert(2, "Invalid state");
         }else if (!zip.matches("^[0-9]*$")) {
             PopupHandlers.errorAlert(2, "Invalid zip");
         }else if (zip.length() > 5 || zip.isEmpty()){
@@ -55,23 +61,58 @@ public class AddCustomerController {
         System.out.println("input successfully validated");
 
         /**
-         * find if address is already in database
-         * if so, link to current customer with the address ID
-         * if not, add the address to the database and add the auto-incremented ID
-         * to the customer being created
+         * checks result set for existing customer with matching name
          */
-        sqlStatement = "SELECT addressId, ? FROM address;";
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setString(1, address);
-        ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
+        while (set.next()){
+           if (set.getString("customerName").equals(name)) {
+               PopupHandlers.errorAlert(2, "Customer with that name already exists.");
+               isValidCustomer = false;
+               break;
+           }
+           else { isValidCustomer = true; }
+        }
 
-//        if (!set.next()){ // result not present, create new db entry
-//            sqlStatement = "";
+        if (isValidCustomer) {
+            System.out.println("customer \"" + name + "\" being added ");
+//
+//            /**
+//             * add country to db if duplicate doesn't exist
+//             */
+//            sqlStatement = ";";
+//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+//            StatementHandler.getPreparedStatement().setString(1, country);
+//            StatementHandler.getPreparedStatement().setString(2, country);
+//            set = StatementHandler.getPreparedStatement().executeQuery();
+//
+//
+//            /**
+//             * add city to db if duplicate doesn't exist
+//             */
+//            sqlStatement ="";
+//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+//            StatementHandler.getPreparedStatement().setString(1, city);
+//            StatementHandler.getPreparedStatement().setString(2, city);
+//
+//            /**
+//             * add customer address to db if duplicate doesn't exist
+//             */
+//            sqlStatement ="";
 //            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
 //            StatementHandler.getPreparedStatement().setString(1, address);
-//            set = StatementHandler.getPreparedStatement().executeQuery();
-//        }
+//            StatementHandler.getPreparedStatement().setString(2, address);
+//
+//            /**
+//             * add customer name to db if duplicate doesn't exist
+//             */
+//            sqlStatement ="";
+//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+//            StatementHandler.getPreparedStatement().setString(1, name);
+//            StatementHandler.getPreparedStatement().setString(2, name;
 
+
+            System.out.println("returning to main screen");
+            window.windowController(event, "/gui/Appointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
+        }
 
     }
 
