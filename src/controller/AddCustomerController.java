@@ -54,7 +54,7 @@ public class AddCustomerController {
             PopupHandlers.errorAlert(2, "Invalid country");
         }else if (!phone.matches("^[0-9]*$")) {
             PopupHandlers.errorAlert(2, "Invalid phone number. Numbers only");
-        } else if (phone.length() != 10){
+        }else if (phone.length() != 10){
             PopupHandlers.errorAlert(2, "Phone number must be 10 digits. Numbers only.");
         }
         System.out.println("input successfully validated");
@@ -71,47 +71,29 @@ public class AddCustomerController {
            else { isValidCustomer = true; }
         }
 
-//        if (isValidCustomer) {
-//            System.out.println("customer \"" + name + "\" being added ");
-//
-//            /**
-//             * add country to db if duplicate doesn't exist
-//             */
-//            sqlStatement = ";";
-//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-//            StatementHandler.getPreparedStatement().setString(1, country);
-//            StatementHandler.getPreparedStatement().setString(2, country);
-//            set = StatementHandler.getPreparedStatement().executeQuery();
-//
-//
-//            /**
-//             * add city to db if duplicate doesn't exist
-//             */
-//            sqlStatement ="";
-//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-//            StatementHandler.getPreparedStatement().setString(1, city);
-//            StatementHandler.getPreparedStatement().setString(2, city);
-//
-//            /**
-//             * add customer address to db if duplicate doesn't exist
-//             */
-//            sqlStatement ="";
-//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-//            StatementHandler.getPreparedStatement().setString(1, address);
-//            StatementHandler.getPreparedStatement().setString(2, address);
-//
-//            /**
-//             * add customer name to db if duplicate doesn't exist
-//             */
-//            sqlStatement ="";
-//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-//            StatementHandler.getPreparedStatement().setString(1, name);
-//            StatementHandler.getPreparedStatement().setString(2, name;
+        if (isValidCustomer) {
+            System.out.println("customer \"" + name + "\" being added ");
+
+            /**
+             * add customer address to db if duplicate doesn't exist
+             */
+            sqlStatement ="";
+            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+            StatementHandler.getPreparedStatement().setString(1, address);
+            StatementHandler.getPreparedStatement().setString(2, address);
+
+            /**
+             * add customer name to db if duplicate doesn't exist
+             */
+            sqlStatement ="";
+            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+            StatementHandler.getPreparedStatement().setString(1, name);
+            StatementHandler.getPreparedStatement().setString(2, name);
 
 
-//            System.out.println("returning to main screen");
-//            window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.APPOINTMENT_WINDOW_TITLE);
-//        }
+            System.out.println("returning to main screen");
+            window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        }
 
     }
 

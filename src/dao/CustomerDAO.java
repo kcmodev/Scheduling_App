@@ -12,6 +12,7 @@ public class CustomerDAO {
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
 
+
     public static void buildCustomerData() throws SQLException {
         System.out.println("building customer object array");
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, "SELECT * FROM customer");

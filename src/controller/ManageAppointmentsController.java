@@ -6,11 +6,17 @@ import dao.CustomerDAO;
 import dao.StatementHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import models.Customer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +29,7 @@ public class ManageAppointmentsController implements Initializable {
 
     @FXML private Label appointmentLabel;
 
-    @FXML private TableView<Customer> customerTableView;
+    @FXML private TableView<Customer> appointmentTableView;
     @FXML private TableColumn<Customer, Integer> customerIDCol;
     @FXML private TableColumn<Customer, String> customerNameCol;
     @FXML private TableColumn<Customer, String> customerAddressCol;
@@ -50,9 +56,27 @@ public class ManageAppointmentsController implements Initializable {
         window.windowController(event, "/gui/AddAppointment.fxml", WindowManager.ADD_APPOINTMENT_TITLE);
     }
 
-    public void setUpdateClicked(ActionEvent event){
+    public void setUpdateClicked(ActionEvent event) throws IOException {
         System.out.println("update button clicked");
-        window.windowController(event, "/gui/UpdateAppointment.fxml", WindowManager.UPDATE_APPOINTMENT_TITLE);
+
+        if (appointmentTableView.getSelectionModel().getSelectedItem() != null) {
+//            window.windowController(event, "/gui/UpdateAppointment.fxml", WindowManager.UPDATE_APPOINTMENT_TITLE);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("ModifyPartScreen.fxml"));
+            Parent parent = loader.load();
+            Scene modPartScene = new Scene(parent);
+
+            UpdateAppointmentController controller = loader.getController();
+            controller.setTextFields(/*appointmentTableView.getSelectionModel().getSelectedItem()*/);
+
+            Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            newWindow.setScene(modPartScene);
+            newWindow.setResizable(false);
+            newWindow.setTitle(WindowManager.UPDATE_APPOINTMENT_TITLE);
+            newWindow.show();
+        } else {
+            PopupHandlers.errorAlert(1, "You must choose an appointment to modify");
+        }
     }
 
     /**
@@ -64,7 +88,7 @@ public class ManageAppointmentsController implements Initializable {
         System.out.println("delete button clicked");
 
         try {
-            String name = customerTableView.getSelectionModel().getSelectedItem().getName();
+            String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
             sqlStatement = "SELECT customerName FROM customer\n" +
                     "WHERE customerName = ?;";
             System.out.println("attempting to delete: \"" + name + "\"");
@@ -91,8 +115,8 @@ public class ManageAppointmentsController implements Initializable {
             }
 
             setFilterSelection();
-            customerTableView.refresh();
-            customerTableView.getSelectionModel().clearSelection();
+            appointmentTableView.refresh();
+            appointmentTableView.getSelectionModel().clearSelection();
 
         } catch (NullPointerException | SQLException e) {
             PopupHandlers.errorAlert(1, "You Must make a selection.");
@@ -123,7 +147,7 @@ public class ManageAppointmentsController implements Initializable {
         customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         appointmentTimeCol.setCellValueFactory(new PropertyValueFactory<>("appointmentTime"));
 
-        customerTableView.setItems(CustomerDAO.getAllCustomers());
+        appointmentTableView.setItems(CustomerDAO.getAllCustomers());
     }
 
     public void setViewWeek(){

@@ -14,7 +14,7 @@
    <children>
       <Rectangle id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="477.0" layoutX="14.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="775.0" />
       <Label id="label" fx:id="appointmentLabel" layoutX="30.0" layoutY="35.0" prefHeight="41.0" prefWidth="401.0" stylesheets="@../Stylesheet.css" text="Scheduled Appointments" />
-      <TableView fx:id="customerTableView" layoutX="71.0" layoutY="113.0" prefHeight="287.0" prefWidth="659.0">
+      <TableView fx:id="appointmentTableView" layoutX="71.0" layoutY="113.0" prefHeight="287.0" prefWidth="659.0">
         <columns>
             <TableColumn fx:id="customerIDCol" prefWidth="102.0" text="Customer ID" />
           <TableColumn fx:id="customerNameCol" prefWidth="152.0" text="Name" />
