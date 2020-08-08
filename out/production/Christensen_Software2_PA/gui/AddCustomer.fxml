@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -46,7 +47,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField id="textfield" fx:id="city" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer City" stylesheets="@../Stylesheet.css" />
+                  <ChoiceBox fx:id="cityDropdown" layoutX="87.0" layoutY="14.0" prefHeight="33.0" prefWidth="222.0" />
                </children>
             </AnchorPane>
             <AnchorPane layoutY="182.0" prefHeight="59.0" prefWidth="349.0">
@@ -66,7 +67,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField id="textfield" fx:id="country" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Country" stylesheets="@../Stylesheet.css" />
+                  <TextField id="textfield" fx:id="country" disable="true" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Customer Country" stylesheets="@../Stylesheet.css" />
                </children>
             </AnchorPane>
             <AnchorPane layoutY="300.0" prefHeight="59.0" prefWidth="349.0">

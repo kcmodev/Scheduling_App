@@ -3,7 +3,7 @@
 java:S2095["GUse try-with-resources or close this "ResultSet" in a "finally" clause.(ΰÿΤ
 ]
 java:S20952"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(ΰÿΤ
-]
-java:S2095F"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(ΰÿΤ
 s
 java:S1192/"XDefine a constant instead of duplicating this literal "WHERE c.customerId = ?;" 3 times.(—θύÿÿÿÿ
+]
+java:S2095F"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(ΰÿΤ

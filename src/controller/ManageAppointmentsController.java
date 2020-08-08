@@ -1,5 +1,6 @@
 package controller;
 
+import dao.AppointmentDAO;
 import dao.ConnectionHandler;
 import dao.CustomerDAO;
 
@@ -14,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import models.Appointment;
 import models.Customer;
 
 import java.io.IOException;
@@ -29,12 +31,12 @@ public class ManageAppointmentsController implements Initializable {
 
     @FXML private Label appointmentLabel;
 
-    @FXML private TableView<Customer> appointmentTableView;
-    @FXML private TableColumn<Customer, Integer> customerIDCol;
-    @FXML private TableColumn<Customer, String> customerNameCol;
-    @FXML private TableColumn<Customer, String> customerAddressCol;
-    @FXML private TableColumn<Customer, String> customerPhoneCol;
-    @FXML private TableColumn<Customer, Time> appointmentTimeCol;
+    @FXML private TableView<Appointment> appointmentTableView;
+    @FXML private TableColumn<Appointment, Integer> appointmentTypeCol;
+    @FXML private TableColumn<Appointment, String> customerNameCol;
+    @FXML private TableColumn<Appointment, String> customerAddressCol;
+    @FXML private TableColumn<Appointment, String> customerPhoneCol;
+    @FXML private TableColumn<Appointment, Time> appointmentTimeCol;
 
     @FXML private ToggleGroup filterSelection;
     @FXML private RadioButton all;
@@ -60,7 +62,6 @@ public class ManageAppointmentsController implements Initializable {
         System.out.println("update button clicked");
 
         if (appointmentTableView.getSelectionModel().getSelectedItem() != null) {
-//            window.windowController(event, "/gui/UpdateAppointment.fxml", WindowManager.UPDATE_APPOINTMENT_TITLE);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("ModifyPartScreen.fxml"));
             Parent parent = loader.load();
@@ -87,40 +88,40 @@ public class ManageAppointmentsController implements Initializable {
     public void deleteClicked () {
         System.out.println("delete button clicked");
 
-        try {
-            String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
-            sqlStatement = "SELECT customerName FROM customer\n" +
-                    "WHERE customerName = ?;";
-            System.out.println("attempting to delete: \"" + name + "\"");
-            System.out.println("sql statement being passed in: " + sqlStatement);
-
-            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-            StatementHandler.getPreparedStatement().setString(1, name);
-            ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
-
-            if (set.next()) {
-                sqlStatement = "DELETE FROM customer WHERE customerName = ?;";
-                System.out.println("new sql statement: \"" + sqlStatement + "\"");
-                StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-                StatementHandler.getPreparedStatement().setString(1, name);
-//                StatementHandler.getPreparedStatement().execute();
-
-                for (Customer customer : CustomerDAO.getAllCustomers()){
-                    if (customer.getName().equals(name)){
-                        System.out.println("deleting: " + customer.getName());
-                        CustomerDAO.deleteCustomer(customer);
-                        break;
-                    }
-                }
-            }
-
-            setFilterSelection();
-            appointmentTableView.refresh();
-            appointmentTableView.getSelectionModel().clearSelection();
-
-        } catch (NullPointerException | SQLException e) {
-            PopupHandlers.errorAlert(1, "You Must make a selection.");
-        }
+//        try {
+//            String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
+//            sqlStatement = "SELECT customerName FROM customer\n" +
+//                    "WHERE customerName = ?;";
+//            System.out.println("attempting to delete: \"" + name + "\"");
+//            System.out.println("sql statement being passed in: " + sqlStatement);
+//
+//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+//            StatementHandler.getPreparedStatement().setString(1, name);
+//            ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
+//
+//            if (set.next()) {
+//                sqlStatement = "DELETE FROM customer WHERE customerName = ?;";
+//                System.out.println("new sql statement: \"" + sqlStatement + "\"");
+//                StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+//                StatementHandler.getPreparedStatement().setString(1, name);
+////                StatementHandler.getPreparedStatement().execute();
+//
+//                for (Customer customer : CustomerDAO.getAllCustomers()){
+//                    if (customer.getName().equals(name)){
+//                        System.out.println("deleting: " + customer.getName());
+//                        CustomerDAO.deleteCustomer(customer);
+//                        break;
+//                    }
+//                }
+//            }
+//
+//            setFilterSelection();
+//            appointmentTableView.refresh();
+//            appointmentTableView.getSelectionModel().clearSelection();
+//
+//        } catch (NullPointerException | SQLException e) {
+//            PopupHandlers.errorAlert(1, "You Must make a selection.");
+//        }
     }
 
     public void setLogOutClicked(ActionEvent event) {
@@ -129,7 +130,7 @@ public class ManageAppointmentsController implements Initializable {
         }
     }
 
-    public void setFilterSelection(){
+    public void setFilterSelection() throws SQLException {
         System.out.println("filtering selection");
         if (all.isSelected())
             setViewAll();
@@ -139,15 +140,15 @@ public class ManageAppointmentsController implements Initializable {
             setViewMonth();
     }
 
-    public void setViewAll() {
+    public void setViewAll() throws SQLException {
         System.out.println("filter set to \"view all\"");
-        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        appointmentTimeCol.setCellValueFactory(new PropertyValueFactory<>("appointmentTime"));
+        appointmentTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
 
-        appointmentTableView.setItems(CustomerDAO.getAllCustomers());
+        appointmentTableView.setItems(AppointmentDAO.setViewAllAppointments());
     }
 
     public void setViewWeek(){
@@ -166,6 +167,11 @@ public class ManageAppointmentsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setLabel("Schedule for /ADMIN USER/");
-        setViewAll();
+
+        try {
+            setViewAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

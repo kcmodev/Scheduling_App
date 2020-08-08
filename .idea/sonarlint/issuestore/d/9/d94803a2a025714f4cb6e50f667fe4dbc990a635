@@ -1,23 +1,23 @@
 
-W	java:S107"BConstructor has 10 parameters, which is greater than 7 authorized.(‘úÚµ
-L
-java:S1068"1Remove this unused "appointmentId" private field.(ÒŞÂÒüÿÿÿÿ
 I
 java:S1068".Remove this unused "customerId" private field.(ÚŸçğÿÿÿÿÿ
 E
 java:S1068"*Remove this unused "userId" private field.(“Ğ„Äüÿÿÿÿ
-D
-java:S1068")Remove this unused "title" private field.(åõò¹ıÿÿÿÿ
-J
-java:S1068"/Remove this unused "description" private field.(ÇÓæâıÿÿÿÿ
-G
-java:S1068	",Remove this unused "location" private field.(Ìöïüÿÿÿÿ
-A
-java:S1068
-"+Remove this unused "contact" private field.(ù×ùØ
 C
 java:S1068"(Remove this unused "type" private field.(–î†ûÿÿÿÿ
 H
 java:S1068"-Remove this unused "startTime" private field.(š³¬ƒıÿÿÿÿ
+J
+java:S1068"/Remove this unused "description" private field.(ÇÓæâıÿÿÿÿ
+A
+java:S1068
+"+Remove this unused "contact" private field.(ù×ùØ
+D
+java:S1068")Remove this unused "title" private field.(åõò¹ıÿÿÿÿ
 F
 java:S1068"+Remove this unused "endTime" private field.(âå©¼ùÿÿÿÿ
+L
+java:S1068"1Remove this unused "appointmentId" private field.(ÒŞÂÒüÿÿÿÿ
+G
+java:S1068	",Remove this unused "location" private field.(Ìöïüÿÿÿÿ
+W	java:S107"BConstructor has 10 parameters, which is greater than 7 authorized.(‘úÚµ

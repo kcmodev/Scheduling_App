@@ -19,6 +19,12 @@ public class Customer{
         this.isActive = isActive;
     }
 
+    public Customer(String name, int customerId, int addressId) {
+        this.name = name;
+        this.customerId = customerId;
+        this.addressId = addressId;
+    }
+
     public String getName() {
         return name;
     }

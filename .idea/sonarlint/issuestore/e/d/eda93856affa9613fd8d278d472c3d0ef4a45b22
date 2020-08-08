@@ -1,26 +1,26 @@
 
-]
-java:S2095&"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(àÿÔ
-q
-java:S1450"[Remove the "sqlStatement" field and declare it as a local variable in the relevant methods.(¡à¯Ô
-S	java:S106"9Replace this use of System.out or System.err by a logger.(¹‰‰üÿÿÿÿ
-S
-java:S1117"8Rename "name" which hides the field declared at line 17.(£âè¼ûÿÿÿÿ
-Q
-java:S1117";Rename "address" which hides the field declared at line 18.(ÉÚ˜‡
-M
-java:S1117"8Rename "city" which hides the field declared at line 19.(Öô®<
-M
-java:S1117"7Rename "zip" which hides the field declared at line 20.(¦®©
 V
 java:S1117";Rename "country" which hides the field declared at line 21.(°¢Ã¶ûÿÿÿÿ
+Q
+java:S1117";Rename "address" which hides the field declared at line 18.(ÉÚ˜‡
+N	java:S106^"9Replace this use of System.out or System.err by a logger.(öÔ‡
+Q	java:S125q"<This block of commented-out lines of code should be removed.(Úƒ–Ù
+S
+java:S1117"8Rename "name" which hides the field declared at line 17.(£âè¼ûÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¹‰‰üÿÿÿÿ
 T
 java:S1117"9Rename "phone" which hides the field declared at line 22.(ÕšåÑøÿÿÿÿ
-S	java:S106<"9Replace this use of System.out or System.err by a logger.(¥ŠÉËıÿÿÿÿ
 M	java:S106K"9Replace this use of System.out or System.err by a logger.(ôè 
-N	java:S106^"9Replace this use of System.out or System.err by a logger.(öÔ‡
-N	java:S106e"9Replace this use of System.out or System.err by a logger.(³ş
+]
+java:S2095&"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(àÿÔ
 W
 java:S1126m"AReplace this if-then-else statement by a single return statement.(ûı­Ü
-Q	java:S125q"<This block of commented-out lines of code should be removed.(Úƒ–Ù
+M
+java:S1117"7Rename "zip" which hides the field declared at line 20.(¦®©
 Q	java:S125s"<This block of commented-out lines of code should be removed.(Àë…¸
+M
+java:S1117"8Rename "city" which hides the field declared at line 19.(Öô®<
+S	java:S106<"9Replace this use of System.out or System.err by a logger.(¥ŠÉËıÿÿÿÿ
+N	java:S106e"9Replace this use of System.out or System.err by a logger.(³ş
+q
+java:S1450"[Remove the "sqlStatement" field and declare it as a local variable in the relevant methods.(¡à¯Ô

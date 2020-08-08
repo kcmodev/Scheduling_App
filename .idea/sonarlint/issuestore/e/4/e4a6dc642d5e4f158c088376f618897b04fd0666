@@ -1,20 +1,20 @@
 
+S	java:S106^"9Replace this use of System.out or System.err by a logger.(¬š–úúÿÿÿÿ
+T	java:S106¢"9Replace this use of System.out or System.err by a logger.(ß¥–¨ÿÿÿÿÿ
 ]
 java:S2095c"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(àÿÔ
+S	java:S1067"9Replace this use of System.out or System.err by a logger.(›…€úÿÿÿÿ
+S	java:S106n"9Replace this use of System.out or System.err by a logger.(—€ıüÿÿÿÿ
+S	java:S106X"9Replace this use of System.out or System.err by a logger.(­¾¡ˆûÿÿÿÿ
+V	java:S125?"<This block of commented-out lines of code should be removed.(õÊ×åûÿÿÿÿ
+O	java:S106"9Replace this use of System.out or System.err by a logger.(†ÕòÓ
+T	java:S106…"9Replace this use of System.out or System.err by a logger.(’²¤øÿÿÿÿ
+O	java:S106š"9Replace this use of System.out or System.err by a logger.(Æ™õ
 q
 java:S1450"[Remove the "sqlStatement" field and declare it as a local variable in the relevant methods.(¡à¯Ô
-S	java:S1062"9Replace this use of System.out or System.err by a logger.(íŞåñúÿÿÿÿ
-S	java:S1067"9Replace this use of System.out or System.err by a logger.(›…€úÿÿÿÿ
-S	java:S106<"9Replace this use of System.out or System.err by a logger.(‘ûŞÿÿÿÿÿ
-S	java:S106X"9Replace this use of System.out or System.err by a logger.(­¾¡ˆûÿÿÿÿ
-S	java:S106^"9Replace this use of System.out or System.err by a logger.(¬š–úúÿÿÿÿ
 S	java:S106_"9Replace this use of System.out or System.err by a logger.(§üè¼ùÿÿÿÿ
 N	java:S106g"9Replace this use of System.out or System.err by a logger.(Éßï®
-S	java:S106n"9Replace this use of System.out or System.err by a logger.(—€ıüÿÿÿÿ
-T	java:S106…"9Replace this use of System.out or System.err by a logger.(’²¤øÿÿÿÿ
 O	java:S106"9Replace this use of System.out or System.err by a logger.(¹ßŠ†
-O	java:S106š"9Replace this use of System.out or System.err by a logger.(Æ™õ
-O	java:S106"9Replace this use of System.out or System.err by a logger.(†ÕòÓ
-T	java:S106¢"9Replace this use of System.out or System.err by a logger.(ß¥–¨ÿÿÿÿÿ
-V	java:S125?"<This block of commented-out lines of code should be removed.(õÊ×åûÿÿÿÿ
 V	java:S125j"<This block of commented-out lines of code should be removed.(û¶ò ùÿÿÿÿ
+S	java:S106<"9Replace this use of System.out or System.err by a logger.(‘ûŞÿÿÿÿÿ
+S	java:S1062"9Replace this use of System.out or System.err by a logger.(íŞåñúÿÿÿÿ
