@@ -11,6 +11,7 @@ public class Appointment {
     private int userId;
     private String type;
     private String startTime;
+    private String startDate;
     private String endTime;
     private String name;
     private String address;
@@ -28,7 +29,8 @@ public class Appointment {
         System.out.println("address found: " + this.address);
         this.phone = CustomerDAO.getCustomerPhone(customerId);
         System.out.println("phone found: " + this.phone);
-        this.startTime = startTime;
+        this.startTime = startTime.substring(15 , 23);
+        this.startDate = startTime.substring(0, 10);
     }
 
     public int getAppointmentId() {
@@ -73,6 +75,10 @@ public class Appointment {
 
     public String getStartTime() {
         return startTime;
+    }
+
+    public String getStartDate(){
+        return startDate;
     }
 
     public void setStartTime(String startTime) {

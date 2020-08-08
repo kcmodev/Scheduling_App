@@ -23,6 +23,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 public class ManageAppointmentsController implements Initializable {
@@ -36,7 +37,7 @@ public class ManageAppointmentsController implements Initializable {
     @FXML private TableColumn<Appointment, String> customerNameCol;
     @FXML private TableColumn<Appointment, String> customerAddressCol;
     @FXML private TableColumn<Appointment, String> customerPhoneCol;
-    @FXML private TableColumn<Appointment, Time> appointmentTimeCol;
+    @FXML private TableColumn<Appointment, Time> appointmentDateTimeCol;
 
     @FXML private ToggleGroup filterSelection;
     @FXML private RadioButton all;
@@ -63,12 +64,12 @@ public class ManageAppointmentsController implements Initializable {
 
         if (appointmentTableView.getSelectionModel().getSelectedItem() != null) {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("ModifyPartScreen.fxml"));
+            loader.setLocation(getClass().getResource("/gui/UpdateAppointment.fxml"));
             Parent parent = loader.load();
             Scene modPartScene = new Scene(parent);
 
             UpdateAppointmentController controller = loader.getController();
-            controller.setTextFields(/*appointmentTableView.getSelectionModel().getSelectedItem()*/);
+            controller.setTextFields(appointmentTableView.getSelectionModel().getSelectedItem());
 
             Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             newWindow.setScene(modPartScene);
@@ -142,13 +143,7 @@ public class ManageAppointmentsController implements Initializable {
 
     public void setViewAll() throws SQLException {
         System.out.println("filter set to \"view all\"");
-        appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
-        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        appointmentTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-
-        appointmentTableView.setItems(AppointmentDAO.setViewAllAppointments());
+        appointmentTableView.setItems(AppointmentDAO.getAllAppointments());
     }
 
     public void setViewWeek(){
@@ -164,14 +159,34 @@ public class ManageAppointmentsController implements Initializable {
         window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
     }
 
+    public void setTableProperties() {
+        appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        appointmentDateTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+
+        appointmentTypeCol.setStyle("-fx-alignment: CENTER;");
+        customerNameCol.setStyle("-fx-alignment: CENTER;");
+        customerAddressCol.setStyle("-fx-alignment: CENTER;");
+        customerPhoneCol.setStyle("-fx-alignment: CENTER;");
+        appointmentDateTimeCol.setStyle("-fx-alignment: CENTER;");
+
+        appointmentTypeCol.setResizable(false);
+        customerNameCol.setResizable(false);
+        customerAddressCol.setResizable(false);
+        customerPhoneCol.setResizable(false);
+        appointmentDateTimeCol.setResizable(false);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setLabel("Schedule for /ADMIN USER/");
-
+        setTableProperties();
         try {
             setViewAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 }

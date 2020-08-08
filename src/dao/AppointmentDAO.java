@@ -7,6 +7,7 @@ import models.Customer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Comparator;
 
 public class AppointmentDAO {
     private static String sqlStatement;
@@ -25,8 +26,8 @@ public class AppointmentDAO {
 
     }
 
-    public static ObservableList<Appointment> setViewAllAppointments() throws SQLException {
-        sqlStatement = "select a.customerId, a.type, time(a.start) startTime from appointment a\n" +
+    public static void setViewAllAppointments() throws SQLException {
+        sqlStatement = "select a.customerId, a.type, a.start from appointment a\n" +
                           "join customer c on a.customerId = c.customerId;";
 
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
@@ -37,24 +38,17 @@ public class AppointmentDAO {
             System.out.println("type retrieved: " + type);
             int customerId = rs.getInt("customerId");
             System.out.println("customerId retrieved: " + customerId);
-            String time = rs.getTime("startTime").toString();
-            System.out.println("time retrieved: " + time);
+            String time = rs.getString("start").replaceAll("[ ]", "  |  ");
+            System.out.println("date/time retrieved: " + time);
 
             Appointment appointment = new Appointment(customerId, type, time);
             appointments.add(appointment);
-
         }
-
-        return getAllAppointments();
     }
 
-    public void setViewAllByWeek(){
+    public static void setViewAllByWeek(){ }
 
-    }
-
-    public void setViewAllByMonth(){
-
-    }
+    public void setViewAllByMonth(){ }
 
     public static ObservableList<Appointment> getAllAppointments() { return appointments; }
 }
