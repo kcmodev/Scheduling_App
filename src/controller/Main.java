@@ -1,6 +1,7 @@
 package controller;
 
 import dao.AppointmentDAO;
+import dao.CityDAO;
 import dao.ConnectionHandler;
 import dao.CustomerDAO;
 import javafx.application.Application;
@@ -10,11 +11,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class Main extends Application {
+    public static final TimeZone userZone = Calendar.getInstance().getTimeZone();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
         Parent root = FXMLLoader.load(getClass().getResource("../gui/Login.fxml"));
         primaryStage.setTitle(WindowManager.LOGIN_SCREEN_TITLE);
         primaryStage.setScene(new Scene(root));
@@ -24,7 +29,10 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException {
         ConnectionHandler.startConnection();
-        AppointmentDAO.setViewAllAppointments();
+
+//        AppointmentDAO.buildAppointmentData();
+//        CustomerDAO.buildCustomerData();
+        CityDAO.setAllCities();
 
         launch(args);
         

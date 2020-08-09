@@ -15,7 +15,7 @@
       <AnchorPane layoutX="248.0" layoutY="527.0" prefHeight="49.0" prefWidth="188.0">
          <children>
             <Button id="button" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" onAction="#setCancelClicked" stylesheets="@../Stylesheet.css" text="Cancel" />
-            <Button id="button" layoutX="14.0" layoutY="5.0" mnemonicParsing="false" onAction="#setSaveClicked" stylesheets="@../Stylesheet.css" text="Save" />
+            <Button id="button" fx:id="saveButton" disable="true" layoutX="14.0" layoutY="5.0" mnemonicParsing="false" onAction="#setSaveClicked" stylesheets="@../Stylesheet.css" text="Save" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="51.0" layoutY="115.0" prefHeight="371.0" prefWidth="349.0">
@@ -47,7 +47,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="cityDropdown" layoutX="87.0" layoutY="14.0" prefHeight="33.0" prefWidth="222.0" />
+                  <ChoiceBox fx:id="cityDropbox" layoutX="87.0" layoutY="14.0" onAction="#setCity" prefHeight="33.0" prefWidth="222.0" />
                </children>
             </AnchorPane>
             <AnchorPane layoutY="182.0" prefHeight="59.0" prefWidth="349.0">

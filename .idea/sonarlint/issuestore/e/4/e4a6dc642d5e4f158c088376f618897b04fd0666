@@ -1,20 +1,28 @@
 
-S	java:S106^"9Replace this use of System.out or System.err by a logger.(¬š–úúÿÿÿÿ
-T	java:S106¢"9Replace this use of System.out or System.err by a logger.(ß¥–¨ÿÿÿÿÿ
-]
-java:S2095c"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(àÿÔ
-S	java:S1067"9Replace this use of System.out or System.err by a logger.(›…€úÿÿÿÿ
-S	java:S106n"9Replace this use of System.out or System.err by a logger.(—€ıüÿÿÿÿ
-S	java:S106X"9Replace this use of System.out or System.err by a logger.(­¾¡ˆûÿÿÿÿ
-V	java:S125?"<This block of commented-out lines of code should be removed.(õÊ×åûÿÿÿÿ
-O	java:S106"9Replace this use of System.out or System.err by a logger.(†ÕòÓ
-T	java:S106…"9Replace this use of System.out or System.err by a logger.(’²¤øÿÿÿÿ
-O	java:S106š"9Replace this use of System.out or System.err by a logger.(Æ™õ
-q
-java:S1450"[Remove the "sqlStatement" field and declare it as a local variable in the relevant methods.(¡à¯Ô
-S	java:S106_"9Replace this use of System.out or System.err by a logger.(§üè¼ùÿÿÿÿ
-N	java:S106g"9Replace this use of System.out or System.err by a logger.(Éßï®
-O	java:S106"9Replace this use of System.out or System.err by a logger.(¹ßŠ†
-V	java:S125j"<This block of commented-out lines of code should be removed.(û¶ò ùÿÿÿÿ
-S	java:S106<"9Replace this use of System.out or System.err by a logger.(‘ûŞÿÿÿÿÿ
-S	java:S1062"9Replace this use of System.out or System.err by a logger.(íŞåñúÿÿÿÿ
+[	java:S106»"9Replace this use of System.out or System.err by a logger.(Ü” øÿÿÿÿ8„âÊô¼.
+‘
+java:S1130‘"nRemove the declaration of thrown exception 'java.sql.SQLException', as it cannot be thrown from method's body.(Ë¡…Ûûÿÿÿÿ8ˆ¡Óİ¼.
+M
+java:S1068"0Remove this unused "sqlStatement" private field.(¡à¯Ô8»îÛ¼.
+N
+java:S1128"1Remove this unused import 'java.util.Comparator'.(î¹ó¹8ªÓğİ¼.
+T	java:S106ˆ"9Replace this use of System.out or System.err by a logger.(’²¤øÿÿÿÿ
+O	java:S106›"9Replace this use of System.out or System.err by a logger.(†ÕòÓ
+S	java:S106;"9Replace this use of System.out or System.err by a logger.(›…€úÿÿÿÿ
+X	java:S125d"<This block of commented-out lines of code should be removed.(µşÔ·8»îÛ¼.
+O	java:S106—"9Replace this use of System.out or System.err by a logger.(Æ™õ
+O	java:S106’"9Replace this use of System.out or System.err by a logger.(¹ßŠ†
+X	java:S125|"<This block of commented-out lines of code should be removed.(Ÿİ÷Û8»îÛ¼.
+T	java:S106Ÿ"9Replace this use of System.out or System.err by a logger.(ß¥–¨ÿÿÿÿÿ
+S	java:S106["9Replace this use of System.out or System.err by a logger.(­¾¡ˆûÿÿÿÿ
+]	java:S125]"<This block of commented-out lines of code should be removed.(ñ¥ùšøÿÿÿÿ8»îÛ¼.
+]	java:S125x"<This block of commented-out lines of code should be removed.(Ú‹Œüÿÿÿÿ8»îÛ¼.
+X	java:S125o"<This block of commented-out lines of code should be removed.(ëãßØ8»îÛ¼.
+z
+java:S1192ª"WDefine a constant instead of duplicating this literal "-fx-alignment: CENTER;" 5 times.(Œù‰•øÿÿÿÿ8ÿ’ìÜ¼.
+]	java:S125h"<This block of commented-out lines of code should be removed.(Ê´¦áıÿÿÿÿ8»îÛ¼.
+S	java:S1066"9Replace this use of System.out or System.err by a logger.(íŞåñúÿÿÿÿ
+]	java:S125`"<This block of commented-out lines of code should be removed.(Æğ¬şÿÿÿÿ8»îÛ¼.
+S	java:S106@"9Replace this use of System.out or System.err by a logger.(‘ûŞÿÿÿÿÿ
+J
+java:S1128"-Remove this unused import 'java.time.ZoneId'.( Æ½“8ÿ—İõ¼.

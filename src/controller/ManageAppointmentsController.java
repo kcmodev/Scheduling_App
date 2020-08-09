@@ -5,6 +5,7 @@ import dao.ConnectionHandler;
 import dao.CustomerDAO;
 
 import dao.StatementHandler;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
@@ -148,6 +150,7 @@ public class ManageAppointmentsController implements Initializable {
 
     public void setViewWeek(){
         System.out.println("filter set to \"filter by week\"");
+
     }
 
     public void setViewMonth(){
@@ -182,6 +185,8 @@ public class ManageAppointmentsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setLabel("Schedule for /ADMIN USER/");
+        String zone = Main.userZone.toZoneId().toString();
+        System.out.println("User time zone: " + zone);
         setTableProperties();
         try {
             setViewAll();

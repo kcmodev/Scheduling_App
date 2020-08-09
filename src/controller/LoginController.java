@@ -11,8 +11,10 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 
 public class LoginController implements Initializable {
@@ -123,12 +125,13 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Locale currentLoc = Locale.getDefault();
+        Locale userLoc = Locale.getDefault();
+//        TimeZone userZone = Calendar.getInstance().getTimeZone();
 //        Locale currentLoc = new Locale("es_CL"); // set to spanish to check locale settings
-        System.out.println("Current locale: " + currentLoc);
+        System.out.println("Current locale: " + userLoc);
 
         ResourceBundle languageSetting;
-        if (currentLoc.toString().equals("en_US")){
+        if (userLoc.toString().equals("en_US")){
             languageSetting = ResourceBundle.getBundle("resources/English");
         } else {
             languageSetting = ResourceBundle.getBundle("resources/Spanish");

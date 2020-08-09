@@ -29,8 +29,8 @@ public class Appointment {
         System.out.println("address found: " + this.address);
         this.phone = CustomerDAO.getCustomerPhone(customerId);
         System.out.println("phone found: " + this.phone);
-        this.startTime = startTime.substring(15 , 23);
-        this.startDate = startTime.substring(0, 10);
+        this.startTime = startTime;
+        this.startDate = startTime;
     }
 
     public int getAppointmentId() {

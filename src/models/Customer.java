@@ -34,7 +34,7 @@ public class Customer{
     }
 
     public int getCustomerId() {
-        return customerId;
+        return this.customerId;
     }
 
     public void setCustomerId(int customerId) {
@@ -102,8 +102,14 @@ public class Customer{
         return "";
     }
 
-    public int getIsActive() {
-        return isActive;
+    public int getIsActiveNumeric() {
+        return this.isActive;
+    }
+
+    public String getIsActiveString() {
+        if (this.isActive == 1)
+            return "Yes";
+        return "No";
     }
 
     public void setIsActive(int isActive) {

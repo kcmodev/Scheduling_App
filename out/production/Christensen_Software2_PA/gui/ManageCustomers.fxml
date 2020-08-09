@@ -18,7 +18,7 @@
                 <TableColumn fx:id="customerNameCol" prefWidth="152.0" text="Name" />
                 <TableColumn fx:id="customerAddressCol" prefWidth="185.0" text="Address" />
                 <TableColumn fx:id="customerPhoneCol" minWidth="0.0" prefWidth="105.0" text="Phone" />
-                <TableColumn fx:id="appointmentTimeCol" prefWidth="114.0" text="Time" />
+                <TableColumn fx:id="isActiveStringCol" prefWidth="114.0" text="Active" />
             </columns>
         </TableView>
         <AnchorPane layoutX="71.0" layoutY="418.0" prefHeight="40.0" prefWidth="659.0">
@@ -37,7 +37,7 @@
       <AnchorPane layoutX="416.0" layoutY="62.0" prefHeight="41.0" prefWidth="314.0" stylesheets="@../Stylesheet.css">
          <children>
             <Button layoutX="245.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setSearchClicked" prefHeight="30.0" prefWidth="70.0" text="Search" />
-            <TextField id="textfield" layoutX="63.0" layoutY="7.0" prefHeight="30.0" prefWidth="175.0" promptText="Search by name" stylesheets="@../Stylesheet.css" />
+            <TextField id="textfield" fx:id="customerSearch" layoutX="63.0" layoutY="7.0" prefHeight="30.0" prefWidth="175.0" promptText="Search by name or ID" stylesheets="@../Stylesheet.css" />
          </children>
       </AnchorPane>
     </children>

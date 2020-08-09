@@ -1,13 +1,10 @@
 package controller;
 
+import dao.CustomerDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import models.Appointment;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 
 public class UpdateAppointmentController {
@@ -22,8 +19,23 @@ public class UpdateAppointmentController {
 
     public void setSaveClicked(ActionEvent event){
         System.out.println("save button clicked");
-        
 
+        String time = appointmentTime.getText();
+        String date = appointmentDate.getText();
+        String type = appointmentType.getText();
+
+        if (time.matches("^[0-9]*$") && time.length() == 6){
+            if (date.matches("^[0-9]*$") && time.length() == 8){
+                String dateTime = date + time;
+            } else {
+                PopupHandlers.errorAlert(2, "Numbers only. No slashes. Use format YYYY MM DD (no spaces, include zeroes)");
+            }
+        } else {
+            PopupHandlers.errorAlert(2, "Numbers only. Leave out semicolons. And use format HH MM SS (no spaces, include zeroes)");
+        }
+        if (CustomerDAO.isValidInput(type)){
+
+        }
     }
 
     public void setCancelClicked(ActionEvent event){

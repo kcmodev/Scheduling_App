@@ -1,0 +1,10 @@
+
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(¹‰‰üÿÿÿÿ8‡Ïƒà¼.
+N
+java:S1172",Remove this unused method parameter "event".(¼¯ûèøÿÿÿÿ8‡Ïƒà¼.
+E	java:S108#")Either remove or fill this block of code.(Ùâ›°8à«½à¼.
+U	java:S106)"9Replace this use of System.out or System.err by a logger.(³ş8‡Ïƒà¼.
+^
+java:S1854"<Remove this useless assignment to local variable "dateTime".(æ–Ø÷üÿÿÿÿ8…ïó¼.
+O
+java:S1481"-Remove this unused "dateTime" local variable.(æ–Ø÷üÿÿÿÿ8…ïó¼.

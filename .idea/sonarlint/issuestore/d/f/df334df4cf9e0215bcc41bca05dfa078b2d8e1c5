@@ -1,0 +1,16 @@
+
+Q	java:S125U"<This block of commented-out lines of code should be removed.(Åñ«è
+Q	java:S125R"<This block of commented-out lines of code should be removed.(Íº¼´
+N	java:S106+"9Replace this use of System.out or System.err by a logger.(‘½¸½
+V	java:S125E"<This block of commented-out lines of code should be removed.(¬£ÇŞøÿÿÿÿ
+V	java:S125;"<This block of commented-out lines of code should be removed.(ë ìÆûÿÿÿÿ
+Q	java:S1252"<This block of commented-out lines of code should be removed.(°§„©
+Q	java:S1258"<This block of commented-out lines of code should be removed.(¡Õ±š
+N	java:S106*"9Replace this use of System.out or System.err by a logger.(¨ğŒ±
+S	java:S106'"9Replace this use of System.out or System.err by a logger.(ª–¸¶øÿÿÿÿ
+T	java:S106ƒ"9Replace this use of System.out or System.err by a logger.(ıìÔ­şÿÿÿÿ
+L
+java:S1128"/Remove this unused import 'dao.AppointmentDAO'.(«¶áú8éí¦Ş¼.
+‹
+java:S1130&"nRemove the declaration of thrown exception 'java.sql.SQLException', as it cannot be thrown from method's body.(İƒ²–8éí¦Ş¼.
+Y	java:S125"<This block of commented-out lines of code should be removed.(ÈºĞ¦8Ò‘‹ö¼.
