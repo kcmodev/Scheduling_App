@@ -4,12 +4,15 @@ import dao.CityDAO;
 import dao.ConnectionHandler;
 import dao.CustomerDAO;
 import dao.StatementHandler;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import org.omg.CORBA.DynAnyPackage.Invalid;
+import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -18,9 +21,10 @@ import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
     WindowManager window = new WindowManager();
-    private String sqlStatement;
     private String currentCity;
+    private String fullPhone;
     private int currentCityId;
+    private Exception InvalidPhone;
 
     /**
      * sets variables for the text fields and
@@ -33,35 +37,44 @@ public class AddCustomerController implements Initializable {
     @FXML private TextField phone;
 
     @FXML private Button saveButton;
-
     /**
      * handles save button click
      * @param event
      * @throws SQLException
      */
-    public void setSaveClicked(ActionEvent event) throws SQLException {
+    public void setSaveClicked(ActionEvent event) {
         System.out.println("save button clicked");
         String name = this.name.getText();
         String address = this.address.getText();
         String zip = this.zip.getText();
 
-        /**
-         * separated phone number to 3 parts
-         * then concats them together with the dashes for the correct syntax
-         */
-        String temp1 = this.phone.getText().substring(0,3);
-        String temp2 = this.phone.getText().substring(3,6);
-        String temp3 = this.phone.getText().substring(6,10);
-        String phone = temp1 + "-" + temp2 + "-" + temp3;
 
+        try {
+            /**
+             * separated phone number to 3 parts
+             * then concats them together with the dashes for the correct syntax
+             */
+            if (phone.getText().matches("^[0-9]*$") && phone.getLength() == 10) {
+                String temp1 = phone.getText().substring(0, 3);
+                String temp2 = phone.getText().substring(3, 6);
+                String temp3 = phone.getText().substring(6, 10);
+                fullPhone = temp1 + "-" + temp2 + "-" + temp3;
+            } else {
+                throw new InvalidValue();
+            }
 
-        /**
-         * validates input from user then calls method to insert record into the database
-         * returns user to manage customers window
-         */
-        if (CustomerDAO.validateCustomer(name, address, zip, phone)) {
-            CustomerDAO.addCustomer(name, address, currentCityId, zip, phone);
-            window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
+            /**
+             * validates input from user then calls method to insert record into the database
+             * returns user to manage customers window
+             */
+            if (CustomerDAO.validateCustomer(name, address, zip)) {
+                CustomerDAO.addCustomer(name, address, currentCityId, zip, fullPhone);
+                window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
+            }
+        } catch (SQLException s) {
+            s.getStackTrace();
+        } catch (InvalidValue i){
+            PopupHandlers.errorAlert(2, "Invalid phone. Numbers only. Include area code");
         }
 
     }
@@ -85,7 +98,7 @@ public class AddCustomerController implements Initializable {
         currentCity = cityDropbox.getValue();
         System.out.println("city selected: " + currentCity);
 
-        sqlStatement = "select c.cityId, c.city, cntry.countryId, cntry.country from city c\n" +
+        String sqlStatement = "select c.cityId, c.city, cntry.countryId, cntry.country from city c\n" +
                         "join country cntry on c.countryId = cntry.countryId;";
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
         ResultSet rs = StatementHandler.getPreparedStatement().executeQuery();

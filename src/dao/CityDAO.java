@@ -36,5 +36,4 @@ public class CityDAO {
     public static ObservableList<City> getAllCities(){ return allCities; }
 
     public static ObservableList<String> getCityNames(){ return cityNames; }
-
 }

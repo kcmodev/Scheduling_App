@@ -5,17 +5,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import models.Customer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ManageCustomersController implements Initializable {
@@ -49,9 +54,30 @@ public class ManageCustomersController implements Initializable {
      * passes customer data to the next window for updating
      * @param event
      */
-    public void setUpdateClicked(ActionEvent event){
+    public void setUpdateClicked(ActionEvent event) throws IOException {
         System.out.println("update button clicked");
-        window.windowController(event, "/gui/UpdateCustomer.fxml", WindowManager.UPDATE_CUSTOMER_TITLE);
+
+        try {
+            if (customerTableView.getSelectionModel().getSelectedItem() != null) {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/gui/UpdateCustomer.fxml"));
+                Parent parent = loader.load();
+                Scene modPartScene = new Scene(parent);
+
+                UpdateCustomerController controller = loader.getController();
+                controller.setTextFields(customerTableView.getSelectionModel().getSelectedItem());
+
+                Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                newWindow.setScene(modPartScene);
+                newWindow.setResizable(false);
+                newWindow.setTitle(WindowManager.UPDATE_CUSTOMER_TITLE);
+                newWindow.show();
+            }
+        } catch (NullPointerException e) {
+            PopupHandlers.errorAlert(1, "You must choose a customer to modify");
+        } catch (SQLException s) {
+            s.getStackTrace();
+        }
     }
 
     /**
@@ -61,6 +87,17 @@ public class ManageCustomersController implements Initializable {
      */
     public void setDeleteClicked(ActionEvent event){
         System.out.println("delete button clicked");
+
+        try {
+            Customer selected = customerTableView.getSelectionModel().getSelectedItem();
+            System.out.println("deleting: \"" + selected.getName() + "\"");
+            CustomerDAO.deleteCustomer(selected);
+            customerTableView.setItems(CustomerDAO.getAllCustomers());
+        } catch (NullPointerException e){
+            PopupHandlers.errorAlert(1, "You must make a selection");
+        } catch (SQLException s){
+            s.getStackTrace();
+        }
     }
 
     /**
