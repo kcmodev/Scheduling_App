@@ -10,12 +10,13 @@ import java.sql.SQLException;
 public class CityDAO {
     private static ObservableList<City> allCities = FXCollections.observableArrayList();
     private static ObservableList<String> cityNames = FXCollections.observableArrayList();
-    private static String sql;
+    private static String sqlStatement;
+    private static ResultSet rs;
 
     public static void setAllCities() throws SQLException {
-        sql = "select cityId, city, countryId from city;";
+        sqlStatement = "select cityId, city, countryId from city;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sql);
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
         ResultSet rs = StatementHandler.getPreparedStatement().executeQuery();
 
         while (rs.next()){
@@ -31,6 +32,20 @@ public class CityDAO {
         System.out.println("List of cities added: ");
         for (City city : allCities)
             System.out.println(city.getCityName());
+    }
+
+    public static int getCityId(String cityName) throws SQLException {
+        sqlStatement = "select cityId, city from city\n" +
+                "where city = ?;";
+
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+        StatementHandler.getPreparedStatement().setString(1, cityName);
+        rs = StatementHandler.getPreparedStatement().executeQuery();
+
+        if (rs.next())
+            return rs.getInt("cityId");
+
+        return 0;
     }
 
     public static ObservableList<City> getAllCities(){ return allCities; }

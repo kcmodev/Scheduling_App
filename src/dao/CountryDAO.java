@@ -8,15 +8,13 @@ public class CountryDAO {
     private static String sqlStatement = "";
     private static ResultSet rs;
 
-    public static String getCountryName(int customerId) throws SQLException {
-        sqlStatement = "select c.customerId, cntry.country from customer c\n" +
-                "join address a on c.addressId = a.addressId\n" +
-                "join city cty on a.cityId = cty.cityId\n" +
+    public static String getCountryName(int cityId) throws SQLException {
+        sqlStatement = "select cty.cityId, cntry.country from city cty\n" +
                 "join country cntry on cty.countryId = cntry.countryId\n" +
-                "where customerId = ?;";
+                "where cityId = ?;";
 
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, customerId);
+        StatementHandler.getPreparedStatement().setInt(1, cityId);
         rs = StatementHandler.getPreparedStatement().executeQuery();
 
         if (rs.next())

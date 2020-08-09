@@ -62,10 +62,11 @@ public class AddCustomerController implements Initializable {
             }
 
             /**
-             * validates input from user then calls method to insert record into the database
+             * validates input from user & that customer with the same name isn't present in the database
+             * calls method to insert record into the database
              * returns user to manage customers window
              */
-            if (CustomerDAO.isValidCustomerInput(name, address, zip)) {
+            if (CustomerDAO.isValidCustomerInput(name, address, zip) && !CustomerDAO.customerExists(name)) {
                 CustomerDAO.addCustomer(name, address, currentCityId, zip, fullPhone);
                 window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
             }

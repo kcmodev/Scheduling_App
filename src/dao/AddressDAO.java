@@ -54,8 +54,11 @@ public class AddressDAO {
     }
 
     public static boolean isNewAddress(String address, int cityId, String zip, String phone) throws SQLException {
+        /**
+         * NEED TO FIX ----- DETERMINE WHAT A UNIQUE ADDRESS IS COMPRISED OF
+         */
         sqlStatement = "select address, cityId, postalCode, phone from address\n" +
-                        "where address = ? and cityId = ? and postalCode = ? and phone = ?;";
+                        "where address = ? or cityId = ? or postalCode = ? or phone = ?;";
 
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
         StatementHandler.getPreparedStatement().setString(1, address);

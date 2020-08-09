@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ManageCustomersController implements Initializable {
-
     WindowManager window = new WindowManager();
 
     /**
@@ -36,9 +35,7 @@ public class ManageCustomersController implements Initializable {
     @FXML TableColumn <CustomerDAO, String> customerAddressCol;
     @FXML TableColumn <CustomerDAO, String> customerPhoneCol;
     @FXML TableColumn <Customer, Integer> isActiveStringCol;
-
     @FXML TextField customerSearch;
-
 
     /**
      * method handles add button click
@@ -72,6 +69,8 @@ public class ManageCustomersController implements Initializable {
                 newWindow.setResizable(false);
                 newWindow.setTitle(WindowManager.UPDATE_CUSTOMER_TITLE);
                 newWindow.show();
+            } else {
+                throw new NullPointerException();
             }
         } catch (NullPointerException e) {
             PopupHandlers.errorAlert(1, "You must choose a customer to modify");
@@ -112,32 +111,32 @@ public class ManageCustomersController implements Initializable {
     /**
      * method handles search button functionality
      * search results based on either name or ID
-     * @param event
      */
-    public void setSearchClicked(ActionEvent event) throws SQLException {
-        System.out.println("search clicked");
-        ObservableList<Customer> filtered = FXCollections.observableArrayList();
+    public void setSearchClicked() throws SQLException {
+        ObservableList<Customer> filtered;
 
-        System.out.println("filtered before: ");
-        for (Customer c : filtered)
-            System.out.println(c);
-
+        /**
+         * uses stream and lambda to filter results and assign them
+         * to the filtered ObservableList for viewing on the customer table
+         */
         if (customerSearch.getText().matches("^[0-9]*$") && !customerSearch.getText().isEmpty()){ // search by ID
             int id = Integer.parseInt(customerSearch.getText());
 
+            /**
+             * this section filters by customer ID
+             */
             filtered = CustomerDAO.getAllCustomers().stream()
                     .filter( x -> x.getCustomerId() == id)
                     .collect(Collectors.collectingAndThen(
                             Collectors.toList(), y -> FXCollections.observableArrayList(y)));
             customerTableView.setItems(filtered);
 
-            System.out.println("filtered after: ");
-            for (Customer c : filtered)
-                System.out.println(c);
-
         } else if (CustomerDAO.isValidInput(customerSearch.getText()) && !customerSearch.getText().isEmpty()){
             String name = customerSearch.getText();
 
+            /**
+             * this section filters by customer name
+             */
             filtered = CustomerDAO.getAllCustomers().stream()
                     .filter( x -> x.getName().contains(name))
                     .collect(Collectors.collectingAndThen(
@@ -149,6 +148,9 @@ public class ManageCustomersController implements Initializable {
                 System.out.println(c);
 
         } else {
+            /**
+             * assigns the filtered view to the table view
+             */
             customerTableView.setItems(CustomerDAO.getAllCustomers());
         }
     }
@@ -180,6 +182,10 @@ public class ManageCustomersController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        /**
+         * initialize shown data in table
+         */
         try {
             setTableProperties();
         } catch (SQLException e) {

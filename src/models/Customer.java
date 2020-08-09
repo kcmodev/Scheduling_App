@@ -69,11 +69,7 @@ public class Customer{
      * returns customer active status as a string
      * @return
      */
-    public String getIsActiveString() {
-        if (this.isActive == 1)
-            return "Yes";
-        return "No";
-    }
+    public String getIsActiveString() { return (this.isActive == 1) ? "Yes" : "No"; }
 
     public void setAddressId(int addressId) {
         this.addressId = addressId;
