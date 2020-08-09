@@ -11,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 import java.net.URL;
@@ -24,7 +23,6 @@ public class AddCustomerController implements Initializable {
     private String currentCity;
     private String fullPhone;
     private int currentCityId;
-    private Exception InvalidPhone;
 
     /**
      * sets variables for the text fields and
@@ -67,7 +65,7 @@ public class AddCustomerController implements Initializable {
              * validates input from user then calls method to insert record into the database
              * returns user to manage customers window
              */
-            if (CustomerDAO.validateCustomer(name, address, zip)) {
+            if (CustomerDAO.isValidCustomerInput(name, address, zip)) {
                 CustomerDAO.addCustomer(name, address, currentCityId, zip, fullPhone);
                 window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
             }
@@ -115,9 +113,9 @@ public class AddCustomerController implements Initializable {
 
     /**
      * method takes input from setCity to fill the country field based on cityId
-     * @param countryId
+     * @param countryName
      */
-    public void setCountry(String countryId){ country.setText(countryId); }
+    public void setCountry(String countryName){ country.setText(countryName); }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

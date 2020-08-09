@@ -33,8 +33,8 @@ public class ManageCustomersController implements Initializable {
     @FXML TableView <Customer> customerTableView;
     @FXML TableColumn <Customer, Integer> customerIDCol;
     @FXML TableColumn <Customer, String> customerNameCol;
-    @FXML TableColumn <Customer, String> customerAddressCol;
-    @FXML TableColumn <Customer, String> customerPhoneCol;
+    @FXML TableColumn <CustomerDAO, String> customerAddressCol;
+    @FXML TableColumn <CustomerDAO, String> customerPhoneCol;
     @FXML TableColumn <Customer, Integer> isActiveStringCol;
 
     @FXML TextField customerSearch;

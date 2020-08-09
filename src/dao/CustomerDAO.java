@@ -39,6 +39,10 @@ public class CustomerDAO {
         StatementHandler.getPreparedStatement().execute();
     }
 
+    public static void updateCustomerInfo(Customer customer){
+
+    }
+
     public static String getCustomerName(int customerId) throws SQLException {
         sqlStatement = "select customerId, customerName from customer where customerId = ?;";
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
@@ -86,10 +90,26 @@ public class CustomerDAO {
      return "";
     }
 
+    public static String getCustomerCity(int customerId) throws SQLException {
+        sqlStatement = "select c.customerId, cty.city from customer c\n" +
+                          "join address a on c.addressId = a.addressId\n" +
+                          "join city cty on a.cityId = cty.cityId\n" +
+                          "where customerId = ?;";
+
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+        StatementHandler.getPreparedStatement().setInt(1, customerId);
+        rs = StatementHandler.getPreparedStatement().executeQuery();
+
+        if (rs.next())
+            return rs.getString("city");
+        return "";
+    }
+
     public static String getCustomerZip(int customerId) throws SQLException {
         sqlStatement = "select c.customerId, a.postalCode from address a\n" +
                          "join customer c on c.addressId = a.addressId\n" +
                          "where customerId = ?;";
+
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
         StatementHandler.getPreparedStatement().setInt(1, customerId);
         rs = StatementHandler.getPreparedStatement().executeQuery();
@@ -100,7 +120,22 @@ public class CustomerDAO {
         return "";
     }
 
-    public static boolean validateCustomer(String name, String address, String zip) throws SQLException {
+    public static String getCustomerAppointmentStart(int customerId) throws SQLException {
+        sqlStatement = "SELECT c.customerId, app.start FROM customer c\n" +
+                "JOIN appointment app ON c.customerId = app.customerId\n" +
+                "WHERE c.customerId = ?;";
+
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+        StatementHandler.getPreparedStatement().setInt(1, customerId);
+        ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
+
+        if (set.next())
+            return set.getString("start");
+
+        return "";
+    }
+
+    public static boolean isValidCustomerInput(String name, String address, String zip) throws SQLException {
         sqlStatement = "select customerName from customer\n" +
                         "where customerName = ?;";
 

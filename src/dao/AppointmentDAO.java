@@ -62,7 +62,7 @@ public class AppointmentDAO {
     }
 
     public static void setViewAllByWeek(){
-        sqlStatement = "select * from ";
+        sqlStatement = "";
     }
 
     public void setViewAllByMonth(){ }
