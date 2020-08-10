@@ -9,19 +9,19 @@ public class StatementHandler {
     /**
      * create statement reference
      */
-    private static PreparedStatement preparedStatement;
+    private PreparedStatement preparedStatement;
 
     /**
      * method to create statement object
      */
-    public static void setPreparedStatement(Connection connection, String sqlStatement) throws SQLException {
+    public void setPreparedStatement(Connection connection, String sqlStatement) throws SQLException {
         preparedStatement = connection.prepareStatement(sqlStatement);
     }
 
     /**
      * getter to return statement object
      */
-    public static PreparedStatement getPreparedStatement(){
+    public PreparedStatement getPreparedStatement(){
         return preparedStatement;
     }
 }

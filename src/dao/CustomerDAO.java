@@ -3,17 +3,15 @@ package dao;
 import controller.PopupHandlers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import models.Address;
 import models.Customer;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CustomerDAO {
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
-    private static String sqlStatement;
-    private static ResultSet rs;
+    private static ObservableList<String> allCustomerNames = FXCollections.observableArrayList();
+    private static final Connection conn = ConnectionHandler.startConnection();
+    private static PopupHandlers popups = new PopupHandlers();
 
     /**
      * adds new customer to database
@@ -24,17 +22,22 @@ public class CustomerDAO {
      * @param phone
      * @throws SQLException
      */
-    public static void addCustomer(String name, String address, int cityId, String zip, String phone) throws SQLException {
-        AddressDAO.addNewAddress(address, cityId, zip, phone);
-        int addressId = AddressDAO.getAddressId(address);
+    public void addCustomer(String name, String address, int cityId, String zip, String phone) throws SQLException {
+        AddressDAO addressData = new AddressDAO();
+        StatementHandler statement = new StatementHandler();
 
-        sqlStatement = "insert into customer (customerName, addressId, active, createDate, createdBy, lastUpdateBy)\n" +
+        addressData.addNewAddress(address, cityId, zip, phone);
+
+        int addressId = addressData.getAddressId(address);
+
+        String sqlStatement = "insert into customer (customerName, addressId, active, createDate, createdBy, lastUpdateBy)\n" +
                 "values (?, ?, 1, NOW(), 'test', 'test');";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setString(1, name);
-        StatementHandler.getPreparedStatement().setInt(2, addressId);
-        StatementHandler.getPreparedStatement().execute();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, name);
+        statement.getPreparedStatement().setInt(2, addressId);
+        statement.getPreparedStatement().execute();
+
         System.out.println("customer: " + name + " added successfully");
 
     }
@@ -44,12 +47,13 @@ public class CustomerDAO {
      * @param customer
      * @throws SQLException
      */
-    public static void deleteCustomer (Customer customer) throws SQLException {
-        sqlStatement = "delete from customer where customerId = ?;";
+    public void deleteCustomer (Customer customer) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "delete from customer where customerId = ?;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, customer.getCustomerId());
-        StatementHandler.getPreparedStatement().execute();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setInt(1, customer.getCustomerId());
+        statement.getPreparedStatement().execute();
     }
 
     /**
@@ -62,37 +66,46 @@ public class CustomerDAO {
      * @param phone
      * @throws SQLException
      */
-    public static void updateCustomer(int customerId, String name, String address, String zip, int cityId, String phone) throws SQLException {
-        // check if address is unique
-//        int addressId = AddressDAO.getAddressId(address);
-//        if (AddressDAO.isNewAddress(address, cityId, zip, phone)) {
-//            AddressDAO.addNewAddress(address, cityId, zip, phone);
-//            addressId = AddressDAO.getAddressId(address);
-//            setCustomerAddressId(customerId, addressId);
-//        }
+    public void updateCustomer(int customerId, String name, String address, String zip, int cityId, String phone) throws SQLException {
+        AddressDAO addressData = new AddressDAO();
+
+        System.out.println("ID: " + customerId);
+        System.out.println("name: " + name);
+        System.out.println("address: " + address);
+        System.out.println("zip: " + zip);
+        System.out.println("cityID: " + cityId);
+        System.out.println("phone: " + phone);
 
         /**
-         * joins customer and address with the id for both
-         * updates accordingly
+         * checks to see if address is new, if so adds it to database
+         * before adding to customer
          */
-        sqlStatement = "update customer, address a\n" +
-                "join customer c on a.addressId = c.addressId\n" +
-                "set c.customerName = ?,\n" +
-                " a.address = ?,\n" +
-                " a.postalCode = ?,\n" +
-                " a.cityId = ?,\n" +
-                " a.phone = ?\n" +
-                "where c.customerId = ?;";
+        if (addressData.isNewAddress(address, cityId, zip, phone))
+            addressData.addNewAddress(address, cityId, zip, phone);
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setString(1, name);
-        StatementHandler.getPreparedStatement().setString(2, address);
-        StatementHandler.getPreparedStatement().setString(3, zip);
-        StatementHandler.getPreparedStatement().setInt(4, cityId);
-        StatementHandler.getPreparedStatement().setString(5, phone);
-        StatementHandler.getPreparedStatement().setInt(6, customerId);
-
-        StatementHandler.getPreparedStatement().execute();
+        /**
+         *
+         *
+         * ~~~~~~~~~~ NEEDS TO BE FIXED ~~~~~~~~~~~
+         *
+         */
+//        /**
+//         * updates existing customer info using new addressId if necessary
+//         */
+//        sqlStatement = "UPDATE customer SET customerName = ?, addressId = ? WHERE customerId = ?;";
+//
+//        System.out.println("sql before prep: \n" + sqlStatement);
+//
+//        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+//        StatementHandler.getPreparedStatement().setString(1, name);
+//        System.out.println("param 1: " + sqlStatement);
+//        StatementHandler.getPreparedStatement().setInt(2, AddressDAO.getAddressId(address));
+//        System.out.println("param 2: " + sqlStatement);
+//        StatementHandler.getPreparedStatement().setInt(3, customerId);
+//        System.out.println("param 3: " + sqlStatement);
+//        StatementHandler.getPreparedStatement().executeUpdate();
+//
+//        System.out.println("sql after prep: \n" + sqlStatement);
     }
 
     /**
@@ -101,17 +114,20 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public static String getCustomerName(int customerId) throws SQLException {
-        sqlStatement = "select customerId, customerName from customer where customerId = ?;";
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, customerId);
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+    public String getCustomerName(int customerId) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select customerId, customerName from customer where customerId = ?;";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setInt(1, customerId);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()){
             if (rs.getInt("customerId") == customerId)
                 return rs.getString("customerName");
         }
-        return "";
+
+    return "";
     }
 
     /**
@@ -120,24 +136,22 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public static String getCustomerAddress(int customerId) throws SQLException {
-        sqlStatement = "select c.customerId, a.address from customer c\n" +
+    public String getCustomerAddress(int customerId) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select c.customerId, a.address from customer c\n" +
                 "join address a on c.addressId = a.addressId\n" +
                 "where customerId = ?;";
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, customerId);
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setInt(1, customerId);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()){
             if (rs.getInt("customerId") == customerId)
                 return rs.getString("address");
         }
-        return "";
-    }
 
-    public static void setCustomerAddressId(int customerId, int addressId) {
-        sqlStatement = "";
-
+    return "";
     }
 
     /**
@@ -146,19 +160,21 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public static String getCustomerPhone(int customerId) throws SQLException {
-        sqlStatement = "select c.customerId, a.phone from customer c\n" +
+    public String getCustomerPhone(int customerId) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select c.customerId, a.phone from customer c\n" +
                 "join address a on c.addressId = a.addressId\n" +
                 "where customerId = ?;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, customerId);
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setInt(1, customerId);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()){
             if (rs.getInt("customerId") == customerId)
                 return rs.getString("phone");
         }
+
      return "";
     }
 
@@ -168,19 +184,21 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public static String getCustomerCity(int customerId) throws SQLException {
-        sqlStatement = "select c.customerId, cty.city from customer c\n" +
+    public String getCustomerCity(int customerId) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select c.customerId, cty.city from customer c\n" +
                           "join address a on c.addressId = a.addressId\n" +
                           "join city cty on a.cityId = cty.cityId\n" +
                           "where customerId = ?;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, customerId);
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setInt(1, customerId);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         if (rs.next())
             return rs.getString("city");
-        return "";
+
+    return "";
     }
 
     /**
@@ -189,18 +207,20 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public static String getCustomerZip(int customerId) throws SQLException {
-        sqlStatement = "select c.customerId, a.postalCode from address a\n" +
+    public String getCustomerZip(int customerId) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select c.customerId, a.postalCode from address a\n" +
                          "join customer c on c.addressId = a.addressId\n" +
                          "where customerId = ?;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, customerId);
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setInt(1, customerId);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         if (rs.next())
             return rs.getString("postalCode");
-        return "";
+
+    return "";
     }
 
     /**
@@ -209,18 +229,20 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public static String getCustomerAppointmentStart(int customerId) throws SQLException {
-        sqlStatement = "SELECT c.customerId, app.start FROM customer c\n" +
+    public String getCustomerAppointmentStart(int customerId) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "SELECT c.customerId, app.start FROM customer c\n" +
                 "JOIN appointment app ON c.customerId = app.customerId\n" +
                 "WHERE c.customerId = ?;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, customerId);
-        ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setInt(1, customerId);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
-        if (set.next())
-            return set.getString("start");
-        return "";
+        if (rs.next())
+            return rs.getString("start");
+
+    return "";
     }
 
     /**
@@ -231,46 +253,49 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public static boolean isValidCustomerInput(String name, String address, String zip) throws SQLException {
+    public boolean isValidCustomerInput(String name, String address, String zip) {
         if (!isValidInput(name)) {
-            PopupHandlers.errorAlert(2, "Invalid name");
+            popups.errorAlert(2, "Invalid name");
             return false;
         }else if (!isValidInput(address)){
-            PopupHandlers.errorAlert(2, "Invalid address");
+            popups.errorAlert(2, "Invalid address");
             return false;
         }else if (!zip.matches("^[0-9]*$")) {
-            PopupHandlers.errorAlert(2, "Invalid zip");
+            popups.errorAlert(2, "Invalid zip");
             return false;
         }else if (zip.length() > 5 || zip.isEmpty()){
-            PopupHandlers.errorAlert(2, "Valid zip code is 5 digits or less");
+            popups.errorAlert(2, "Valid zip code is 5 digits or less");
             return false;
         }
 
-        System.out.println("input OK");
-        return true;
+    return true;
     }
 
-    public static boolean customerExists(String name) throws SQLException {
-        sqlStatement = "select customerName from customer\n" +
+    /**
+     * method checks for customer in database with a matching name
+     * @param name
+     * @return
+     * @throws SQLException
+     */
+    public boolean customerExists(String name) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select customerName from customer\n" +
                 "where customerName = ?;";
 
-        /**
-         * checks result set for existing customer with matching name
-         */
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setString(1, name);
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, name);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         if(rs.next()){
             if (rs.getString("customerName").equals(name)) {
-                PopupHandlers.errorAlert(2, "Customer with that name already exists.");
+                popups.errorAlert(2, "Customer with that name already exists.");
                 return true;
             }
         } else {
-            System.out.println("customer \"" + name + "\" already exists");
             return false;
         }
-        return false;
+
+    return false;
     }
 
     /**
@@ -279,10 +304,7 @@ public class CustomerDAO {
      * @param input
      * @return
      */
-    public static boolean isValidInput(String input){
-        if (input.matches("^[a-zA-Z0-9 ]*$") && !input.isEmpty()){ return true; }
-        return false;
-    }
+    public boolean isValidInput(String input){ return (input.matches("^[a-zA-Z0-9 ]*$") && !input.isEmpty()) ? true : false; }
 
     /**
      * builds observable list to populate customer table view
@@ -290,10 +312,12 @@ public class CustomerDAO {
      */
     public static void buildCustomerData() throws SQLException {
         allCustomers.clear();
-        System.out.println("building customer object array");
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, "SELECT * FROM customer");
-        PreparedStatement getCustList = StatementHandler.getPreparedStatement();
-        rs = getCustList.executeQuery();
+
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "SELECT * FROM customer";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()){
             String name = rs.getString("customerName");
@@ -302,7 +326,9 @@ public class CustomerDAO {
             int active = rs.getInt("active");
 
             Customer customer = new Customer(name, customerID, addressID, active);
+
             allCustomers.add(customer);
+            allCustomerNames.add(name);
         }
     }
 
@@ -311,9 +337,15 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<Customer> getAllCustomers() throws SQLException {
+    public ObservableList<Customer> getAllCustomers() throws SQLException {
         buildCustomerData();
         return allCustomers;
     }
+
+    /**
+     * returns observable list of all customer names for choice boxes
+     * @return
+     */
+    public ObservableList<String> getAllCustomerNames() { return allCustomerNames; }
 
 }

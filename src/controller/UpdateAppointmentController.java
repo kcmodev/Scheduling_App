@@ -8,7 +8,8 @@ import models.Appointment;
 
 
 public class UpdateAppointmentController {
-    WindowManager window = new WindowManager();
+    private WindowManager window = new WindowManager();
+    private PopupHandlers popups = new PopupHandlers();
 
     @FXML private TextField customerName;
     @FXML private TextField customerAddress;
@@ -18,8 +19,7 @@ public class UpdateAppointmentController {
     @FXML private TextField appointmentType;
 
     public void setSaveClicked(ActionEvent event){
-        System.out.println("save button clicked");
-
+        CustomerDAO customer = new CustomerDAO();
         String time = appointmentTime.getText();
         String date = appointmentDate.getText();
         String type = appointmentType.getText();
@@ -28,21 +28,19 @@ public class UpdateAppointmentController {
             if (date.matches("^[0-9]*$") && time.length() == 8){
                 String dateTime = date + time;
             } else {
-                PopupHandlers.errorAlert(2, "Numbers only. No slashes. Use format YYYY MM DD (no spaces, include zeroes)");
+                popups.errorAlert(2, "Numbers only. No slashes. Use format YYYY MM DD (no spaces, include zeroes)");
             }
         } else {
-            PopupHandlers.errorAlert(2, "Numbers only. Leave out semicolons. And use format HH MM SS (no spaces, include zeroes)");
+            popups.errorAlert(2, "Numbers only. Leave out semicolons. And use format HH MM SS (no spaces, include zeroes)");
         }
-        if (CustomerDAO.isValidInput(type)){
+        if (customer.isValidInput(type)){
 
         }
     }
 
     public void setCancelClicked(ActionEvent event){
-        System.out.println("cancel button clicked");
-
-        if (PopupHandlers.confirmationAlert("quit and discard unsaved changes")) {
-            window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        if (popups.confirmationAlert("quit and discard unsaved changes")) {
+            window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
         }
     }
 

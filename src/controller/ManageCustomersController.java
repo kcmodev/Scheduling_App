@@ -24,7 +24,8 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ManageCustomersController implements Initializable {
-    WindowManager window = new WindowManager();
+    private WindowManager window = new WindowManager();
+    private PopupHandlers popups = new PopupHandlers();
 
     /**
      * sets table values
@@ -42,8 +43,7 @@ public class ManageCustomersController implements Initializable {
      * @param event
      */
     public void setAddClicked(ActionEvent event){
-        System.out.println("add button clicked");
-        window.windowController(event, "/gui/AddCustomer.fxml", WindowManager.ADD_CUSTOMER_TITLE);
+        window.windowController(event, "/gui/AddCustomer.fxml", window.ADD_CUSTOMER_TITLE);
     }
 
     /**
@@ -52,7 +52,6 @@ public class ManageCustomersController implements Initializable {
      * @param event
      */
     public void setUpdateClicked(ActionEvent event) throws IOException {
-        System.out.println("update button clicked");
 
         try {
             if (customerTableView.getSelectionModel().getSelectedItem() != null) {
@@ -67,15 +66,15 @@ public class ManageCustomersController implements Initializable {
                 Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 newWindow.setScene(modPartScene);
                 newWindow.setResizable(false);
-                newWindow.setTitle(WindowManager.UPDATE_CUSTOMER_TITLE);
+                newWindow.setTitle(window.UPDATE_CUSTOMER_TITLE);
                 newWindow.show();
             } else {
                 throw new NullPointerException();
             }
         } catch (NullPointerException e) {
-            PopupHandlers.errorAlert(1, "You must choose a customer to modify");
+            popups.errorAlert(1, "You must choose a customer to modify");
         } catch (SQLException s) {
-            s.getStackTrace();
+            s.printStackTrace();
         }
     }
 
@@ -85,17 +84,16 @@ public class ManageCustomersController implements Initializable {
      * @param event
      */
     public void setDeleteClicked(ActionEvent event){
-        System.out.println("delete button clicked");
+        CustomerDAO customer = new CustomerDAO();
 
         try {
             Customer selected = customerTableView.getSelectionModel().getSelectedItem();
-            System.out.println("deleting: \"" + selected.getName() + "\"");
-            CustomerDAO.deleteCustomer(selected);
-            customerTableView.setItems(CustomerDAO.getAllCustomers());
+            customer.deleteCustomer(selected);
+            customerTableView.setItems(customer.getAllCustomers());
         } catch (NullPointerException e){
-            PopupHandlers.errorAlert(1, "You must make a selection");
+            popups.errorAlert(1, "You must make a selection");
         } catch (SQLException s){
-            s.getStackTrace();
+            s.printStackTrace();
         }
     }
 
@@ -104,8 +102,7 @@ public class ManageCustomersController implements Initializable {
      * @param event
      */
     public void setCancelClicked(ActionEvent event){
-        System.out.println("cancel button clicked");
-        window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
     }
 
     /**
@@ -114,6 +111,7 @@ public class ManageCustomersController implements Initializable {
      */
     public void setSearchClicked() throws SQLException {
         ObservableList<Customer> filtered;
+        CustomerDAO customer = new CustomerDAO();
 
         /**
          * uses stream and lambda to filter results and assign them
@@ -123,35 +121,31 @@ public class ManageCustomersController implements Initializable {
             int id = Integer.parseInt(customerSearch.getText());
 
             /**
-             * this section filters by customer ID
+             * this stream/lambda filters by customer ID
              */
-            filtered = CustomerDAO.getAllCustomers().stream()
+            filtered = customer.getAllCustomers().stream()
                     .filter( x -> x.getCustomerId() == id)
                     .collect(Collectors.collectingAndThen(
                             Collectors.toList(), y -> FXCollections.observableArrayList(y)));
             customerTableView.setItems(filtered);
 
-        } else if (CustomerDAO.isValidInput(customerSearch.getText()) && !customerSearch.getText().isEmpty()){
+        } else if (customer.isValidInput(customerSearch.getText()) && !customerSearch.getText().isEmpty()){
             String name = customerSearch.getText();
 
             /**
-             * this section filters by customer name
+             * this stream/lambda filters by customer name
              */
-            filtered = CustomerDAO.getAllCustomers().stream()
+            filtered = customer.getAllCustomers().stream()
                     .filter( x -> x.getName().contains(name))
                     .collect(Collectors.collectingAndThen(
                             Collectors.toList(), y -> FXCollections.observableArrayList(y)));
             customerTableView.setItems(filtered);
 
-            System.out.println("filtered after: ");
-            for (Customer c : filtered)
-                System.out.println(c);
-
         } else {
             /**
              * assigns the filtered view to the table view
              */
-            customerTableView.setItems(CustomerDAO.getAllCustomers());
+            customerTableView.setItems(customer.getAllCustomers());
         }
     }
 
@@ -159,7 +153,9 @@ public class ManageCustomersController implements Initializable {
      * method sets values for table and display properties
      * @throws SQLException
      */
-    public void setTableProperties() throws SQLException {
+    private void setTableProperties() throws SQLException {
+        CustomerDAO customer = new CustomerDAO();
+
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
@@ -178,7 +174,7 @@ public class ManageCustomersController implements Initializable {
         customerPhoneCol.setResizable(false);
         isActiveStringCol.setResizable(false);
 
-        customerTableView.setItems(CustomerDAO.getAllCustomers());
+        customerTableView.setItems(customer.getAllCustomers());
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {

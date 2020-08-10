@@ -29,20 +29,20 @@ public class LoginController implements Initializable {
     /**
      * instantiates window manager and connection to database
      */
-    WindowManager window = new WindowManager();
+    private WindowManager window = new WindowManager();
+    private PopupHandlers popups = new PopupHandlers();
 
     /**
      * handles clicking log in button
      * @param event
      */
     public void logInHandler(ActionEvent event) throws SQLException {
-        System.out.println("log in button clicked");
         String enteredUserName = userNameTextField.getText();
         String enteredPassword = passwordTextField.getText();
         System.out.println("User name entered: \"" + enteredUserName + "\"");
         System.out.println("Password entered: \"" + enteredPassword + "\"");
 
-        window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
 
         /**
          * checks to make sure user name and/or password are not left blank
@@ -112,7 +112,7 @@ public class LoginController implements Initializable {
      * handles exit button click
      */
     public void exitHandler (){
-        if (PopupHandlers.confirmationAlert("exit the program")) {
+        if (popups.confirmationAlert("exit the program")) {
             ConnectionHandler.closeConnection();
             System.exit(1);
         }

@@ -1,5 +1,6 @@
 package controller;
 
+import dao.AppointmentDAO;
 import dao.CityDAO;
 import dao.ConnectionHandler;
 import javafx.application.Application;
@@ -14,6 +15,7 @@ import java.util.TimeZone;
 
 public class Main extends Application {
     public static final TimeZone userZone = Calendar.getInstance().getTimeZone();
+    private static AppointmentDAO appointmentData = new AppointmentDAO();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -26,8 +28,10 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws SQLException {
-        ConnectionHandler.startConnection();
+//        ConnectionHandler.startConnection();
+
         CityDAO.buildListOfCities();
+        appointmentData.setValidApptTimes();
 
         launch(args);
         

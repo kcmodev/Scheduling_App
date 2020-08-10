@@ -1,12 +1,12 @@
 package models;
 
-import dao.ConnectionHandler;
 import dao.CustomerDAO;
-import dao.StatementHandler;
 
 import java.sql.*;
 
 public class Customer{
+    private static CustomerDAO customerData = new CustomerDAO();
+
     private String name;
     private int customerId;
     private int addressId;
@@ -47,7 +47,7 @@ public class Customer{
      * @return
      * @throws SQLException
      */
-    public String getAddress() throws SQLException { return CustomerDAO.getCustomerAddress(this.customerId); }
+    public String getAddress() throws SQLException { return customerData.getCustomerAddress(this.customerId); }
 
     /**
      * method queries database and compares customer ID from customer table
@@ -55,7 +55,7 @@ public class Customer{
      * @return
      * @throws SQLException
      */
-    public String getPhone() throws SQLException { return CustomerDAO.getCustomerPhone(this.customerId); }
+    public String getPhone() throws SQLException { return customerData.getCustomerPhone(this.customerId); }
 
     /**
      * method queries database and compares customer ID from customer table
@@ -63,7 +63,7 @@ public class Customer{
      * @return
      * @throws SQLException
      */
-    public String getAppointmentTime() throws SQLException { return CustomerDAO.getCustomerAppointmentStart(this.customerId); }
+    public String getAppointmentTime() throws SQLException { return customerData.getCustomerAppointmentStart(this.customerId); }
 
     /**
      * returns customer active status as a string

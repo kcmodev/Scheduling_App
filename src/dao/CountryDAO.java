@@ -1,21 +1,21 @@
 package dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class CountryDAO {
-    private static String sqlStatement = "";
-    private static ResultSet rs;
+    private static final Connection conn = ConnectionHandler.startConnection();
 
     public static String getCountryName(int cityId) throws SQLException {
-        sqlStatement = "select cty.cityId, cntry.country from city cty\n" +
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select cty.cityId, cntry.country from city cty\n" +
                 "join country cntry on cty.countryId = cntry.countryId\n" +
                 "where cityId = ?;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setInt(1, cityId);
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setInt(1, cityId);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         if (rs.next())
             return rs.getString("country");

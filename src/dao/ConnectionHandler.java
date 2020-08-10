@@ -26,7 +26,7 @@ public class ConnectionHandler {
      */
     private static final String SQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
-    public static Connection connection = null;
+    private static Connection connection = null;
 
     /**
      * handles opening new connection
@@ -38,7 +38,7 @@ public class ConnectionHandler {
             connection = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
             System.out.println("connection successful");
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return connection;

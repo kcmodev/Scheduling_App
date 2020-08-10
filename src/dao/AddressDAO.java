@@ -1,12 +1,11 @@
 package dao;
 
-import javax.xml.transform.Result;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AddressDAO {
-    private static String sqlStatement;
-    private static ResultSet rs;
+    private static final Connection conn = ConnectionHandler.startConnection();
 
     /**
      * method adds new address to database
@@ -16,36 +15,34 @@ public class AddressDAO {
      * @param phone
      * @throws SQLException
      */
-    public static void addNewAddress(String address, int cityId, String zip, String phone) throws SQLException {
+    public void addNewAddress(String address, int cityId, String zip, String phone) throws SQLException {
+        StatementHandler statement = new StatementHandler();
 
-        /**
-         * checks for duplicates in database before proceeding to add a new record to address
-         */
-        //System.out.println("new address? " + isNewAddress(address, cityId, zip, phone));
-        //if (isNewAddress(address, cityId, zip, phone)) {
-            System.out.println("adding \"" + address + "\" to the database");
-            sqlStatement = "insert into address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdateBy)\n" +
-                    "values (?, ' ', ?, ?, ?, CURRENT_TIMESTAMP, 'admin', 'admin')";
+        String sqlStatement = "insert into address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdateBy)\n" +
+                "values (?, ' ', ?, ?, ?, NOW(), 'admin', 'admin')";
 
-            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-            StatementHandler.getPreparedStatement().setString(1, address);
-            StatementHandler.getPreparedStatement().setInt(2, cityId);
-            StatementHandler.getPreparedStatement().setString(3, zip);
-            StatementHandler.getPreparedStatement().setString(4, phone);
-            StatementHandler.getPreparedStatement().execute();
-//        } else {
-//            System.out.println("address \"" + address + "\" already exists");
-//        }
-    }
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, address);
+        statement.getPreparedStatement().setInt(2, cityId);
+        statement.getPreparedStatement().setString(3, zip);
+        statement.getPreparedStatement().setString(4, phone);
+        statement.getPreparedStatement().execute();
+}
 
-    public static int getAddressId(String address) throws SQLException {
+    /**
+     * return address Id using address string
+     * @param address
+     * @return
+     * @throws SQLException
+     */
+    public int getAddressId(String address) throws SQLException {
+        StatementHandler statement = new StatementHandler();
         int addressId = 0;
+        String sqlStatement = "select addressId, address from address where address = ?";
 
-        sqlStatement = "select addressId, address from address where address = ?";
-
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setString(1, address);
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, address);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()) {
             addressId = rs.getInt("addressId");
@@ -62,25 +59,24 @@ public class AddressDAO {
      * @return
      * @throws SQLException
      */
-    public static boolean isNewAddress(String address, int cityId, String zip, String phone) throws SQLException {
-        sqlStatement = "select address, cityId, postalCode, phone from address\n" +
+    public boolean isNewAddress(String address, int cityId, String zip, String phone) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select address, cityId, postalCode, phone from address\n" +
                         "where address = ? and cityId = ? and postalCode = ? and phone = ?;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        StatementHandler.getPreparedStatement().setString(1, address);
-        StatementHandler.getPreparedStatement().setInt(2, cityId);
-        StatementHandler.getPreparedStatement().setString(3, zip);
-        StatementHandler.getPreparedStatement().setString(4, phone);
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, address);
+        statement.getPreparedStatement().setInt(2, cityId);
+        statement.getPreparedStatement().setString(3, zip);
+        statement.getPreparedStatement().setString(4, phone);
 
-        rs = StatementHandler.getPreparedStatement().executeQuery();
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         if (rs.next())
             return false;
 
-        return true;
+    return true;
     }
 
-    public static void deleteUnownedAddress(int addressId){
-
-    }
+    public void deleteUnownedAddress(int addressId){ }
 }

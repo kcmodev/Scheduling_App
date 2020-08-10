@@ -19,15 +19,15 @@ public class Appointment {
 
 
     public Appointment(int customerId, String type, String startTime) throws SQLException {
-        System.out.println("in appointment constructor");
+        CustomerDAO customer = new CustomerDAO();
 
         this.customerId = customerId;
         this.type = type;
-        this.name = CustomerDAO.getCustomerName(customerId);
+        this.name = customer.getCustomerName(customerId);
         System.out.println("name found: " + this.name);
-        this.address = CustomerDAO.getCustomerAddress(customerId);
+        this.address = customer.getCustomerAddress(customerId);
         System.out.println("address found: " + this.address);
-        this.phone = CustomerDAO.getCustomerPhone(customerId);
+        this.phone = customer.getCustomerPhone(customerId);
         System.out.println("phone found: " + this.phone);
         this.startTime = startTime;
         this.startDate = startTime;

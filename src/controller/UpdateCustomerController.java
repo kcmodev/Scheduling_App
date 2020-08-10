@@ -9,12 +9,11 @@ import models.Customer;
 import org.omg.CORBA.DynAnyPackage.InvalidSeq;
 import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UpdateCustomerController {
-    WindowManager window = new WindowManager();
-    private String fullPhone;
+    private WindowManager window = new WindowManager();
+    private PopupHandlers popups = new PopupHandlers();
     Customer temp;
 
     @FXML private TextField name;
@@ -25,19 +24,16 @@ public class UpdateCustomerController {
     @FXML private TextField phone;
 
     public void setSaveClicked(ActionEvent event) throws SQLException {
+        CityDAO cityData = new CityDAO();
+        CustomerDAO customerData = new CustomerDAO();
+
+        String fullPhone;
+        boolean diffName = true, diffAddr = true, diffCity = true, diffZip = true, diffPhone = true;
         String newName = name.getText();
         String newAddress = address.getText();
         String newZip = zip.getText();
         String newPhone = phone.getText();
-        int newCityId = CityDAO.getCityId(city.getValue());
-
-        boolean diffName = true,
-                diffAddr = true,
-                diffCity = true,
-                diffZip = true,
-                diffPhone = true;
-
-        System.out.println("save button clicked");
+        int newCityId = cityData.getCityId(city.getValue());
 
         try {
             /**
@@ -47,13 +43,13 @@ public class UpdateCustomerController {
              */
             if (temp.getName().equals(newName))
                 diffName = false;
-            if (CustomerDAO.getCustomerAddress(temp.getCustomerId()).equals(newAddress))
+            if (customerData.getCustomerAddress(temp.getCustomerId()).equals(newAddress))
                 diffAddr = false;
-            if (CustomerDAO.getCustomerCity(temp.getCustomerId()).equals(city.getValue()))
+            if (customerData.getCustomerCity(temp.getCustomerId()).equals(city.getValue()))
                 diffCity = false;
-            if (CustomerDAO.getCustomerZip(temp.getCustomerId()).equals(newZip))
+            if (customerData.getCustomerZip(temp.getCustomerId()).equals(newZip))
                 diffZip = false;
-            if (CustomerDAO.getCustomerPhone(temp.getCustomerId()).equals(newPhone))
+            if (customerData.getCustomerPhone(temp.getCustomerId()).equals(newPhone))
                 diffPhone = false;
 
             /**
@@ -79,16 +75,16 @@ public class UpdateCustomerController {
                  * validates input from user then calls method to insert record into the database
                  * returns user to manage customers window
                  */
-                if (CustomerDAO.isValidCustomerInput(newName, newAddress, newZip)) {
-                    CustomerDAO.updateCustomer(temp.getCustomerId(), newName, newAddress, newZip, newCityId, fullPhone);
+                if (customerData.isValidCustomerInput(newName, newAddress, newZip)) {
+                    customerData.updateCustomer(temp.getCustomerId(), newName, newAddress, newZip, newCityId, fullPhone);
                     window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
                 }
             }
 
         } catch (InvalidValue e){
-            PopupHandlers.errorAlert(2, "No changes detected");
+            popups.errorAlert(2, "No changes detected");
         } catch (InvalidSeq q) {
-            PopupHandlers.errorAlert(2, "Invalid phone. Numbers only. Include area code");
+            popups.errorAlert(2, "Invalid phone. Numbers only. Include area code");
         } catch (SQLException s){
             s.printStackTrace();
         }
@@ -96,34 +92,37 @@ public class UpdateCustomerController {
     }
 
     public void setCancelClicked(ActionEvent event){
-        System.out.println("cancel button clicked");
-
-        if (PopupHandlers.confirmationAlert("quit and discard unsaved changes")){
-            window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
+        if (popups.confirmationAlert("quit and discard unsaved changes")){
+            window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
         }
     }
 
-    public void setCity() throws SQLException { setCountry(CountryDAO.getCountryName(CityDAO.getCityId(city.getValue()))); }
+    public void setCity() throws SQLException {
+        CityDAO cityData = new CityDAO();
+        setCountry(CountryDAO.getCountryName(cityData.getCityId(city.getValue())));
+    }
 
     public void setCountry(String countryName) { country.setText(countryName); }
 
     public void setTextFields(Customer customer) throws SQLException {
+        CustomerDAO customerData = new CustomerDAO();
+        CityDAO cityData = new CityDAO();
         temp = customer; // save initial incoming information to compare before updating
 
         /**
          * sets initial values for all text fields
          */
         name.setText(customer.getName());
-        address.setText(CustomerDAO.getCustomerAddress(customer.getCustomerId()));
-        city.setItems(CityDAO.getCityNames());
-        city.setValue(CustomerDAO.getCustomerCity(customer.getCustomerId()));
+        address.setText(customerData.getCustomerAddress(customer.getCustomerId()));
+        city.setItems(cityData.getCityNames());
+        city.setValue(customerData.getCustomerCity(customer.getCustomerId()));
         setCity(); // sets country initial value
-        zip.setText(CustomerDAO.getCustomerZip(customer.getCustomerId()));
+        zip.setText(customerData.getCustomerZip(customer.getCustomerId()));
 
         /**
          * parses incoming phone number to remove dashes
          */
-        String parsedPhone = CustomerDAO.getCustomerPhone(customer.getCustomerId());
+        String parsedPhone = customerData.getCustomerPhone(customer.getCustomerId());
         String newParsedPhone = parsedPhone.substring(0,3) + parsedPhone.substring(4,7) + parsedPhone.substring(8,12);
         phone.setText(newParsedPhone);
     }

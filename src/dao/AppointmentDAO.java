@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import models.Appointment;
 import models.Customer;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -15,19 +16,21 @@ import java.time.ZonedDateTime;
 import java.util.Comparator;
 
 public class AppointmentDAO {
-    private static String sqlStatement;
     private static ZoneId userZone = ZoneId.of(Main.userZone.getID());
     private static ZonedDateTime zonedTime;
     private static ObservableList<Appointment> appointments = FXCollections.observableArrayList();
-    private ResultSet rs;
+    private static final ObservableList<String> VALID_APPT_TIMES = FXCollections.observableArrayList();
+    private static final Connection conn = ConnectionHandler.startConnection();
+
 
     public static void buildAppointmentData() throws SQLException {
         appointments.clear();
-        sqlStatement = "select a.customerId, a.type, a.start from appointment a\n" +
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "select a.customerId, a.type, a.start from appointment a\n" +
                 "join customer c on a.customerId = c.customerId;";
 
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        ResultSet rs = StatementHandler.getPreparedStatement().executeQuery();
+        statement.setPreparedStatement(conn, sqlStatement);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()){
             String type = rs.getString("type");
@@ -49,26 +52,43 @@ public class AppointmentDAO {
         }
     }
 
-    public void addAppointment() {
+    public void addAppointment() { }
 
-    }
+    public void deleteAppointment() { }
 
-    public void deleteAppointment() {
+    public void modifyAppointment() { }
 
-    }
-
-    public void modifyAppointment() {
-
-    }
-
-    public static void setViewAllByWeek(){
-        sqlStatement = "";
-    }
+    public void setViewAllByWeek(){ }
 
     public void setViewAllByMonth(){ }
 
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
         buildAppointmentData();
         return appointments;
+    }
+
+    public static ObservableList<String> getValidApptTimes() { return VALID_APPT_TIMES; }
+
+    public void setValidApptTimes() {
+        int hours = 9;
+        int minutes = 0;
+        int counter;
+
+        while (hours < 17){
+            counter = 00;
+            while (counter < 5) {
+                VALID_APPT_TIMES.add(hours + ":" + minutes);
+                minutes += 15;
+                counter++;
+                if (minutes == 60) {
+                    minutes = 0;
+                    break;
+                }
+            }
+            hours++;
+        }
+
+        VALID_APPT_TIMES.stream().forEach(System.out::println);
+
     }
 }

@@ -29,8 +29,9 @@ import java.util.Comparator;
 import java.util.ResourceBundle;
 
 public class ManageAppointmentsController implements Initializable {
-    private String sqlStatement;
-    WindowManager window = new WindowManager();
+    private WindowManager window = new WindowManager();
+    private PopupHandlers popups = new PopupHandlers();
+    private AppointmentDAO appointmentData = new AppointmentDAO();
 
     @FXML private Label appointmentLabel;
 
@@ -51,18 +52,13 @@ public class ManageAppointmentsController implements Initializable {
      * method dynamically sets label to the logged in user's username
      * @param label
      */
-    public void setLabel(String label) {
-        System.out.println("makes it to set label with: \"" + label + "\"");
-        appointmentLabel.setText(label);
-    }
+    public void setLabel(String label) { appointmentLabel.setText(label); }
 
     public void setAddClicked(ActionEvent event){
-        System.out.println("add button clicked");
-        window.windowController(event, "/gui/AddAppointment.fxml", WindowManager.ADD_APPOINTMENT_TITLE);
+        window.windowController(event, "/gui/AddAppointment.fxml", window.ADD_APPOINTMENT_TITLE);
     }
 
     public void setUpdateClicked(ActionEvent event) throws IOException {
-        System.out.println("update button clicked");
 
         if (appointmentTableView.getSelectionModel().getSelectedItem() != null) {
             FXMLLoader loader = new FXMLLoader();
@@ -79,7 +75,7 @@ public class ManageAppointmentsController implements Initializable {
             newWindow.setTitle(WindowManager.UPDATE_APPOINTMENT_TITLE);
             newWindow.show();
         } else {
-            PopupHandlers.errorAlert(1, "You must choose an appointment to modify");
+            popups.errorAlert(1, "You must choose an appointment to modify");
         }
     }
 
@@ -89,8 +85,6 @@ public class ManageAppointmentsController implements Initializable {
      * returns an error if null
      */
     public void deleteClicked () {
-        System.out.println("delete button clicked");
-
 //        try {
 //            String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
 //            sqlStatement = "SELECT customerName FROM customer\n" +
@@ -128,8 +122,8 @@ public class ManageAppointmentsController implements Initializable {
     }
 
     public void setLogOutClicked(ActionEvent event) {
-        if (PopupHandlers.confirmationAlert("log out")){
-            window.windowController(event, "/gui/Login.fxml", WindowManager.LOGIN_SCREEN_TITLE);
+        if (popups.confirmationAlert("log out")){
+            window.windowController(event, "/gui/Login.fxml", window.LOGIN_SCREEN_TITLE);
         }
     }
 
@@ -145,21 +139,17 @@ public class ManageAppointmentsController implements Initializable {
 
     public void setViewAll() throws SQLException {
         System.out.println("filter set to \"view all\"");
-        appointmentTableView.setItems(AppointmentDAO.getAllAppointments());
+        appointmentTableView.setItems(appointmentData.getAllAppointments());
     }
 
-    public void setViewWeek(){
-        System.out.println("filter set to \"filter by week\"");
-
-    }
+    public void setViewWeek(){ System.out.println("filter set to \"filter by week\""); }
 
     public void setViewMonth(){
         System.out.println("filter set to \"filter by month\"");
     }
 
     public void manageCustomersClicked(ActionEvent event){
-        System.out.println("manage customers button clicked");
-        window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
+        window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
     }
 
     public void setTableProperties() {
@@ -187,11 +177,13 @@ public class ManageAppointmentsController implements Initializable {
         setLabel("Schedule for /ADMIN USER/");
         String zone = Main.userZone.toZoneId().toString();
         System.out.println("User time zone: " + zone);
+
         setTableProperties();
+
         try {
             setViewAll();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

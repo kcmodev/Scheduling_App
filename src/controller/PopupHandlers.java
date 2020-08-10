@@ -14,7 +14,7 @@ public class PopupHandlers {
      * confirmation alert popup handler
      * passes in string variable to define text in the alert
      */
-    public static final boolean confirmationAlert(String action){
+    public boolean confirmationAlert(String action){
         titleText = "Confirmation";
         headerText = "Please confirm";
 
@@ -44,7 +44,7 @@ public class PopupHandlers {
      * overloaded error alert popup handler to receive error code
      * and custom message to display in alert popup
      */
-    public static void errorAlert(int errorCode, String errorText){
+    public void errorAlert(int errorCode, String errorText){
         headerText = "Error";
 
         if (errorCode == 1){ // no selection made
