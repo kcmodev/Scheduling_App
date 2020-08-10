@@ -12,6 +12,7 @@ public class CustomerDAO {
     private static ObservableList<String> allCustomerNames = FXCollections.observableArrayList();
     private static final Connection conn = ConnectionHandler.startConnection();
     private static PopupHandlers popups = new PopupHandlers();
+    private AddressDAO addressData = new AddressDAO();
 
     /**
      * adds new customer to database
@@ -23,13 +24,10 @@ public class CustomerDAO {
      * @throws SQLException
      */
     public void addCustomer(String name, String address, int cityId, String zip, String phone) throws SQLException {
-        AddressDAO addressData = new AddressDAO();
         StatementHandler statement = new StatementHandler();
 
         addressData.addNewAddress(address, cityId, zip, phone);
-
         int addressId = addressData.getAddressId(address);
-
         String sqlStatement = "insert into customer (customerName, addressId, active, createDate, createdBy, lastUpdateBy)\n" +
                 "values (?, ?, 1, NOW(), 'test', 'test');";
 
@@ -37,9 +35,6 @@ public class CustomerDAO {
         statement.getPreparedStatement().setString(1, name);
         statement.getPreparedStatement().setInt(2, addressId);
         statement.getPreparedStatement().execute();
-
-        System.out.println("customer: " + name + " added successfully");
-
     }
 
     /**
@@ -67,7 +62,7 @@ public class CustomerDAO {
      * @throws SQLException
      */
     public void updateCustomer(int customerId, String name, String address, String zip, int cityId, String phone) throws SQLException {
-        AddressDAO addressData = new AddressDAO();
+        StatementHandler statement = new StatementHandler();
 
         System.out.println("ID: " + customerId);
         System.out.println("name: " + name);
@@ -83,29 +78,29 @@ public class CustomerDAO {
         if (addressData.isNewAddress(address, cityId, zip, phone))
             addressData.addNewAddress(address, cityId, zip, phone);
 
-        /**
-         *
-         *
-         * ~~~~~~~~~~ NEEDS TO BE FIXED ~~~~~~~~~~~
-         *
-         */
 //        /**
-//         * updates existing customer info using new addressId if necessary
+//         *
+//         *
+//         * ~~~~~~~~~~ NEEDS TO BE FIXED ~~~~~~~~~~~
+//         *
 //         */
-//        sqlStatement = "UPDATE customer SET customerName = ?, addressId = ? WHERE customerId = ?;";
-//
-//        System.out.println("sql before prep: \n" + sqlStatement);
-//
-//        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-//        StatementHandler.getPreparedStatement().setString(1, name);
-//        System.out.println("param 1: " + sqlStatement);
-//        StatementHandler.getPreparedStatement().setInt(2, AddressDAO.getAddressId(address));
-//        System.out.println("param 2: " + sqlStatement);
-//        StatementHandler.getPreparedStatement().setInt(3, customerId);
-//        System.out.println("param 3: " + sqlStatement);
-//        StatementHandler.getPreparedStatement().executeUpdate();
-//
-//        System.out.println("sql after prep: \n" + sqlStatement);
+        /**
+         * updates existing customer info using new addressId if necessary
+         */
+        String sqlStatement = "UPDATE customer SET customerName = ?, addressId = ? WHERE customerId = ?;";
+
+        System.out.println("sql before prep: \n" + sqlStatement);
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, name);
+        System.out.println("param 1: " + sqlStatement);
+        statement.getPreparedStatement().setInt(2, addressData.getAddressId(address));
+        System.out.println("param 2: " + sqlStatement);
+        statement.getPreparedStatement().setInt(3, customerId);
+        System.out.println("param 3: " + sqlStatement);
+        statement.getPreparedStatement().executeUpdate();
+
+        System.out.println("sql after prep: \n" + sqlStatement);
     }
 
     /**
@@ -138,6 +133,7 @@ public class CustomerDAO {
      */
     public String getCustomerAddress(int customerId) throws SQLException {
         StatementHandler statement = new StatementHandler();
+
         String sqlStatement = "select c.customerId, a.address from customer c\n" +
                 "join address a on c.addressId = a.addressId\n" +
                 "where customerId = ?;";

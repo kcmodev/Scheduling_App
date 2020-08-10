@@ -77,7 +77,7 @@ public class UpdateCustomerController {
                  */
                 if (customerData.isValidCustomerInput(newName, newAddress, newZip)) {
                     customerData.updateCustomer(temp.getCustomerId(), newName, newAddress, newZip, newCityId, fullPhone);
-                    window.windowController(event, "/gui/ManageCustomers.fxml", WindowManager.MANAGE_CUSTOMERS_TITLE);
+                    window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
                 }
             }
 
