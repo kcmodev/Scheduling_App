@@ -82,13 +82,11 @@ public class AppointmentDAO {
                 counter++;
                 if (minutes == 60) {
                     minutes = 0;
+                    hours++;
                     break;
                 }
             }
-            hours++;
         }
-
         VALID_APPT_TIMES.stream().forEach(System.out::println);
-
     }
 }

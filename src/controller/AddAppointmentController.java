@@ -8,11 +8,13 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
     private WindowManager window = new WindowManager();
     private PopupHandlers popups = new PopupHandlers();
+    private CustomerDAO customer = new CustomerDAO();
 
     @FXML private ChoiceBox<String> names;
     @FXML private TextField address;
@@ -31,9 +33,8 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
-    public void setNames() {
-        CustomerDAO customer = new CustomerDAO();
-        names.setItems(customer.getAllCustomerNames());
+    public void setNames() throws SQLException {
+        System.out.println("setNames running");
     }
 
     public void setTimes(){
@@ -42,6 +43,10 @@ public class AddAppointmentController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setNames();
+        try {
+            names.setItems(customer.getAllCustomerNames());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }
