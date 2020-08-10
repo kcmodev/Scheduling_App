@@ -1,0 +1,21 @@
+
+Q
+java:S2209_"5Change this instance-reference to a static reference.(±ÖJ8ÌõÙÊ½.
+J
+java:S2440"-Remove this instantiation of "PopupHandlers".(ıÖÜü8ÌõÙÊ½.
+B
+java:S1659"%Declare "diffZip" on a separate line.(•‰›ê8ĞšÈÊ½.
+t
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(ÏÒâ»üÿÿÿÿ8‘Ÿ¦§½.
+C
+java:S1659"&Declare "diffAddr" on a separate line.(•‰›ê8ĞšÈÊ½.
+R
+java:S2209U"5Change this instance-reference to a static reference.(ü¯ÄÂ8ÌõÙÊ½.
+W
+java:S2209`"5Change this instance-reference to a static reference.(ıùÄÖşÿÿÿÿ8¡¹ÉÊ½.
+C
+java:S1659"&Declare "diffCity" on a separate line.(•‰›ê8ĞšÈÊ½.
+D
+java:S1659"'Declare "diffPhone" on a separate line.(•‰›ê8ĞšÈÊ½.
+W
+java:S2209W"5Change this instance-reference to a static reference.(ßî±Ğşÿÿÿÿ8ÌõÙÊ½.

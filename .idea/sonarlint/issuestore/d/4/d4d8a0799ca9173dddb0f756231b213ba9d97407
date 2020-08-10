@@ -1,13 +1,13 @@
 
+H
+java:S1068"-Remove this unused "addressId" private field.(¾¯Óşÿÿÿÿ
+D
+java:S1068".Remove this unused "postalCode" private field.(ö™¼
+E
+java:S1068"*Remove this unused "cityId" private field.(©ıõğşÿÿÿÿ
+1
+java:S1700"Rename field "address"(÷§ùÿÿÿÿ
 D
 java:S1068")Remove this unused "phone" private field.(¾øÌ‡ıÿÿÿÿ
 F
 java:S1068"+Remove this unused "address" private field.(÷§ùÿÿÿÿ
-E
-java:S1068"*Remove this unused "cityId" private field.(©ıõğşÿÿÿÿ
-D
-java:S1068".Remove this unused "postalCode" private field.(ö™¼
-1
-java:S1700"Rename field "address"(÷§ùÿÿÿÿ
-H
-java:S1068"-Remove this unused "addressId" private field.(¾¯Óşÿÿÿÿ

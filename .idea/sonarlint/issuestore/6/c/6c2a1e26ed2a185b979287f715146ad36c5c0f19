@@ -1,15 +1,34 @@
 
-d
-java:S2095O"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(©´Ş8óûÍÛ¼.
-]	java:S125"<This block of commented-out lines of code should be removed.(Ú¢•üÿÿÿÿ8´—ï×¼.
-]	java:S125"<This block of commented-out lines of code should be removed.(Øä¾®ùÿÿÿÿ8´—ï×¼.
-W
-java:S1118":Add a private constructor to hide the implicit public one.(¨¤½î8¼´Û¼.
-]	java:S125"<This block of commented-out lines of code should be removed.(€Î¸Úÿÿÿÿÿ8´—ï×¼.
-d
-java:S2095."GUse try-with-resources or close this "ResultSet" in a "finally" clause.(©´Ş8¤¯¥Û¼.
-X	java:S125"<This block of commented-out lines of code should be removed.(„Øà¹8´—ï×¼.
+y
+java:S1192"VDefine a constant instead of duplicating this literal "where customerId = ?;" 4 times.(Ğæôİûÿÿÿÿ8™äöÈ½.
+Z	java:S106K"9Replace this use of System.out or System.err by a logger.(ı˜‚Òûÿÿÿÿ8û…ÖÂ½.
+F
+java:S1125³"(Remove the literal "true" boolean value.(è¼×¾8™äöÈ½.
+X
+java:S2209ˆ"5Change this instance-reference to a static reference.(Ó·”Ôúÿÿÿÿ8™äöÈ½.
+Z	java:S106I"9Replace this use of System.out or System.err by a logger.(Î­¢üÿÿÿÿ8áñÓÂ½.
+X	java:S125l"<This block of commented-out lines of code should be removed.(§ÎÔ¬8éîşÄ½.
+o
+java:S1192"MDefine a constant instead of duplicating this literal "customerName" 3 times.(ä¿ÓÅıÿÿÿÿ8™äöÈ½.
+X
+java:S2209£"5Change this instance-reference to a static reference.(§ó²†ùÿÿÿÿ8¥†àÊ½.
+Z	java:S106H"9Replace this use of System.out or System.err by a logger.(®‹Æ˜ûÿÿÿÿ8û…ÖÂ½.
 h
-java:S11921"KDefine a constant instead of duplicating this literal "customerId" 3 times.(¿ô—®8ÃúÎÛ¼.
-d
-java:S2095>"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(©´Ş8öÔÄÛ¼.
+java:S1192~"KDefine a constant instead of duplicating this literal "customerId" 3 times.(¿ô—®8”¥—½.
+J
+java:S2440"-Remove this instantiation of "PopupHandlers".(şïİ8¥†àÊ½.
+U	java:S106L"9Replace this use of System.out or System.err by a logger.(§Íû£8¹ĞÖÂ½.
+]	java:S125a"<This block of commented-out lines of code should be removed.(Èş¥²øÿÿÿÿ8éîşÄ½.
+U	java:S106)"9Replace this use of System.out or System.err by a logger.(íÅ—8ˆí—½.
+Z	java:S106J"9Replace this use of System.out or System.err by a logger.(úéŸãúÿÿÿÿ8û…ÖÂ½.
+Z	java:S106M"9Replace this use of System.out or System.err by a logger.(µ¢íÿÿÿÿÿ8§Ï×Â½.
+S
+java:S2209…"5Change this instance-reference to a static reference.(ˆÈ¥à8™äöÈ½.
+X
+java:S2209‚"5Change this instance-reference to a static reference.(àñ¸‰øÿÿÿÿ8™äöÈ½.
+X	java:S125c"<This block of commented-out lines of code should be removed.(µşÔ·8éîşÄ½.
+X	java:S125_"<This block of commented-out lines of code should be removed.(°Úäö8éîşÄ½.
+‘
+java:S1192"nDefine a constant instead of duplicating this literal "join address a on c.addressId = a.addressId\n" 3 times.(¨¾Şéıÿÿÿÿ8Âçå¢½.
+S
+java:S2209‹"5Change this instance-reference to a static reference.(–Ø’æ8™äöÈ½.

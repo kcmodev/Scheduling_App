@@ -1,0 +1,15 @@
+
+I
+java:S1172V",Remove this unused method parameter "event".(µ ™8×Ëù÷¼.
+W
+java:S2209i"5Change this instance-reference to a static reference.(á ®Åşÿÿÿÿ8¹üĞË½.
+z
+java:S1192¥"WDefine a constant instead of duplicating this literal "-fx-alignment: CENTER;" 5 times.(Ëúùşıÿÿÿÿ8„£×—½.
+W
+java:S2209E"5Change this instance-reference to a static reference.(êÂ¯ûÿÿÿÿ8ÅºÎË½.
+W
+java:S2209."5Change this instance-reference to a static reference.(ÍúŒ…úÿÿÿÿ8ø´ÌË½.
+O
+java:S1612",Replace this lambda with a method reference.(¼ÒÇÈÿÿÿÿÿ8”×ƒÌ½.
+O
+java:S1612",Replace this lambda with a method reference.(¼ÒÇÈÿÿÿÿÿ8”×ƒÌ½.

@@ -1,24 +1,21 @@
 
-N	java:S106^"9Replace this use of System.out or System.err by a logger.(öÔ‡
-]
-java:S2095&"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(àÿÔ
-M
-java:S1117"7Rename "zip" which hides the field declared at line 20.(¦®©
-W
-java:S1126m"AReplace this if-then-else statement by a single return statement.(ûı­Ü
-S	java:S106"9Replace this use of System.out or System.err by a logger.(¹‰‰üÿÿÿÿ
-S	java:S106<"9Replace this use of System.out or System.err by a logger.(¥ŠÉËıÿÿÿÿ
-T
-java:S1117"9Rename "phone" which hides the field declared at line 22.(ÕšåÑøÿÿÿÿ
-q
-java:S1450"[Remove the "sqlStatement" field and declare it as a local variable in the relevant methods.(¡à¯Ô
-N	java:S106e"9Replace this use of System.out or System.err by a logger.(³ş
-M
-java:S1117"8Rename "city" which hides the field declared at line 19.(Öô®<
-M	java:S106K"9Replace this use of System.out or System.err by a logger.(ôè 
-V
-java:S1117";Rename "country" which hides the field declared at line 21.(°¢Ã¶ûÿÿÿÿ
+|
+java:S1450"ZRemove the "currentCity" field and declare it as a local variable in the relevant methods.(Š´Ö¼ùÿÿÿÿ8œ§ë‚½.
 S
-java:S1117"8Rename "name" which hides the field declared at line 17.(£âè¼ûÿÿÿÿ
+java:S11173"8Rename "name" which hides the field declared at line 35.(£âè¼ûÿÿÿÿ
+z
+java:S1450"XRemove the "fullPhone" field and declare it as a local variable in the relevant methods.(ñı¸ûÿÿÿÿ8ãÊı£½.
+E
+java:S1068"(Remove this unused "conn" private field.(´»¦8ĞûÀÉ½.
+W
+java:S2209L"5Change this instance-reference to a static reference.(ıùÄÖşÿÿÿÿ8•°ñÉ½.
+M
+java:S11175"7Rename "zip" which hides the field declared at line 38.(¦®©
+U	java:S106h"9Replace this use of System.out or System.err by a logger.(Ï½Û8Ì‡ì€½.
 Q
-java:S1117";Rename "address" which hides the field declared at line 18.(ÉÚ˜‡
+java:S11174";Rename "address" which hides the field declared at line 36.(ÉÚ˜‡
+W
+java:S2209]"5Change this instance-reference to a static reference.(ıùÄÖşÿÿÿÿ8Î“ñÉ½.
+]	java:S125n"<This block of commented-out lines of code should be removed.(ıî»ûÿÿÿÿ8ØêÈ½.
+c
+java:S2095p"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(˜Èù8Ì„Ì½.
