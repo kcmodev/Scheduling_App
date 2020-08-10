@@ -21,9 +21,9 @@ public class AddressDAO {
         /**
          * checks for duplicates in database before proceeding to add a new record to address
          */
-        System.out.println("new address? " + isNewAddress(address, cityId, zip, phone));
-        if (isNewAddress(address, cityId, zip, phone)) {
-            System.out.println("new address. adding \"" + address + "\" to the database");
+        //System.out.println("new address? " + isNewAddress(address, cityId, zip, phone));
+        //if (isNewAddress(address, cityId, zip, phone)) {
+            System.out.println("adding \"" + address + "\" to the database");
             sqlStatement = "insert into address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdateBy)\n" +
                     "values (?, ' ', ?, ?, ?, CURRENT_TIMESTAMP, 'admin', 'admin')";
 
@@ -33,9 +33,9 @@ public class AddressDAO {
             StatementHandler.getPreparedStatement().setString(3, zip);
             StatementHandler.getPreparedStatement().setString(4, phone);
             StatementHandler.getPreparedStatement().execute();
-        } else {
-            System.out.println("address \"" + address + "\" already exists");
-        }
+//        } else {
+//            System.out.println("address \"" + address + "\" already exists");
+//        }
     }
 
     public static int getAddressId(String address) throws SQLException {
@@ -53,12 +53,18 @@ public class AddressDAO {
         return addressId;
     }
 
+    /**
+     * method checks for a unique address
+     * @param address
+     * @param cityId
+     * @param zip
+     * @param phone
+     * @return
+     * @throws SQLException
+     */
     public static boolean isNewAddress(String address, int cityId, String zip, String phone) throws SQLException {
-        /**
-         * NEED TO FIX ----- DETERMINE WHAT A UNIQUE ADDRESS IS COMPRISED OF
-         */
         sqlStatement = "select address, cityId, postalCode, phone from address\n" +
-                        "where address = ? or cityId = ? or postalCode = ? or phone = ?;";
+                        "where address = ? and cityId = ? and postalCode = ? and phone = ?;";
 
         StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
         StatementHandler.getPreparedStatement().setString(1, address);
@@ -74,4 +80,7 @@ public class AddressDAO {
         return true;
     }
 
+    public static void deleteUnownedAddress(int addressId){
+
+    }
 }

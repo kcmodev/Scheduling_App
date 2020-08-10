@@ -13,27 +13,6 @@ public class CityDAO {
     private static String sqlStatement;
     private static ResultSet rs;
 
-    public static void setAllCities() throws SQLException {
-        sqlStatement = "select cityId, city, countryId from city;";
-
-        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-        ResultSet rs = StatementHandler.getPreparedStatement().executeQuery();
-
-        while (rs.next()){
-            int cityId = rs.getInt("cityId");
-            String cityName = rs.getString("city");
-            int countryId = rs.getInt("countryId");
-
-            City city = new City(cityId, cityName, countryId);
-            allCities.add(city);
-            cityNames.add(cityName);
-        }
-
-        System.out.println("List of cities added: ");
-        for (City city : allCities)
-            System.out.println(city.getCityName());
-    }
-
     public static int getCityId(String cityName) throws SQLException {
         sqlStatement = "select cityId, city from city\n" +
                 "where city = ?;";
@@ -48,7 +27,26 @@ public class CityDAO {
         return 0;
     }
 
-    public static ObservableList<City> getAllCities(){ return allCities; }
-
     public static ObservableList<String> getCityNames(){ return cityNames; }
+
+    /**
+     * build static list of city data
+     * @throws SQLException
+     */
+    public static void buildListOfCities() throws SQLException {
+        sqlStatement = "select cityId, city, countryId from city;";
+
+        StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
+        ResultSet rs = StatementHandler.getPreparedStatement().executeQuery();
+
+        while (rs.next()){
+            int cityId = rs.getInt("cityId");
+            String cityName = rs.getString("city");
+            int countryId = rs.getInt("countryId");
+
+            City city = new City(cityId, cityName, countryId);
+            allCities.add(city);
+            cityNames.add(cityName);
+        }
+    }
 }

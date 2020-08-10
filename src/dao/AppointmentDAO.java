@@ -42,7 +42,7 @@ public class AppointmentDAO {
 //            time = time.replace("T", "  |  ");
 //            time.replaceAll("^[a-z]$", "  |  ");
             String time = rs.getString("start").replaceAll("[ ]", "  |  ");
-            System.out.println("date/time retrieved: " + time);
+//            System.out.println("date/time retrieved: " + time);
 
             Appointment appointment = new Appointment(customerId, type, time);
             appointments.add(appointment);

@@ -57,7 +57,7 @@ public class UpdateCustomerController {
                 diffPhone = false;
 
             /**
-             * checks for no changes in any field, else runs the update customer method
+             * checks for no changes in all field, else runs the update customer method
              */
             if (!diffName && !diffAddr && !diffCity && !diffZip && !diffPhone) {
                 throw new InvalidValue();

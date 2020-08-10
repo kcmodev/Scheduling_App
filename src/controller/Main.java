@@ -1,9 +1,7 @@
 package controller;
 
-import dao.AppointmentDAO;
 import dao.CityDAO;
 import dao.ConnectionHandler;
-import dao.CustomerDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,7 +27,7 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException {
         ConnectionHandler.startConnection();
-        CityDAO.setAllCities();
+        CityDAO.buildListOfCities();
 
         launch(args);
         
