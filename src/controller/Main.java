@@ -31,7 +31,7 @@ public class Main extends Application {
 //        ConnectionHandler.startConnection();
 
         CityDAO.buildListOfCities();
-        appointmentData.setValidApptTimes();
+        appointmentData.buildValidApptTimes();
 
         launch(args);
         

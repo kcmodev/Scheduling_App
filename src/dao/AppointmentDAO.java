@@ -19,44 +19,57 @@ public class AppointmentDAO {
     private static ZoneId userZone = ZoneId.of(Main.userZone.getID());
     private static ZonedDateTime zonedTime;
     private static ObservableList<Appointment> appointments = FXCollections.observableArrayList();
-    private static final ObservableList<String> VALID_APPT_TIMES = FXCollections.observableArrayList();
+
+    private ObservableList<String> validHours = FXCollections.observableArrayList();
+    private ObservableList<String> validMinutes = FXCollections.observableArrayList();
+    private ObservableList<String> validMonths = FXCollections.observableArrayList();
+    private ObservableList<String> validDays = FXCollections.observableArrayList();
+    private ObservableList<String> validYears = FXCollections.observableArrayList();
+
     private static final Connection conn = ConnectionHandler.startConnection();
 
 
     public static void buildAppointmentData() throws SQLException {
         appointments.clear();
         StatementHandler statement = new StatementHandler();
-        String sqlStatement = "select a.customerId, a.type, a.start from appointment a\n" +
-                "join customer c on a.customerId = c.customerId;";
+        String sqlStatement = "SELECT customerId, type, DATE(start) apptDate, TIME(start) apptTime FROM appointment";
 
         statement.setPreparedStatement(conn, sqlStatement);
         ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()){
-            String type = rs.getString("type");
-            System.out.println("type retrieved: " + type);
             int customerId = rs.getInt("customerId");
-            System.out.println("customerId retrieved: " + customerId);
-            System.out.println("zone id found: " + userZone);
+            String type = rs.getString("type");
+            String startDate = rs.getString("apptDate");
+            String startTime = rs.getString("apptTime");
+
+//            System.out.println("zone id found: " + userZone);
 
 //            ZonedDateTime timestamp = rs.getTimestamp("start").toLocalDateTime().atZone(ZoneId.of("UTC"));
 //            String time = timestamp.toString().replace("Z[UTC]", "");
 //            System.out.println("char to replace: " + time.charAt(10));
 //            time = time.replace("T", "  |  ");
 //            time.replaceAll("^[a-z]$", "  |  ");
-            String time = rs.getString("start").replaceAll("[ ]", "  |  ");
 //            System.out.println("date/time retrieved: " + time);
 
-            Appointment appointment = new Appointment(customerId, type, time);
+            Appointment appointment = new Appointment(customerId, type, startDate, startTime);
             appointments.add(appointment);
         }
     }
 
-    public void addAppointment() { }
+//    public String getAppointmentDate(String dateTime){
+//        String sqlStatement = "";
+//    }
+//
+//    public String getAppointmentTime(String dateTime){
+//
+//    }
 
-    public void deleteAppointment() { }
+    public void addAppointment(){ }
 
-    public void modifyAppointment() { }
+    public void deleteAppointment(){ }
+
+    public void modifyAppointment(){ }
 
     public void setViewAllByWeek(){ }
 
@@ -67,26 +80,47 @@ public class AppointmentDAO {
         return appointments;
     }
 
-    public static ObservableList<String> getValidApptTimes() { return VALID_APPT_TIMES; }
+    public ObservableList<String> getValidHours() { return validHours; }
 
-    public void setValidApptTimes() {
-        int hours = 9;
-        int minutes = 0;
-        int counter;
+    /**
+     * make available hours for appointments 09-16
+     * omits 1700 due to business closing at 1700 hrs
+     * @param validHours
+     */
+    public void setValidHours(ObservableList<String> validHours) {
+        for (int i = 9; i <= 16; i++)
+            validHours.add(Integer.toString(i));
+        this.validHours = validHours;
+    }
 
-        while (hours < 17){
-            counter = 00;
-            while (counter < 5) {
-                VALID_APPT_TIMES.add(hours + ":" + minutes);
-                minutes += 15;
-                counter++;
-                if (minutes == 60) {
-                    minutes = 0;
-                    hours++;
-                    break;
-                }
-            }
-        }
-        VALID_APPT_TIMES.stream().forEach(System.out::println);
+    public ObservableList<String> getValidMinutes() { return validMinutes; }
+
+    public void setValidMinutes(ObservableList<String> validMinutes) {
+        validMinutes.add("00");
+        for (int i = 15; i <= 45; i++)
+            validMinutes.add(Integer.toString(i));
+        this.validMinutes = validMinutes;
+    }
+
+    public ObservableList<String> getValidMonths() { return validMonths; }
+
+    public void setValidMonths(ObservableList<String> validMonths) {
+        for (int i = 1; i <= 12; i++)
+            validMonths.add(Integer.toString(i));
+        this.validMonths = validMonths;
+    }
+
+    public ObservableList<String> getValidDays(int month) { return validDays; }
+
+    public void setValidDays(ObservableList<String> validDays) {
+        for (int i = 1; i <= 31; i++)
+            validDays.add(Integer.toString(i));
+        this.validDays = validDays;
+    }
+
+    public ObservableList<String> getValidYears() { return validYears; }
+
+    public void setValidYears(ObservableList<String> validYears) {
+        this.validYears = validYears;
     }
 }

@@ -21,17 +21,19 @@ import models.Customer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.ZoneId;
-import java.util.Comparator;
 import java.util.ResourceBundle;
 
 public class ManageAppointmentsController implements Initializable {
-    private WindowManager window = new WindowManager();
-    private PopupHandlers popups = new PopupHandlers();
-    private AppointmentDAO appointmentData = new AppointmentDAO();
+    private final Connection conn = ConnectionHandler.startConnection();
+    private final WindowManager window = new WindowManager();
+    private final PopupHandlers popups = new PopupHandlers();
+    private final AppointmentDAO appointmentData = new AppointmentDAO();
+    private final CustomerDAO customerData = new CustomerDAO();
 
     @FXML private Label appointmentLabel;
 
@@ -40,7 +42,8 @@ public class ManageAppointmentsController implements Initializable {
     @FXML private TableColumn<Appointment, String> customerNameCol;
     @FXML private TableColumn<Appointment, String> customerAddressCol;
     @FXML private TableColumn<Appointment, String> customerPhoneCol;
-    @FXML private TableColumn<Appointment, Time> appointmentDateTimeCol;
+    @FXML private TableColumn<Appointment, String> appointmentTimeCol;
+    @FXML private TableColumn<Appointment, String> appointmentDateCol;
 
     @FXML private ToggleGroup filterSelection;
     @FXML private RadioButton all;
@@ -85,40 +88,39 @@ public class ManageAppointmentsController implements Initializable {
      * returns an error if null
      */
     public void deleteClicked () {
-//        try {
-//            String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
-//            sqlStatement = "SELECT customerName FROM customer\n" +
-//                    "WHERE customerName = ?;";
-//            System.out.println("attempting to delete: \"" + name + "\"");
-//            System.out.println("sql statement being passed in: " + sqlStatement);
-//
-//            StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-//            StatementHandler.getPreparedStatement().setString(1, name);
-//            ResultSet set = StatementHandler.getPreparedStatement().executeQuery();
-//
-//            if (set.next()) {
-//                sqlStatement = "DELETE FROM customer WHERE customerName = ?;";
-//                System.out.println("new sql statement: \"" + sqlStatement + "\"");
-//                StatementHandler.setPreparedStatement(ConnectionHandler.connection, sqlStatement);
-//                StatementHandler.getPreparedStatement().setString(1, name);
-////                StatementHandler.getPreparedStatement().execute();
-//
-//                for (Customer customer : CustomerDAO.getAllCustomers()){
-//                    if (customer.getName().equals(name)){
-//                        System.out.println("deleting: " + customer.getName());
-//                        CustomerDAO.deleteCustomer(customer);
-//                        break;
-//                    }
-//                }
-//            }
-//
-//            setFilterSelection();
-//            appointmentTableView.refresh();
-//            appointmentTableView.getSelectionModel().clearSelection();
-//
-//        } catch (NullPointerException | SQLException e) {
-//            PopupHandlers.errorAlert(1, "You Must make a selection.");
-//        }
+        StatementHandler statement = new StatementHandler();
+
+        try {
+            String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
+            String selectStatement = "SELECT customerName FROM customer\n" +
+                    "WHERE customerName = ?;";
+
+            statement.setPreparedStatement(conn, selectStatement);
+            statement.getPreparedStatement().setString(1, name);
+            ResultSet set = statement.getPreparedStatement().executeQuery();
+
+            if (set.next()) {
+                String deleteStatement = "DELETE FROM customer WHERE customerName = ?;";
+                statement.setPreparedStatement(conn, deleteStatement);
+                statement.getPreparedStatement().setString(1, name);
+
+                for (Customer customer : customerData.getAllCustomers()){
+                    if (customer.getName().equals(name)){
+                        customerData.deleteCustomer(customer);
+                        break;
+                    }
+                }
+            }
+
+            setFilterSelection();
+            appointmentTableView.refresh();
+            appointmentTableView.getSelectionModel().clearSelection();
+
+        } catch (NullPointerException e) {
+            popups.errorAlert(1, "You Must make a selection.");
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
     }
 
     public void setLogOutClicked(ActionEvent event) {
@@ -128,7 +130,7 @@ public class ManageAppointmentsController implements Initializable {
     }
 
     public void setFilterSelection() throws SQLException {
-        System.out.println("filtering selection");
+        System.out.println("setting filter selection");
         if (all.isSelected())
             setViewAll();
         if (week.isSelected())
@@ -157,19 +159,22 @@ public class ManageAppointmentsController implements Initializable {
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        appointmentDateTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        appointmentDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        appointmentTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
 
         appointmentTypeCol.setStyle("-fx-alignment: CENTER;");
         customerNameCol.setStyle("-fx-alignment: CENTER;");
         customerAddressCol.setStyle("-fx-alignment: CENTER;");
         customerPhoneCol.setStyle("-fx-alignment: CENTER;");
-        appointmentDateTimeCol.setStyle("-fx-alignment: CENTER;");
+        appointmentDateCol.setStyle("-fx-alignment: CENTER;");
+        appointmentTimeCol.setStyle("-fx-alignment: CENTER;");
 
         appointmentTypeCol.setResizable(false);
         customerNameCol.setResizable(false);
         customerAddressCol.setResizable(false);
         customerPhoneCol.setResizable(false);
-        appointmentDateTimeCol.setResizable(false);
+        appointmentDateCol.setResizable(false);
+        appointmentTimeCol.setResizable(false);
     }
 
     @Override

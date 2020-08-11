@@ -2,13 +2,20 @@ package controller;
 
 import dao.AppointmentDAO;
 import dao.ConnectionHandler;
+import dao.StatementHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Calendar;
@@ -18,6 +25,14 @@ import java.util.TimeZone;
 
 
 public class LoginController implements Initializable {
+    private WindowManager window = new WindowManager();
+    private PopupHandlers popups = new PopupHandlers();
+
+    private final ConnectionHandler conn = new ConnectionHandler();
+    private String enteredUserName;
+//    protected String errorTitle;
+//    protected String errorHeader;
+//    protected String errorText;
 
     @FXML private TextField userNameTextField;
     @FXML private PasswordField passwordTextField;
@@ -27,40 +42,33 @@ public class LoginController implements Initializable {
     @FXML private Label loginPasswordLabel;
 
     /**
-     * instantiates window manager and connection to database
-     */
-    private WindowManager window = new WindowManager();
-    private PopupHandlers popups = new PopupHandlers();
-
-    /**
      * handles clicking log in button
      * @param event
      */
     public void logInHandler(ActionEvent event) throws SQLException {
-        String enteredUserName = userNameTextField.getText();
+        StatementHandler statement = new StatementHandler();
+
+        enteredUserName = userNameTextField.getText();
         String enteredPassword = passwordTextField.getText();
-        System.out.println("User name entered: \"" + enteredUserName + "\"");
-        System.out.println("Password entered: \"" + enteredPassword + "\"");
+
+        System.out.println("User name: \"" + enteredUserName + "\"");
+        System.out.println("Password: \"" + enteredPassword + "\"");
 
         window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
 
-        /**
-         * checks to make sure user name and/or password are not left blank
-         */
+//        /**
+//         * checks to make sure user name and/or password are not left blank
+//         */
 //        if (enteredUserName.equals("") || enteredPassword.equals("")){
 //            System.out.println("found a blank field");
-//            PopupHandlers.errorAlert(2, "Please enter a user name and password");
+//            popups.errorAlert(2, "Please enter a user name and password");
 //        /**
 //         * checks username for alphanumeric characters
 //         */
 //        } else {
 //            if (enteredUserName.matches("^[a-zA-Z0-9]*$")) {
-//
-//                System.out.println("entered if statement");
-//                StatementHandler.setPreparedStatement(ConnectionHandler.startConnection(), "SELECT * FROM user");
-//                System.out.println("sql statement running");
-//                PreparedStatement checkCreds = StatementHandler.getPreparedStatement();
-//                ResultSet userList = checkCreds.executeQuery();
+//                statement.setPreparedStatement(ConnectionHandler.startConnection(), "SELECT * FROM user");
+//                ResultSet userList = statement.getPreparedStatement().executeQuery();
 //
 //                /**
 //                 * parses user table to verify username and password match a record
@@ -79,13 +87,13 @@ public class LoginController implements Initializable {
 //                                Parent parent= loader.load();
 //                                Scene appointmentsScene = new Scene(parent);
 //
-//                                AppointmentsController controller = loader.getController();
+//                                ManageAppointmentsController controller = loader.getController();
 //                                controller.setLabel("Schedule appointments for " + enteredUserName);
 //
 //                                Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
 //                                newWindow.setScene(appointmentsScene);
 //                                newWindow.setResizable(false);
-//                                newWindow.setTitle(AppointmentsController.APPOINTMENT_WINDOW_TITLE);
+//                                newWindow.setTitle(WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
 //                                newWindow.show();
 //                            } catch (IOException e) {
 //                                e.printStackTrace();
@@ -93,27 +101,32 @@ public class LoginController implements Initializable {
 //                        }
 //                        if (!isValidPassword) {
 //                            ConnectionHandler.closeConnection();
-//                            PopupHandlers.errorAlert(1, "Username and password do not match");
+//                            popups.errorAlert(1, "Username and password do not match");
 //                            break;
 //                        }
 //                    } else {
 //                        ConnectionHandler.closeConnection();
-//                        PopupHandlers.errorAlert(1, "Invalid username");
+//                        popups.errorAlert(1, "Invalid username");
 //                        break;
 //                    }
 //                }
 //            } else {
-//                PopupHandlers.errorAlert(1, "Input must be alphanumeric");
+//                popups.errorAlert(1, "Input must be alphanumeric");
 //            }
 //        }
+    }
+
+    public void getUserId (String userName){
+
     }
 
     /**
      * handles exit button click
      */
     public void exitHandler (){
+        ConnectionHandler conn = new ConnectionHandler();
         if (popups.confirmationAlert("exit the program")) {
-            ConnectionHandler.closeConnection();
+            conn.closeConnection();
             System.exit(1);
         }
     }
@@ -136,6 +149,8 @@ public class LoginController implements Initializable {
         } else {
             languageSetting = ResourceBundle.getBundle("resources/Spanish");
         }
+
+
         loginTitleLabel.setText(languageSetting.getString("titleLabel"));
         loginUserLabel.setText(languageSetting.getString("userNameLabel"));
         loginPasswordLabel.setText(languageSetting.getString("passwordLabel"));

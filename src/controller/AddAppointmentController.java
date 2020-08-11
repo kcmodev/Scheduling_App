@@ -1,5 +1,6 @@
 package controller;
 
+import dao.AppointmentDAO;
 import dao.CustomerDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,12 +15,17 @@ import java.util.ResourceBundle;
 public class AddAppointmentController implements Initializable {
     private WindowManager window = new WindowManager();
     private PopupHandlers popups = new PopupHandlers();
-    private CustomerDAO customer = new CustomerDAO();
+    private CustomerDAO customerData = new CustomerDAO();
+    private AppointmentDAO appointmentData = new AppointmentDAO();
 
     @FXML private ChoiceBox<String> names;
     @FXML private TextField address;
     @FXML private TextField phone;
-    @FXML private ChoiceBox<String> times;
+    @FXML private ChoiceBox<String> hours;
+    @FXML private ChoiceBox<String> minutes;
+    @FXML private ChoiceBox<String> years;
+    @FXML private ChoiceBox<String> months;
+    @FXML private ChoiceBox<String> days;
 
     public void setSaveClicked(ActionEvent event) {
         System.out.println("save button clicked");
@@ -37,16 +43,20 @@ public class AddAppointmentController implements Initializable {
         System.out.println("setNames running");
     }
 
-    public void setTimes(){
-
+    public void onHours(){
     }
+    public void onMinutes(){}
+
+    public void onYears(){}
+    public void onMonths(){}
+    public void onDays(){}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            names.setItems(customer.getAllCustomerNames());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            names.setItems(customerData.getAllCustomerNames());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

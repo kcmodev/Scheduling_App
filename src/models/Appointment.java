@@ -1,10 +1,13 @@
 package models;
 
+import dao.AddressDAO;
 import dao.CustomerDAO;
 
 import java.sql.SQLException;
 
 public class Appointment {
+    private CustomerDAO customerData = new CustomerDAO();
+
     private int appointmentId;
     private int customerId;
     private int addressId;
@@ -13,24 +16,20 @@ public class Appointment {
     private String startTime;
     private String startDate;
     private String endTime;
+    private String endDate;
     private String name;
     private String address;
     private String phone;
 
 
-    public Appointment(int customerId, String type, String startTime) throws SQLException {
-        CustomerDAO customer = new CustomerDAO();
-
+    public Appointment(int customerId, String type, String startDate, String startTime) throws SQLException {
         this.customerId = customerId;
         this.type = type;
-        this.name = customer.getCustomerName(customerId);
-        System.out.println("name found: " + this.name);
-        this.address = customer.getCustomerAddress(customerId);
-        System.out.println("address found: " + this.address);
-        this.phone = customer.getCustomerPhone(customerId);
-        System.out.println("phone found: " + this.phone);
+        this.name = customerData.getCustomerName(customerId);
+        this.address = customerData.getCustomerAddress(customerId);
+        this.phone = customerData.getCustomerPhone(customerId);
+        this.startDate = startDate;
         this.startTime = startTime;
-        this.startDate = startTime;
     }
 
     public int getAppointmentId() {
