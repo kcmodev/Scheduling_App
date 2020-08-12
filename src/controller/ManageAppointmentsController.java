@@ -120,10 +120,14 @@ public class ManageAppointmentsController implements Initializable {
         appointmentTableView.setItems(appointmentData.getAllAppointments());
     }
 
-    public void setViewWeek(){ System.out.println("filter set to \"filter by week\""); }
+    public void setViewWeek() throws SQLException {
+        appointmentTableView.setItems(appointmentData.setViewAllByWeek());
+        System.out.println("filter set to \"filter by week\"");
+    }
 
-    public void setViewMonth(){
+    public void setViewMonth() throws SQLException {
         System.out.println("filter set to \"filter by month\"");
+        appointmentTableView.setItems(appointmentData.setViewAllByMonth());
     }
 
     public void manageCustomersClicked(ActionEvent event){
@@ -150,6 +154,7 @@ public class ManageAppointmentsController implements Initializable {
         customerAddressCol.setResizable(false);
         customerPhoneCol.setResizable(false);
         appointmentDateCol.setResizable(false);
+        appointmentDateCol.setSortable(false); // disable sorting by column, directing user to use radio buttons instead
         appointmentTimeCol.setResizable(false);
     }
 

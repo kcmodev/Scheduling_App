@@ -1,6 +1,5 @@
 package models;
 
-import dao.AddressDAO;
 import dao.CustomerDAO;
 
 import java.sql.SQLException;
@@ -41,25 +40,15 @@ public class Appointment {
         this.appointmentId = appointmentId;
     }
 
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public int getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
+//    public int getCustomerId() { return customerId; }
+//
+//    public void setCustomerId(int customerId) { this.customerId = customerId; }
+//
+//    public int getAddressId() { return addressId; }
+//
+//    public void setAddressId(int addressId) { this.addressId = addressId; }
+//
+//    public int getUserId() { return userId; }
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -81,17 +70,17 @@ public class Appointment {
         return startDate;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
+//    public void setStartTime(String startTime) {
+//        this.startTime = startTime;
+//    }
+//
+//    public String getEndTime() {
+//        return endTime;
+//    }
+//
+//    public void setEndTime(String endTime) {
+//        this.endTime = endTime;
+//    }
 
     public String getName() {
         return name;

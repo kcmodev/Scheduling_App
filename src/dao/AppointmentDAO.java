@@ -4,22 +4,15 @@ import controller.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Appointment;
-import models.Customer;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class AppointmentDAO {
-    private static int counter = 0;
 
     private static ZoneId userZone = ZoneId.of(Main.userZone.getID());
-    private static ZonedDateTime zonedTime;
     private static ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
     private static ObservableList<String> validHours = FXCollections.observableArrayList();
@@ -28,7 +21,6 @@ public class AppointmentDAO {
     private static ObservableList<String> validDays = FXCollections.observableArrayList();
     private static ObservableList<String> validYears = FXCollections.observableArrayList();
 
-//    private static final Calendar cal = Calendar.getInstance();
     private static final Connection conn = ConnectionHandler.startConnection();
     private CustomerDAO customerData = new CustomerDAO();
 
@@ -76,16 +68,77 @@ public class AppointmentDAO {
 
     }
 
-    public ObservableList<Appointment> setViewAllByWeek(){
+    /**
+     * uses sql to sort the appointments by week, stores them in an observable array and
+     * returns said array
+     * @return
+     * @throws SQLException
+     */
+    public ObservableList<Appointment> setViewAllByWeek() throws SQLException {
         ObservableList<Appointment> filtered = FXCollections.observableArrayList();
+        StatementHandler statement = new StatementHandler();
 
-        
+        String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type,\n" +
+                "TIME(a.start) startTime, DATE(a.start) startDate FROM appointment a\n" +
+                "JOIN customer c ON a.customerId = c.customerId\n" +
+                "JOIN address addr ON c.addressId = addr.addressId\n" +
+                "ORDER BY WEEK(start) ASC;";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+        while (rs.next()){
+            int apptId = rs.getInt("appointmentId");
+            int custId = rs.getInt("customerId");
+            String type = rs.getString("type");
+            String date = rs.getString("startDate");
+            String time = rs.getString("startTime");
+
+            Appointment appt = new Appointment(apptId, custId, type, date, time);
+            filtered.add(appt);
+        }
 
         return filtered;
     }
 
-    public void setViewAllByMonth(){ }
+    /**
+     * uses sql to sort the appointments by month, stores them in an observable array and
+     * returns said array
+     * @return
+     * @throws SQLException
+     */
+    public ObservableList<Appointment> setViewAllByMonth() throws SQLException {
+        ObservableList<Appointment> filtered = FXCollections.observableArrayList();
+        StatementHandler statement = new StatementHandler();
 
+        String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type,\n" +
+                "TIME(a.start) startTime, DATE(a.start) startDate FROM appointment a\n" +
+                "JOIN customer c ON a.customerId = c.customerId\n" +
+                "JOIN address addr ON c.addressId = addr.addressId\n" +
+                "ORDER BY MONTH(start), YEAR(start) ASC;";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+        while (rs.next()){
+            int apptId = rs.getInt("appointmentId");
+            int custId = rs.getInt("customerId");
+            String type = rs.getString("type");
+            String date = rs.getString("startDate");
+            String time = rs.getString("startTime");
+
+            Appointment appt = new Appointment(apptId, custId, type, date, time);
+            filtered.add(appt);
+        }
+
+        return filtered;
+    }
+
+    /**
+     * method returns current appointment list
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
         buildAppointmentData();
         return appointments;
@@ -127,7 +180,7 @@ public class AppointmentDAO {
         System.out.println("months built");
         for (int i = 1; i <= 12; i++) {
             if (i < 10) {
-                validMonths.add("0" + i);
+                validMonths.add("0" + i); // add leading 0 for proper formatting
             } else {
                 validMonths.add(Integer.toString(i));
             }
@@ -142,18 +195,12 @@ public class AppointmentDAO {
      */
     public static ObservableList<String> getValidDays(int month, int year) {
         Year currentYear = Year.of(year);
-        System.out.println("~~~~~~ counter: " + counter++ + "~~~~~~~~~");
-        System.out.println("month coming in: " + month);
-        System.out.println("year coming in: " + year);
-        System.out.println("year object: " + currentYear.toString());
-        System.out.println("is leap year: " + currentYear.isLeap());
 
         /**
          * checking if month is february and assigning either 28 or 29 days depending on if it is a leap year
          * first is not leap year
          */
         if (month == 2 && !currentYear.isLeap()) {
-            System.out.println("found february normal year, 289 days");
             /**
              * stream with a lambda to filter observable list to 28 days for february when selected
              */
@@ -163,7 +210,6 @@ public class AppointmentDAO {
 
         // leap year found
         if (month == 2 && currentYear.isLeap()) {
-            System.out.println("found february leap year, 29 days");
             /**
              * stream with a lambda to filter observable list to 29 days for february when selected and
              * it happens to be a leap year
@@ -177,7 +223,6 @@ public class AppointmentDAO {
          * returns 30 days if true
          */
         if (month == 4 || month == 6 ||month == 9 || month == 11){
-            System.out.println("found april, june, sept, or nov. 30 days.");
             /**
              * stream with a lambda to filter observable list to 30 days for
              * april, june, september, and november
@@ -188,8 +233,8 @@ public class AppointmentDAO {
 
         /**
          * else returns 31 days for rest of the months
+         * jan, mar, may, jul, aug, oct, & dec
          */
-        System.out.println("found anything else, 31 days");
         return validDays;
     }
 
