@@ -87,40 +87,16 @@ public class ManageAppointmentsController implements Initializable {
      * removes selected customer from the database
      * returns an error if null
      */
-    public void deleteClicked () {
-        StatementHandler statement = new StatementHandler();
+    public void deleteClicked () throws SQLException {
 
-        try {
-            String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
-            String selectStatement = "SELECT customerName FROM customer\n" +
-                    "WHERE customerName = ?;";
+        String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
+        String type = appointmentTableView.getSelectionModel().getSelectedItem().getType();
 
-            statement.setPreparedStatement(conn, selectStatement);
-            statement.getPreparedStatement().setString(1, name);
-            ResultSet set = statement.getPreparedStatement().executeQuery();
+        appointmentData.deleteAppointment(name, type);
 
-            if (set.next()) {
-                String deleteStatement = "DELETE FROM customer WHERE customerName = ?;";
-                statement.setPreparedStatement(conn, deleteStatement);
-                statement.getPreparedStatement().setString(1, name);
-
-                for (Customer customer : customerData.getAllCustomers()){
-                    if (customer.getName().equals(name)){
-                        customerData.deleteCustomer(customer);
-                        break;
-                    }
-                }
-            }
-
-            setFilterSelection();
-            appointmentTableView.refresh();
-            appointmentTableView.getSelectionModel().clearSelection();
-
-        } catch (NullPointerException e) {
-            popups.errorAlert(1, "You Must make a selection.");
-        } catch (SQLException s) {
-            s.printStackTrace();
-        }
+        setFilterSelection();
+        appointmentTableView.refresh();
+        appointmentTableView.getSelectionModel().clearSelection();
     }
 
     public void setLogOutClicked(ActionEvent event) {

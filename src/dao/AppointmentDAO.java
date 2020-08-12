@@ -27,47 +27,7 @@ public class AppointmentDAO {
 
     private static final Calendar cal = Calendar.getInstance();
     private static final Connection conn = ConnectionHandler.startConnection();
-
-
-    /**
-     * clears and builds most recent list of appointments
-     * @throws SQLException
-     */
-    public static void buildAppointmentData() throws SQLException {
-        appointments.clear();
-        StatementHandler statement = new StatementHandler();
-        String sqlStatement = "SELECT customerId, type, DATE(start) apptDate, TIME(start) apptTime FROM appointment";
-
-        statement.setPreparedStatement(conn, sqlStatement);
-        ResultSet rs = statement.getPreparedStatement().executeQuery();
-
-        while (rs.next()){
-            int customerId = rs.getInt("customerId");
-            String type = rs.getString("type");
-            String startDate = rs.getString("apptDate");
-            String startTime = rs.getString("apptTime");
-
-//            System.out.println("zone id found: " + userZone);
-
-//            ZonedDateTime timestamp = rs.getTimestamp("start").toLocalDateTime().atZone(ZoneId.of("UTC"));
-//            String time = timestamp.toString().replace("Z[UTC]", "");
-//            System.out.println("char to replace: " + time.charAt(10));
-//            time = time.replace("T", "  |  ");
-//            time.replaceAll("^[a-z]$", "  |  ");
-//            System.out.println("date/time retrieved: " + time);
-
-            Appointment appointment = new Appointment(customerId, type, startDate, startTime);
-            appointments.add(appointment);
-        }
-    }
-
-//    public String getAppointmentDate(String dateTime){
-//        String sqlStatement = "";
-//    }
-//
-//    public String getAppointmentTime(String dateTime){
-//
-//    }
+    private CustomerDAO customerData = new CustomerDAO();
 
     public void addAppointment(String name, String start, String end, String type) throws SQLException {
         CustomerDAO customerData = new CustomerDAO();
@@ -86,9 +46,22 @@ public class AppointmentDAO {
 
     }
 
-    public void deleteAppointment(){ }
+    public void deleteAppointment(String name, String type) throws SQLException {
+        StatementHandler statement = new StatementHandler();
 
-    public void modifyAppointment(){ }
+        String sqlStatement = "delete appointment from appointment " +
+                "join customer on customer.customerId = appointment.customerId " +
+                "where customerName = ? and type = ?;";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, name);
+        statement.getPreparedStatement().setString(2, type);
+        statement.getPreparedStatement().execute();
+    }
+
+    public void modifyAppointment(){
+
+    }
 
     public void setViewAllByWeek(){ }
 
@@ -216,6 +189,29 @@ public class AppointmentDAO {
         System.out.println("years built");
         for (int i = 2020; i <= 2025; i++){
             validYears.add(Integer.toString(i));
+        }
+    }
+
+    /**
+     * clears and builds most recent list of appointments
+     * @throws SQLException
+     */
+    public static void buildAppointmentData() throws SQLException {
+        appointments.clear();
+        StatementHandler statement = new StatementHandler();
+        String sqlStatement = "SELECT customerId, type, DATE(start) apptDate, TIME(start) apptTime FROM appointment";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+        while (rs.next()){
+            int customerId = rs.getInt("customerId");
+            String type = rs.getString("type");
+            String startDate = rs.getString("apptDate");
+            String startTime = rs.getString("apptTime");
+
+            Appointment appointment = new Appointment(customerId, type, startDate, startTime);
+            appointments.add(appointment);
         }
     }
 }

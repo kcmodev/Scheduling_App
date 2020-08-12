@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="anchor" prefHeight="600.0" prefWidth="450.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateAppointmentController">
+<AnchorPane id="anchor" prefHeight="600.0" prefWidth="450.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateAppointmentController">
     <children>
         <Rectangle id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="588.0" layoutX="5.0" layoutY="6.0" stroke="BLACK" strokeType="INSIDE" width="440.0" />
         <Label id="label" layoutX="21.0" layoutY="32.0" prefHeight="40.0" prefWidth="248.0" stylesheets="@../Stylesheet.css" text="Update Appointment Details" />
@@ -17,66 +18,69 @@
                 <Button id="button" layoutX="14.0" layoutY="5.0" mnemonicParsing="false" onAction="#setSaveClicked" stylesheets="@../Stylesheet.css" text="Save" />
             </children>
         </AnchorPane>
-        <AnchorPane layoutX="51.0" layoutY="115.0" prefHeight="371.0" prefWidth="349.0">
+        <AnchorPane layoutX="25.0" layoutY="108.0" prefHeight="405.0" prefWidth="401.0">
             <children>
-                <AnchorPane prefHeight="59.0" prefWidth="349.0">
+                <AnchorPane prefHeight="59.0" prefWidth="373.0">
                     <children>
                         <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Name:">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Label>
-                        <TextField id="textfield" fx:id="customerName" disable="true" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Name" stylesheets="@../Stylesheet.css" />
+                        <TextField id="textfield" fx:id="names" disable="true" layoutX="113.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Name" stylesheets="@../Stylesheet.css" />
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutY="59.0" prefHeight="59.0" prefWidth="349.0">
+                <AnchorPane layoutY="59.0" prefHeight="59.0" prefWidth="373.0">
                     <children>
                         <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Address:">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Label>
-                        <TextField id="textfield" fx:id="customerAddress" disable="true" layoutX="85.0" layoutY="14.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Address" stylesheets="@../Stylesheet.css" />
+                        <TextField id="textfield" fx:id="address" disable="true" layoutX="114.0" layoutY="14.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Address" stylesheets="@../Stylesheet.css" />
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutY="118.0" prefHeight="59.0" prefWidth="349.0">
+                <AnchorPane layoutY="118.0" prefHeight="59.0" prefWidth="373.0">
                     <children>
                         <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Phone:">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Label>
-                        <TextField id="textfield" fx:id="customerPhone" disable="true" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Phone Number" stylesheets="@../Stylesheet.css" />
+                        <TextField id="textfield" fx:id="phone" disable="true" layoutX="113.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Phone Number" stylesheets="@../Stylesheet.css" />
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutY="182.0" prefHeight="59.0" prefWidth="349.0">
-                    <children>
-                        <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Time:">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Label>
-                        <TextField id="textfield" fx:id="appointmentTime" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Appointment Time" stylesheets="@../Stylesheet.css" />
-                    </children>
-                </AnchorPane>
-            <AnchorPane layoutX="2.0" layoutY="241.0" prefHeight="59.0" prefWidth="349.0">
+            <AnchorPane layoutX="2.0" layoutY="177.0" prefHeight="59.0" prefWidth="373.0">
                <children>
-                  <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Date:">
+                  <Label id="subLabel" layoutX="7.0" layoutY="10.0" prefHeight="40.0" prefWidth="117.0" stylesheets="@../Stylesheet.css" text="Time (Hours | Mins)">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField id="textfield" fx:id="appointmentDate" layoutX="86.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Appointment Date" stylesheets="@../Stylesheet.css" />
+                  <ChoiceBox fx:id="hours" layoutX="166.0" layoutY="14.0" prefHeight="33.0" prefWidth="89.0" />
+                  <ChoiceBox fx:id="minutes" layoutX="262.0" layoutY="13.0" prefHeight="33.0" prefWidth="80.0" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="2.0" layoutY="300.0" prefHeight="59.0" prefWidth="349.0">
+            <AnchorPane layoutY="236.0" prefHeight="59.0" prefWidth="373.0">
+               <children>
+                  <Label id="subLabel" layoutY="11.0" prefHeight="40.0" prefWidth="117.0" stylesheets="@../Stylesheet.css" text="Date (yyyymmdd)">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="years" layoutX="130.0" layoutY="15.0" prefHeight="33.0" prefWidth="80.0" />
+                  <ChoiceBox fx:id="months" layoutX="216.0" layoutY="15.0" onAction="#onMonths" prefHeight="33.0" prefWidth="62.0" />
+                  <ChoiceBox fx:id="days" layoutX="284.0" layoutY="13.0" prefHeight="33.0" prefWidth="62.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="2.0" layoutY="300.0" prefHeight="59.0" prefWidth="373.0">
                <children>
                   <Label id="subLabel" layoutX="14.0" layoutY="10.0" prefHeight="40.0" prefWidth="62.0" stylesheets="@../Stylesheet.css" text="Type:">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField id="textfield" fx:id="appointmentType" layoutX="83.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Appointment Type" stylesheets="@../Stylesheet.css" />
+                  <TextField id="textfield" fx:id="type" layoutX="112.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Appointment Type" stylesheets="@../Stylesheet.css" />
                </children>
             </AnchorPane>
             </children>
