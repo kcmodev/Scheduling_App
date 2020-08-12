@@ -22,7 +22,8 @@ public class Appointment {
     private String phone;
 
 
-    public Appointment(int customerId, String type, String startDate, String startTime) throws SQLException {
+    public Appointment(int appointmentId, int customerId, String type, String startDate, String startTime) throws SQLException {
+        this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.type = type;
         this.name = customerData.getCustomerName(customerId);

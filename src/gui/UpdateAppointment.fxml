@@ -68,9 +68,9 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="years" layoutX="130.0" layoutY="15.0" prefHeight="33.0" prefWidth="80.0" />
+                  <ChoiceBox fx:id="years" layoutX="130.0" layoutY="15.0" onAction="#onYears" prefHeight="33.0" prefWidth="80.0" />
                   <ChoiceBox fx:id="months" layoutX="216.0" layoutY="15.0" onAction="#onMonths" prefHeight="33.0" prefWidth="62.0" />
-                  <ChoiceBox fx:id="days" layoutX="284.0" layoutY="13.0" prefHeight="33.0" prefWidth="62.0" />
+                  <ChoiceBox fx:id="days" layoutX="284.0" layoutY="15.0" prefHeight="33.0" prefWidth="62.0" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="2.0" layoutY="300.0" prefHeight="59.0" prefWidth="373.0">

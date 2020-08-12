@@ -8,6 +8,7 @@ import models.Customer;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -15,6 +16,8 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class AppointmentDAO {
+    private static int counter = 0;
+
     private static ZoneId userZone = ZoneId.of(Main.userZone.getID());
     private static ZonedDateTime zonedTime;
     private static ObservableList<Appointment> appointments = FXCollections.observableArrayList();
@@ -25,7 +28,7 @@ public class AppointmentDAO {
     private static ObservableList<String> validDays = FXCollections.observableArrayList();
     private static ObservableList<String> validYears = FXCollections.observableArrayList();
 
-    private static final Calendar cal = Calendar.getInstance();
+//    private static final Calendar cal = Calendar.getInstance();
     private static final Connection conn = ConnectionHandler.startConnection();
     private CustomerDAO customerData = new CustomerDAO();
 
@@ -59,11 +62,27 @@ public class AppointmentDAO {
         statement.getPreparedStatement().execute();
     }
 
-    public void modifyAppointment(){
+    public void modifyAppointment(int apptId, String dateTime, String type) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+
+        String sqlStatement = "update appointment set start = " + dateTime + ", type = ? where appointmentId = ?";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, type);
+        statement.getPreparedStatement().setInt(2, apptId);
+
+        statement.getPreparedStatement().execute();
+
 
     }
 
-    public void setViewAllByWeek(){ }
+    public ObservableList<Appointment> setViewAllByWeek(){
+        ObservableList<Appointment> filtered = FXCollections.observableArrayList();
+
+        
+
+        return filtered;
+    }
 
     public void setViewAllByMonth(){ }
 
@@ -121,12 +140,19 @@ public class AppointmentDAO {
      * @param month
      * @return
      */
-    public static ObservableList<String> getValidDays(int month) {
+    public static ObservableList<String> getValidDays(int month, int year) {
+        Year currentYear = Year.of(year);
+        System.out.println("~~~~~~ counter: " + counter++ + "~~~~~~~~~");
+        System.out.println("month coming in: " + month);
+        System.out.println("year coming in: " + year);
+        System.out.println("year object: " + currentYear.toString());
+        System.out.println("is leap year: " + currentYear.isLeap());
+
         /**
          * checking if month is february and assigning either 28 or 29 days depending on if it is a leap year
          * first is not leap year
          */
-        if (month == 2 && !(cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365)) {
+        if (month == 2 && !currentYear.isLeap()) {
             System.out.println("found february normal year, 289 days");
             /**
              * stream with a lambda to filter observable list to 28 days for february when selected
@@ -136,7 +162,7 @@ public class AppointmentDAO {
         }
 
         // leap year found
-        if (month == 2 && (cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365)) {
+        if (month == 2 && currentYear.isLeap()) {
             System.out.println("found february leap year, 29 days");
             /**
              * stream with a lambda to filter observable list to 29 days for february when selected and
@@ -199,18 +225,19 @@ public class AppointmentDAO {
     public static void buildAppointmentData() throws SQLException {
         appointments.clear();
         StatementHandler statement = new StatementHandler();
-        String sqlStatement = "SELECT customerId, type, DATE(start) apptDate, TIME(start) apptTime FROM appointment";
+        String sqlStatement = "SELECT appointmentId, customerId, type, DATE(start) apptDate, TIME(start) apptTime FROM appointment;";
 
         statement.setPreparedStatement(conn, sqlStatement);
         ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()){
+            int appointmentId = rs.getInt("appointmentId");
             int customerId = rs.getInt("customerId");
             String type = rs.getString("type");
             String startDate = rs.getString("apptDate");
             String startTime = rs.getString("apptTime");
 
-            Appointment appointment = new Appointment(customerId, type, startDate, startTime);
+            Appointment appointment = new Appointment(appointmentId, customerId, type, startDate, startTime);
             appointments.add(appointment);
         }
     }

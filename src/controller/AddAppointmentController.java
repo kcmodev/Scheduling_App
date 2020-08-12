@@ -11,6 +11,9 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Year;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
@@ -33,7 +36,7 @@ public class AddAppointmentController implements Initializable {
     public void setSaveClicked(ActionEvent event) throws SQLException {
         String customer = names.getValue();
         String hrs = hours.getValue();
-        String min = minutes.getValue() + "00"; // adds seconds on the end of the string for the timestamp
+        String min = minutes.getValue();
         String yr = years.getValue();
         String mon = months.getValue();
         String day = days.getValue();
@@ -44,8 +47,8 @@ public class AddAppointmentController implements Initializable {
          * correct format for a timestamp
          */
         String date = yr + mon + day;
-        String startTime = hrs + min;
-        String endTime = hrs + (Integer.parseInt(min) + 15);
+        String startTime = hrs + min + "00";
+        String endTime = startTime;
 
         /**
          * concat a start and end timestamp for the sql query
@@ -69,17 +72,19 @@ public class AddAppointmentController implements Initializable {
         phone.setText(addressData.getPhoneByName(names.getValue()));
     }
 
-    public void onMonths(){ days.setItems(appointmentData.getValidDays(Integer.parseInt(months.getValue()))); }
+    public void onMonths(){ days.setItems(appointmentData.getValidDays(Integer.parseInt(months.getValue()), Integer.parseInt(years.getValue()))); }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        LocalDate currentDay = LocalDate.now();
+
         try {
             names.setItems(customerData.getAllCustomerNames());
-            hours.setItems(AppointmentDAO.getValidHours());
-            minutes.setItems(AppointmentDAO.getValidMinutes());
-            years.setItems(AppointmentDAO.getValidYears());
-            months.setItems(AppointmentDAO.getValidMonths());
-            days.setItems(AppointmentDAO.getValidDays(1));
+            hours.setItems(appointmentData.getValidHours());
+            minutes.setItems(appointmentData.getValidMinutes());
+            years.setItems(appointmentData.getValidYears());
+            months.setItems(appointmentData.getValidMonths());
+            days.setItems(appointmentData.getValidDays(currentDay.getMonthValue(), currentDay.getYear()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
