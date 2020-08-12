@@ -130,6 +130,23 @@ public class CustomerDAO {
     return "";
     }
 
+    public String getAddressByName(String name) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+
+        String sqlStatement = "select c.customerName, a.address from customer c\n" +
+                                "join address a on c.addressId = a.addressId\n" +
+                                "where c.customerName = ?;";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, name);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+        if (rs.next())
+            return rs.getString("address");
+
+        return "";
+    }
+
     /**
      * retrieves customer phone with customer ID
      * @param customerId
@@ -197,6 +214,27 @@ public class CustomerDAO {
             return rs.getString("postalCode");
 
     return "";
+    }
+
+    /**
+     * get customerId with customer name
+     * @param name
+     * @return
+     * @throws SQLException
+     */
+    public int getCustomerIdByName(String name) throws SQLException {
+        StatementHandler statementHandler = new StatementHandler();
+
+        String sqlStatement = "select customerId from customer where customerName = ?;";
+
+        statementHandler.setPreparedStatement(conn, sqlStatement);
+        statementHandler.getPreparedStatement().setString(1, name);
+        ResultSet rs = statementHandler.getPreparedStatement().executeQuery();
+
+        if (rs.next())
+            return rs.getInt("customerId");
+
+        return 0;
     }
 
     /**

@@ -28,10 +28,14 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws SQLException {
-//        ConnectionHandler.startConnection();
-
         CityDAO.buildListOfCities();
-        appointmentData.buildValidApptTimes();
+
+        AppointmentDAO appointmentData = new AppointmentDAO();
+        appointmentData.setValidHours();
+        appointmentData.setValidMinutes();
+        appointmentData.setValidYears();
+        appointmentData.setValidMonths();
+        appointmentData.setValidDays();
 
         launch(args);
         

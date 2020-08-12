@@ -50,6 +50,23 @@ public class AddressDAO {
         return addressId;
     }
 
+    public String getPhoneByName(String name) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+
+        String sqlStatement = "select c.customerName, a.phone from customer c\n" +
+                "join address a on c.addressId = a.addressId\n" +
+                "where c.customerName = ?;";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, name);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+        if (rs.next())
+            return rs.getString("phone");
+
+        return "";
+    }
+
     /**
      * method checks for a unique address
      * @param address
@@ -78,5 +95,5 @@ public class AddressDAO {
     return true;
     }
 
-    public void deleteUnownedAddress(int addressId){ }
+    public void deleteUnownedAddresses(int addressId){ }
 }
