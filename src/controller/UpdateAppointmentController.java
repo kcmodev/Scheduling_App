@@ -42,7 +42,7 @@ public class UpdateAppointmentController {
     public void setSaveClicked(ActionEvent event) throws SQLException {
 
         String newHr = hours.getValue();
-        String newMin = minutes.getValue(); // trailing zeroes for seconds
+        String newMin = minutes.getValue();
         String newYr = years.getValue();
         String newMnth = months.getValue();
         String newDay = days.getValue();
@@ -53,7 +53,7 @@ public class UpdateAppointmentController {
         System.out.println("info coming in: (yr)" + newYr + " | (mnth)" + newMnth+ " | (day)" + newDay+ " | (hr)" + newHr+ " | (min)" + newMin);
         System.out.println("appointment ID: " + tempAppt.getAppointmentId());
 
-        String startDateTime = newYr + d + newMnth + d + newDay + " " + newHr + c + newMin + c + "00";
+        String startDateTime = newYr + d + newMnth + d + newDay + " " + newHr + c + newMin + c + "00"; // trailing zeroes for seconds
         String endDateTime = startDateTime;
 
         appointmentData.modifyAppointment(tempAppt.getAppointmentId(), startDateTime, endDateTime, newType);

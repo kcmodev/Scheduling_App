@@ -40,8 +40,11 @@ public class LoginController implements Initializable {
      * gets user timezone
      * comment first and uncomment second to check timezone requirements
      */
-    private static final ZoneId userSystemZone = ZoneId.systemDefault();
-//    public static final ZoneId userSystemZone = ZoneId.of("-05:00"); // set offset to -8 to check timezones
+    private static LocalDateTime dateTime = LocalDateTime.now();
+    private static ZoneId userSystemZone = ZoneId.systemDefault();
+    private static TimeZone userTimeZone = TimeZone.getTimeZone(userSystemZone);
+    private static ZonedDateTime localToZoned = dateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+
 
     private static final PopupHandlers popups = new PopupHandlers();
     private static UserDAO userData = new UserDAO();
@@ -134,7 +137,7 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("user offset: " + userSystemZone.getRules());
+        System.out.println("user offset: " + userSystemZone.getId() + " || " + userTimeZone.getDisplayName() + " || " + localToZoned.getOffset());
         System.out.println("Current locale: " + userLocale);
 
         if (userLocale.toString().equals("en_US")){
