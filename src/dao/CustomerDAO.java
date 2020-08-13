@@ -1,6 +1,6 @@
 package dao;
 
-import controller.PopupHandlers;
+import ErrorHandling.PopupHandlers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Customer;

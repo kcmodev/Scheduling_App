@@ -1,0 +1,48 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class UserDAO {
+    private final Connection conn = ConnectionHandler.startConnection();
+
+
+    /**
+     * checks if user exists
+     * @param name
+     * @return
+     * @throws SQLException
+     */
+    public boolean isUser(String name) throws SQLException {
+       StatementHandler statement = new StatementHandler();
+
+       String sqlStatement = "SELECT userName FROM user WHERE userName = ?;";
+
+       statement.setPreparedStatement(conn, sqlStatement);
+       statement.getPreparedStatement().setString(1, name);
+       ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+       return (rs.next()) ? true : false;
+    }
+
+    /**
+     * checks if user and password match
+     * @param name
+     * @param pass
+     * @return
+     * @throws SQLException
+     */
+    public boolean passwordMatch(String name, String pass) throws SQLException {
+        StatementHandler statement = new StatementHandler();
+
+        String sqlStatement = "SELECT userName, password FROM user WHERE userName = ? AND password = ?;";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, name);
+        statement.getPreparedStatement().setString(2, pass);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+        return (rs.next()) ? true : false;
+    }
+}
