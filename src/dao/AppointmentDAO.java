@@ -1,19 +1,26 @@
 package dao;
 
+import controller.LoginController;
 import controller.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Appointment;
 
 import java.sql.*;
-import java.time.Year;
-import java.time.ZoneId;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.stream.Collectors;
 
 public class AppointmentDAO {
 
     private static ZoneId userZone = ZoneId.of(Main.userZone.getID());
     private static ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+    private static LocalDateTime localDateTime;
+    private static ZonedDateTime zone;
+    private static final DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyyHH:mm:ss");
 
     private static ObservableList<String> validHours = FXCollections.observableArrayList();
     private static ObservableList<String> validMinutes = FXCollections.observableArrayList();
@@ -78,10 +85,9 @@ public class AppointmentDAO {
         ObservableList<Appointment> filtered = FXCollections.observableArrayList();
         StatementHandler statement = new StatementHandler();
 
-        String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type,\n" +
-                "TIME(a.start) startTime, DATE(a.start) startDate FROM appointment a\n" +
-                "JOIN customer c ON a.customerId = c.customerId\n" +
-                "JOIN address addr ON c.addressId = addr.addressId\n" +
+        String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type, start FROM appointment a " +
+                "JOIN customer c ON a.customerId = c.customerId " +
+                "JOIN address addr ON c.addressId = addr.addressId " +
                 "ORDER BY WEEK(start) ASC;";
 
         statement.setPreparedStatement(conn, sqlStatement);
@@ -91,10 +97,16 @@ public class AppointmentDAO {
             int apptId = rs.getInt("appointmentId");
             int custId = rs.getInt("customerId");
             String type = rs.getString("type");
-            String date = rs.getString("startDate");
-            String time = rs.getString("startTime");
 
-            Appointment appt = new Appointment(apptId, custId, type, date, time);
+            Timestamp start = rs.getTimestamp("start");
+            localDateTime = start.toLocalDateTime();
+            zone = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+            String formattedDateTime = zone.toOffsetDateTime().format(dateTimeFormat);
+
+            String startDate = getDate(formattedDateTime);
+            String startTime = getTime(formattedDateTime);
+
+            Appointment appt = new Appointment(apptId, custId, type, startDate, startTime);
             filtered.add(appt);
         }
 
@@ -111,10 +123,9 @@ public class AppointmentDAO {
         ObservableList<Appointment> filtered = FXCollections.observableArrayList();
         StatementHandler statement = new StatementHandler();
 
-        String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type,\n" +
-                "TIME(a.start) startTime, DATE(a.start) startDate FROM appointment a\n" +
-                "JOIN customer c ON a.customerId = c.customerId\n" +
-                "JOIN address addr ON c.addressId = addr.addressId\n" +
+        String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type, start FROM appointment a " +
+                "JOIN customer c ON a.customerId = c.customerId " +
+                "JOIN address addr ON c.addressId = addr.addressId " +
                 "ORDER BY MONTH(start), YEAR(start) ASC;";
 
         statement.setPreparedStatement(conn, sqlStatement);
@@ -124,10 +135,17 @@ public class AppointmentDAO {
             int apptId = rs.getInt("appointmentId");
             int custId = rs.getInt("customerId");
             String type = rs.getString("type");
-            String date = rs.getString("startDate");
-            String time = rs.getString("startTime");
 
-            Appointment appt = new Appointment(apptId, custId, type, date, time);
+            Timestamp start = rs.getTimestamp("start");
+            localDateTime = start.toLocalDateTime();
+            zone = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+            String formattedDateTime = zone.toOffsetDateTime().format(dateTimeFormat);
+
+            String startDate = getDate(formattedDateTime);
+            String startTime = getTime(formattedDateTime);
+
+
+            Appointment appt = new Appointment(apptId, custId, type, startDate, startTime);
             filtered.add(appt);
         }
 
@@ -270,8 +288,8 @@ public class AppointmentDAO {
     public static void buildAppointmentData() throws SQLException {
         appointments.clear();
         StatementHandler statement = new StatementHandler();
-        String sqlStatement = "SELECT appointmentId, customerId, type, DATE(start) apptDate, TIME(start) apptTime FROM appointment;";
 
+        String sqlStatement = "SELECT appointmentId, customerId, type, start FROM appointment;";
         statement.setPreparedStatement(conn, sqlStatement);
         ResultSet rs = statement.getPreparedStatement().executeQuery();
 
@@ -279,11 +297,27 @@ public class AppointmentDAO {
             int appointmentId = rs.getInt("appointmentId");
             int customerId = rs.getInt("customerId");
             String type = rs.getString("type");
-            String startDate = rs.getString("apptDate");
-            String startTime = rs.getString("apptTime");
+
+            Timestamp start = rs.getTimestamp("start");
+            localDateTime = start.toLocalDateTime();
+            zone = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+            String formattedDateTime = zone.toOffsetDateTime().format(dateTimeFormat);
+
+            String startDate = getDate(formattedDateTime);
+            String startTime = getTime(formattedDateTime);
 
             Appointment appointment = new Appointment(appointmentId, customerId, type, startDate, startTime);
             appointments.add(appointment);
         }
+    }
+
+    public static final String getDate(String dateTime){
+        String startDate = dateTime.substring(0, 10);
+        return startDate;
+    }
+
+    public static final String getTime(String dateTime){
+        String startTime = dateTime.substring(10, 18);
+        return startTime;
     }
 }

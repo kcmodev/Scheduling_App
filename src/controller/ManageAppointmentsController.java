@@ -2,8 +2,6 @@ package controller;
 
 import ErrorHandling.PopupHandlers;
 import dao.AppointmentDAO;
-import dao.ConnectionHandler;
-import dao.CustomerDAO;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,16 +17,13 @@ import models.Appointment;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ManageAppointmentsController implements Initializable {
-    private final Connection conn = ConnectionHandler.startConnection();
     private final WindowManager window = new WindowManager();
     private final PopupHandlers popups = new PopupHandlers();
     private final AppointmentDAO appointmentData = new AppointmentDAO();
-    private final CustomerDAO customerData = new CustomerDAO();
 
     @FXML private Label appointmentLabel;
 
@@ -40,7 +35,7 @@ public class ManageAppointmentsController implements Initializable {
     @FXML private TableColumn<Appointment, String> appointmentTimeCol;
     @FXML private TableColumn<Appointment, String> appointmentDateCol;
 
-    @FXML private ToggleGroup filterSelection;
+//    @FXML private ToggleGroup filterSelection; // ~~~ probably dont need
     @FXML private RadioButton all;
     @FXML private RadioButton week;
     @FXML private RadioButton month;
@@ -52,10 +47,20 @@ public class ManageAppointmentsController implements Initializable {
      */
     public void setLabel(String label) { appointmentLabel.setText(label); }
 
+    /**
+     * handles add button being clicked
+     * @param event
+     */
     public void setAddClicked(ActionEvent event){
         window.windowController(event, "/gui/AddAppointment.fxml", window.ADD_APPOINTMENT_TITLE);
     }
 
+    /**
+     * handles update button clicked
+     * sends selected object to the next screen
+     * @param event
+     * @throws IOException
+     */
     public void setUpdateClicked(ActionEvent event) throws IOException {
 
         if (appointmentTableView.getSelectionModel().getSelectedItem() != null) {
@@ -94,12 +99,22 @@ public class ManageAppointmentsController implements Initializable {
         appointmentTableView.getSelectionModel().clearSelection();
     }
 
+    /**
+     * handles the log out button being clicked
+     * @param event
+     */
     public void setLogOutClicked(ActionEvent event) {
         if (popups.confirmationAlert("log out")){
             window.windowController(event, "/gui/Login.fxml", window.LOGIN_SCREEN_TITLE);
         }
     }
 
+    /**
+     * sets the "filter by" radio button when coming back from another screen and handles action
+     * on a selection being made
+     * default is "all"
+     * @throws SQLException
+     */
     public void setFilterSelection() throws SQLException {
         System.out.println("setting filter selection");
         if (all.isSelected())
@@ -110,18 +125,27 @@ public class ManageAppointmentsController implements Initializable {
             setViewMonth();
     }
 
+    /**
+     * sets view all and activates on "all" radio button click
+     * @throws SQLException
+     */
     public void setViewAll() throws SQLException {
-        System.out.println("filter set to \"view all\"");
         appointmentTableView.setItems(appointmentData.getAllAppointments());
     }
 
+    /**
+     * sets sort by week and activates on "week" radio button click
+     * @throws SQLException
+     */
     public void setViewWeek() throws SQLException {
         appointmentTableView.setItems(appointmentData.setViewAllByWeek());
-        System.out.println("filter set to \"filter by week\"");
     }
 
+    /**
+     * sets sort by month and activates on "month" radio button click
+     * @throws SQLException
+     */
     public void setViewMonth() throws SQLException {
-        System.out.println("filter set to \"filter by month\"");
         appointmentTableView.setItems(appointmentData.setViewAllByMonth());
     }
 
@@ -156,9 +180,6 @@ public class ManageAppointmentsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setLabel("Schedule for /ADMIN USER/");
-        String zone = Main.userZone.toZoneId().toString();
-        System.out.println("User time zone: " + zone);
-
         setTableProperties();
 
         try {

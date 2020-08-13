@@ -7,7 +7,6 @@ import java.sql.SQLException;
 public class UserDAO {
     private final Connection conn = ConnectionHandler.startConnection();
 
-
     /**
      * checks if user exists
      * @param name
