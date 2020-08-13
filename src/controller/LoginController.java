@@ -22,30 +22,31 @@ import org.w3c.dom.ls.LSOutput;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
 public class LoginController implements Initializable {
-    private static final Locale userLoc = Locale.getDefault();
+    /**
+     * gets user locale
+     * comment first and uncomment second to check locale requirements
+     */
+    private static final Locale userLocale = Locale.getDefault();
 //    private static final Locale userLoc = new Locale("es_CL"); // set to spanish to check locale settings
 
+    /**
+     * gets user timezone
+     * comment first and uncomment second to check timezone requirements
+     */
     private static final ZoneId userSystemZone = ZoneId.systemDefault();
-//    public static final ZoneId userSystemZone = ZoneId.of("-06:00");
+//    public static final ZoneId userSystemZone = ZoneId.of("-05:00"); // set offset to -8 to check timezones
 
     private static final PopupHandlers popups = new PopupHandlers();
     private static UserDAO userData = new UserDAO();
-
     private static ResourceBundle languageSetting;
-    public static String enteredUserName;
-
-    public static final TimeZone userZone = Calendar.getInstance().getTimeZone();
-    private static final Instant instant = Instant.now();
-    public static final ZoneOffset USER_OFFSET = userSystemZone.getRules().getOffset(instant);
+    public static String userName;
 
     @FXML private TextField userNameTextField;
     @FXML private PasswordField passwordTextField;
@@ -61,9 +62,8 @@ public class LoginController implements Initializable {
      * @param event
      */
     public void logInHandler(ActionEvent event) throws SQLException {
-        enteredUserName = userNameTextField.getText();
+        userName = userNameTextField.getText();
         String enteredPassword = passwordTextField.getText();
-        System.out.println("current offset: " + USER_OFFSET);
 
         window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
 
@@ -134,10 +134,10 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("user offset: " + USER_OFFSET.getId());
-        System.out.println("Current locale: " + userLoc);
+        System.out.println("user offset: " + userSystemZone.getRules());
+        System.out.println("Current locale: " + userLocale);
 
-        if (userLoc.toString().equals("en_US")){
+        if (userLocale.toString().equals("en_US")){
             languageSetting = ResourceBundle.getBundle("resources/English");
         } else {
             languageSetting = ResourceBundle.getBundle("resources/Spanish");

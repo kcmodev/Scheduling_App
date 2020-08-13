@@ -23,9 +23,9 @@ public class UpdateAppointmentController {
     @FXML
     private TextField names;
     @FXML
-    private TextField address;
+    private TextField addresses;
     @FXML
-    private TextField phone;
+    private TextField phoneNumbers;
     @FXML
     private ChoiceBox<String> hours;
     @FXML
@@ -37,24 +37,26 @@ public class UpdateAppointmentController {
     @FXML
     private ChoiceBox<String> days;
     @FXML
-    private TextField type;
+    private TextField types;
 
     public void setSaveClicked(ActionEvent event) throws SQLException {
 
         String newHr = hours.getValue();
-        String newMin = minutes.getValue() + "00"; // trailing zeroes for seconds
+        String newMin = minutes.getValue(); // trailing zeroes for seconds
         String newYr = years.getValue();
         String newMnth = months.getValue();
         String newDay = days.getValue();
-        String newType = type.getText();
+        String newType = types.getText();
+        String c = ":";
+        String d = "-";
 
         System.out.println("info coming in: (yr)" + newYr + " | (mnth)" + newMnth+ " | (day)" + newDay+ " | (hr)" + newHr+ " | (min)" + newMin);
         System.out.println("appointment ID: " + tempAppt.getAppointmentId());
 
-        String dateTime = newYr + newMnth + newDay + newHr + newMin;
-        System.out.println("datetime: " + dateTime);
+        String startDateTime = newYr + d + newMnth + d + newDay + " " + newHr + c + newMin + c + "00";
+        String endDateTime = startDateTime;
 
-        appointmentData.modifyAppointment(tempAppt.getAppointmentId(), dateTime, newType);
+        appointmentData.modifyAppointment(tempAppt.getAppointmentId(), startDateTime, endDateTime, newType);
 
         window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
     }
@@ -75,6 +77,15 @@ public class UpdateAppointmentController {
 
     public void setTextFields(Appointment appointment) {
         tempAppt = appointment;
+        String name = appointment.getName();
+        String address = appointment.getAddress();
+        String type = appointment.getType();
+        String phone = appointment.getPhone();
+
+        names.setText(name);
+        addresses.setText(address);
+        types.setText(type);
+        phoneNumbers.setText(phone);
 
         /**
          * take in date and time separately from incoming appointment
@@ -83,16 +94,12 @@ public class UpdateAppointmentController {
         String date = appointment.getStartDate();
         String hr = time.substring(0, 2);
         String min = time.substring(3, 5);
-        yr = date.substring(0, 4);
-        mnth = date.substring(5, 7);
-        String day = date.substring(8, 10);
+        mnth = date.substring(0, 2);
+        String day = date.substring(3, 5);
+        yr = date.substring(6, 10);
 
         hours.setItems(appointmentData.getValidHours());
         minutes.setItems(appointmentData.getValidMinutes());
-
-        /**
-         * get substring from time to differentiate hours and minutes respectively
-         */
 
         hours.setValue(hr);
         minutes.setValue(min);
@@ -101,11 +108,10 @@ public class UpdateAppointmentController {
         months.setItems(appointmentData.getValidMonths());
         days.setItems(appointmentData.getValidDays(Integer.parseInt(mnth), Integer.parseInt(yr)));
 
-        /**
-         * get substring from date and split year, month, and day respectively
-         */
         years.setValue(yr);
         months.setValue(mnth);
         days.setValue(day);
+
+
     }
 }

@@ -41,12 +41,20 @@ public class AddAppointmentController implements Initializable {
         String day = days.getValue();
         String aptType = type.getText();
 
+//        String customer = "test";
+//        String hrs = "09";
+//        String min = "00";
+//        String yr = "2020";
+//        String mon = "01";
+//        String day = "01";
+//        String aptType = "test";
+
         /**
          * convert date, start, and end time into strings and concat everything into the
          * correct format for a timestamp
          */
-        String date = yr + mon + day;
-        String startTime = hrs + min + "00";
+        String date = yr + "-" + mon + "-" + day + " ";
+        String startTime = hrs + ":" + min + ":" + "00";
         String endTime = startTime;
 
         /**

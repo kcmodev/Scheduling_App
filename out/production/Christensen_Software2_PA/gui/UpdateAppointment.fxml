@@ -37,7 +37,7 @@
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Label>
-                        <TextField id="textfield" fx:id="address" disable="true" layoutX="114.0" layoutY="14.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Address" stylesheets="@../Stylesheet.css" />
+                        <TextField id="textfield" fx:id="addresses" disable="true" layoutX="114.0" layoutY="14.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Address" stylesheets="@../Stylesheet.css" />
                     </children>
                 </AnchorPane>
                 <AnchorPane layoutY="118.0" prefHeight="59.0" prefWidth="373.0">
@@ -47,7 +47,7 @@
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Label>
-                        <TextField id="textfield" fx:id="phone" disable="true" layoutX="113.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Phone Number" stylesheets="@../Stylesheet.css" />
+                        <TextField id="textfield" fx:id="phoneNumbers" disable="true" layoutX="113.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Customer Phone Number" stylesheets="@../Stylesheet.css" />
                     </children>
                 </AnchorPane>
             <AnchorPane layoutX="2.0" layoutY="177.0" prefHeight="59.0" prefWidth="373.0">
@@ -80,7 +80,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField id="textfield" fx:id="type" layoutX="112.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Appointment Type" stylesheets="@../Stylesheet.css" />
+                  <TextField id="textfield" fx:id="types" layoutX="112.0" layoutY="13.0" prefHeight="33.0" prefWidth="229.0" promptText="Enter Appointment Type" stylesheets="@../Stylesheet.css" />
                </children>
             </AnchorPane>
             </children>

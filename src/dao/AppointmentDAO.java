@@ -1,17 +1,13 @@
 package dao;
 
-import controller.LoginController;
 import controller.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Appointment;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.stream.Collectors;
 
 public class AppointmentDAO {
@@ -20,8 +16,7 @@ public class AppointmentDAO {
     private static ObservableList<Appointment> appointments = FXCollections.observableArrayList();
     private static LocalDateTime localDateTime;
     private static ZonedDateTime zone;
-    private static final DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyyHH:mm:ss");
-
+    private static DateTimeFormatter dateTimeFormat;
     private static ObservableList<String> validHours = FXCollections.observableArrayList();
     private static ObservableList<String> validMinutes = FXCollections.observableArrayList();
     private static ObservableList<String> validMonths = FXCollections.observableArrayList();
@@ -34,11 +29,18 @@ public class AppointmentDAO {
     public void addAppointment(String name, String start, String end, String type) throws SQLException {
         CustomerDAO customerData = new CustomerDAO();
         StatementHandler statement = new StatementHandler();
-
         int custId = customerData.getCustomerIdByName(name);
 
-        String sqlStatement = "insert into appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdateBy)\n" +
-                "values (?, 1, 'not needed', 'not needed', 'not needed', '', ?, 'not needed', " + start + ", " + end + ", DATE(NOW()), 'admin', 'admin')";
+        /**
+         * formats start and end to be inserted into database as UTC by adding ghe current user's offset
+         */
+        System.out.println("unformatted start: " + start);
+        String formattedStartDateTime = formatDateTimeForDB(start);
+        System.out.println("unformatted end: " + end);
+        String formattedEndDateTime = formatDateTimeForDB(end);
+
+        String sqlStatement = "insert into appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdateBy) " +
+                "values (?, 1, 'not needed', 'not needed', 'not needed', '', ?, 'not needed', " + formattedStartDateTime + ", " + formattedEndDateTime + ", DATE(NOW()), 'admin', 'admin')";
 
         statement.setPreparedStatement(conn, sqlStatement);
         statement.getPreparedStatement().setInt(1, custId);
@@ -61,18 +63,21 @@ public class AppointmentDAO {
         statement.getPreparedStatement().execute();
     }
 
-    public void modifyAppointment(int apptId, String dateTime, String type) throws SQLException {
+    public void modifyAppointment(int apptId, String start, String end, String type) throws SQLException {
         StatementHandler statement = new StatementHandler();
 
-        String sqlStatement = "update appointment set start = " + dateTime + ", type = ? where appointmentId = ?";
+        System.out.println("unformatted start: " + start);
+        String formattedStart = formatDateTimeForDB(start);
+        System.out.println("unformatted end: " + end);
+        String formattedEnd = formatDateTimeForDB(end);
 
-        statement.setPreparedStatement(conn, sqlStatement);
-        statement.getPreparedStatement().setString(1, type);
-        statement.getPreparedStatement().setInt(2, apptId);
+//        String sqlStatement = "update appointment set start = " + formattedStart + ", set end = " + formattedEnd + " , type = ? where appointmentId = ?";
 
-        statement.getPreparedStatement().execute();
+//        statement.setPreparedStatement(conn, sqlStatement);
+//        statement.getPreparedStatement().setString(1, type);
+//        statement.getPreparedStatement().setInt(2, apptId);
 
-
+//        statement.getPreparedStatement().execute();
     }
 
     /**
@@ -158,7 +163,7 @@ public class AppointmentDAO {
      * @throws SQLException
      */
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
-        buildAppointmentData();
+        buildAppointmentDataForTables();
         return appointments;
     }
 
@@ -285,7 +290,7 @@ public class AppointmentDAO {
      * clears and builds most recent list of appointments
      * @throws SQLException
      */
-    public static void buildAppointmentData() throws SQLException {
+    public static void buildAppointmentDataForTables() throws SQLException {
         appointments.clear();
         StatementHandler statement = new StatementHandler();
 
@@ -298,6 +303,7 @@ public class AppointmentDAO {
             int customerId = rs.getInt("customerId");
             String type = rs.getString("type");
 
+            dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyyHH:mm:ss");
             Timestamp start = rs.getTimestamp("start");
             localDateTime = start.toLocalDateTime();
             zone = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
@@ -319,5 +325,26 @@ public class AppointmentDAO {
     public static final String getTime(String dateTime){
         String startTime = dateTime.substring(10, 18);
         return startTime;
+    }
+
+    /**
+     * formats incoming dateTimes into UTC for input into database
+     * @param dateTime
+     * @return
+     */
+    public static final String formatDateTimeForDB(String dateTime){
+        Timestamp startDateTime = Timestamp.valueOf(dateTime);
+
+        localDateTime = startDateTime.toLocalDateTime();
+        ZonedDateTime localToZoned = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+        System.out.println("local to zoned utc offset: " + localToZoned.getOffset());
+        ZonedDateTime zonedToUTC = localToZoned.withZoneSameInstant(ZoneId.of("UTC"));
+        System.out.println("time converted to utc: " + zonedToUTC);
+
+        dateTimeFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        String formattedDateTime = zonedToUTC.format(dateTimeFormat);
+        System.out.println("formatted: " + formattedDateTime);
+
+        return formattedDateTime;
     }
 }
