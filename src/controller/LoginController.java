@@ -2,6 +2,7 @@ package controller;
 
 import ErrorHandling.PopupHandlers;
 import ErrorHandling.LoginError;
+import dao.AppointmentDAO;
 import dao.ConnectionHandler;
 
 import dao.UserDAO;
@@ -73,7 +74,7 @@ public class LoginController implements Initializable {
         String enteredPassword = passwordTextField.getText();
 
         window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
-
+        AppointmentDAO.isAppointmentNearNow();
 //        /**
 //         * checks login credentials
 //         */

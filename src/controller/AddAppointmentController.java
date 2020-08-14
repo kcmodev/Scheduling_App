@@ -96,11 +96,11 @@ public class AddAppointmentController implements Initializable {
 
         try {
             names.setItems(customerData.getAllCustomerNames());
-            hours.setItems(appointmentData.getValidHours());
-            minutes.setItems(appointmentData.getValidMinutes());
-            years.setItems(appointmentData.getValidYears());
-            months.setItems(appointmentData.getValidMonths());
-            days.setItems(appointmentData.getValidDays(currentDay.getMonthValue(), currentDay.getYear()));
+            hours.setItems(AppointmentDAO.getValidHours());
+            minutes.setItems(AppointmentDAO.getValidMinutes());
+            years.setItems(AppointmentDAO.getValidYears());
+            months.setItems(AppointmentDAO.getValidMonths());
+            days.setItems(AppointmentDAO.getValidDays(currentDay.getMonthValue(), currentDay.getYear()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

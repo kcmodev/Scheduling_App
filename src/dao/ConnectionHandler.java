@@ -36,7 +36,6 @@ public class ConnectionHandler {
         try {
             Class.forName(SQL_DRIVER);
             connection = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-            System.out.println("connection successful");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -50,7 +49,6 @@ public class ConnectionHandler {
     public static void closeConnection(){
         try {
             connection.close();
-            System.out.println("connection closed successfully");
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
