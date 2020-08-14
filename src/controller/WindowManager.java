@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class WindowManager {
+
     public static final String LOGIN_SCREEN_TITLE = "Christensen Software 2 PA - Login Screen";
     public static final String MANAGE_APPOINTMENTS_WINDOW_TITLE = "Scheduled appointments";
     public static final String UPDATE_APPOINTMENT_TITLE = "Update appointment details";

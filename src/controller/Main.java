@@ -15,7 +15,7 @@ import java.util.TimeZone;
 
 public class Main extends Application {
     public static final TimeZone userZone = Calendar.getInstance().getTimeZone();
-    private static AppointmentDAO appointmentData = new AppointmentDAO();
+    private static final AppointmentDAO appointmentData = new AppointmentDAO();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -30,7 +30,6 @@ public class Main extends Application {
     public static void main(String[] args) throws SQLException {
         CityDAO.buildListOfCities();
 
-        AppointmentDAO appointmentData = new AppointmentDAO();
         appointmentData.setValidHours();
         appointmentData.setValidMinutes();
         appointmentData.setValidYears();

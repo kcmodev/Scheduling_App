@@ -1,5 +1,6 @@
 package dao;
 
+import ErrorHandling.InvalidCustomerData;
 import ErrorHandling.PopupHandlers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -268,17 +269,18 @@ public class CustomerDAO {
      * @throws SQLException
      */
     public boolean isValidCustomerInput(String name, String address, String zip) {
-        if (!isValidInput(name)) {
-            popups.errorAlert(2, "Invalid name");
-            return false;
-        }else if (!isValidInput(address)){
-            popups.errorAlert(2, "Invalid address");
-            return false;
-        }else if (!zip.matches("^[0-9]*$")) {
-            popups.errorAlert(2, "Invalid zip");
-            return false;
-        }else if (zip.length() > 5 || zip.isEmpty()){
-            popups.errorAlert(2, "Valid zip code is 5 digits or less");
+        try {
+            if (!isValidInput(name)) {
+                throw new InvalidCustomerData("Invalid name");
+            } else if (!isValidInput(address)) {
+                throw new InvalidCustomerData("Invalid address");
+            } else if (!zip.matches("^[0-9]*$")) {
+                throw new InvalidCustomerData("Invalid zip");
+            } else if (zip.length() > 5 || zip.isEmpty()) {
+                throw new InvalidCustomerData("Valid zip code is 5 digits");
+            }
+        } catch (InvalidCustomerData i){
+            popups.errorAlert(2, i.getLocalizedMessage());
             return false;
         }
 
@@ -318,7 +320,9 @@ public class CustomerDAO {
      * @param input
      * @return
      */
-    public boolean isValidInput(String input){ return (input.matches("^[a-zA-Z0-9 ]*$") && !input.isEmpty()) ? true : false; }
+    public boolean isValidInput(String input){
+        return (input.matches("^[a-zA-Z0-9 ]*$") && !input.isEmpty()) ? true : false;
+    }
 
     /**
      * builds observable list to populate customer table view

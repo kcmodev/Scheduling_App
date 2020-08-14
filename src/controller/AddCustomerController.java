@@ -1,10 +1,11 @@
 package controller;
 
+import ErrorHandling.InvalidCustomerData;
 import ErrorHandling.PopupHandlers;
 import dao.CityDAO;
 import dao.ConnectionHandler;
+import dao.CountryDAO;
 import dao.CustomerDAO;
-import dao.StatementHandler;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,15 +17,14 @@ import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
     private WindowManager window = new WindowManager();
     private PopupHandlers popups = new PopupHandlers();
-    private CityDAO city = new CityDAO();
-    private static final Connection conn = ConnectionHandler.startConnection();
+    private static CityDAO cityData = new CityDAO();
+    private static CountryDAO countryData = new CountryDAO();
 
     private String currentCity;
     private String fullPhone;
@@ -71,7 +71,7 @@ public class AddCustomerController implements Initializable {
                 String temp3 = phone.getText().substring(6, 10);
                 fullPhone = temp1 + "-" + temp2 + "-" + temp3;
             } else {
-                throw new InvalidValue();
+                throw new InvalidCustomerData("Invalid phone. Digits only. Include area code");
             }
 
             /**
@@ -82,13 +82,14 @@ public class AddCustomerController implements Initializable {
             if (customer.isValidCustomerInput(name, address, zip) && !customer.customerExists(name)) {
                 customer.addCustomer(name, address, currentCityId, zip, fullPhone);
                 window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
+            } else {
+                throw new InvalidCustomerData("Duplicate customer. Please enter alternate information");
             }
         } catch (SQLException s) {
             s.getStackTrace();
-        } catch (InvalidValue i){
-            popups.errorAlert(2, "Invalid phone. Numbers only. Include area code");
+        } catch (InvalidCustomerData i){
+            popups.errorAlert(2, i.getMessage());
         }
-
     }
 
     /**
@@ -107,24 +108,14 @@ public class AddCustomerController implements Initializable {
      * @throws SQLException
      */
     public void setCity() throws SQLException {
-        StatementHandler statement = new StatementHandler();
         currentCity = cityDropbox.getValue();
-        System.out.println("city selected: " + currentCity);
+        currentCityId = cityData.getCityId(currentCity);
 
         /**
-         * ~~~~~~~MOVE TO CITY DAO~~~~~~
+         * sets country name based on city ID
          */
-//        String sqlStatement = "select c.cityId, c.city, cntry.countryId, cntry.country from city c\n" +
-//                        "join country cntry on c.countryId = cntry.countryId;";
-//        StatementHandler.setPreparedStatement(conn, sqlStatement);
-        ResultSet rs = statement.getPreparedStatement().executeQuery();
+        setCountry(countryData.getCountryName(currentCityId));
 
-        while (rs.next()){
-            if (rs.getString("city").equals(currentCity)) {
-                currentCityId = rs.getInt("cityId");
-                setCountry(rs.getString("country"));
-            }
-        }
         // enables the save button once a city is chosen
         saveButton.setDisable(false);
     }
@@ -141,6 +132,6 @@ public class AddCustomerController implements Initializable {
          * populates drop box with list of strings of all states in the database
          * available as choices to the user
          */
-        cityDropbox.setItems(city.getCityNames());
+        cityDropbox.setItems(cityData.getCityNames());
     }
 }

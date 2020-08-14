@@ -71,7 +71,10 @@ public class AppointmentDAO {
         System.out.println("unformatted end: " + end);
         String formattedEnd = formatDateTimeForDB(end);
 
-        String sqlStatement = "update appointment set start = " + formattedStart + ", set end = " + formattedEnd + " , type = ? where appointmentId = ?";
+        System.out.println("appt ID: " + apptId);
+        System.out.println("type coming in: " + type);
+
+        String sqlStatement = "UPDATE appointment SET start = " + formattedStart + ", end = " + formattedEnd + " , type = ? where appointmentId = ?";
 
         statement.setPreparedStatement(conn, sqlStatement);
         statement.getPreparedStatement().setString(1, type);
