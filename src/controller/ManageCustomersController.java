@@ -31,13 +31,20 @@ public class ManageCustomersController implements Initializable {
     /**
      * sets table values
      */
-    @FXML TableView <Customer> customerTableView;
-    @FXML TableColumn <Customer, Integer> customerIDCol;
-    @FXML TableColumn <Customer, String> customerNameCol;
-    @FXML TableColumn <CustomerDAO, String> customerAddressCol;
-    @FXML TableColumn <CustomerDAO, String> customerPhoneCol;
-    @FXML TableColumn <Customer, Integer> isActiveStringCol;
-    @FXML TextField customerSearch;
+    @FXML
+    private TableView <Customer> customerTableView;
+    @FXML
+    private TableColumn <Customer, Integer> customerIDCol;
+    @FXML
+    private TableColumn <Customer, String> customerNameCol;
+    @FXML
+    private TableColumn <CustomerDAO, String> customerAddressCol;
+    @FXML
+    private TableColumn <CustomerDAO, String> customerPhoneCol;
+    @FXML
+    private TableColumn <Customer, Integer> isActiveStringCol;
+    @FXML
+    private TextField customerSearch;
 
     /**
      * method handles add button click

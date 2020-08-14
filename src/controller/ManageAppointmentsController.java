@@ -25,20 +25,28 @@ public class ManageAppointmentsController implements Initializable {
     private final PopupHandlers popups = new PopupHandlers();
     private final AppointmentDAO appointmentData = new AppointmentDAO();
 
-    @FXML private Label appointmentLabel;
-
-    @FXML private TableView<Appointment> appointmentTableView;
-    @FXML private TableColumn<Appointment, Integer> appointmentTypeCol;
-    @FXML private TableColumn<Appointment, String> customerNameCol;
-    @FXML private TableColumn<Appointment, String> customerAddressCol;
-    @FXML private TableColumn<Appointment, String> customerPhoneCol;
-    @FXML private TableColumn<Appointment, String> appointmentTimeCol;
-    @FXML private TableColumn<Appointment, String> appointmentDateCol;
-
-//    @FXML private ToggleGroup filterSelection; // ~~~ probably dont need
-    @FXML private RadioButton all;
-    @FXML private RadioButton week;
-    @FXML private RadioButton month;
+    @FXML
+    private Label appointmentLabel;
+    @FXML
+    private TableView<Appointment> appointmentTableView;
+    @FXML
+    private TableColumn<Appointment, Integer> appointmentTypeCol;
+    @FXML
+    private TableColumn<Appointment, String> customerNameCol;
+    @FXML
+    private TableColumn<Appointment, String> customerAddressCol;
+    @FXML
+    private TableColumn<Appointment, String> customerPhoneCol;
+    @FXML
+    private TableColumn<Appointment, String> appointmentTimeCol;
+    @FXML
+    private TableColumn<Appointment, String> appointmentDateCol;
+    @FXML
+    private RadioButton all;
+    @FXML
+    private RadioButton week;
+    @FXML
+    private RadioButton month;
 
 
     /**

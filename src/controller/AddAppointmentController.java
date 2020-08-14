@@ -22,15 +22,24 @@ public class AddAppointmentController implements Initializable {
     private AppointmentDAO appointmentData = new AppointmentDAO();
     private AddressDAO addressData = new AddressDAO();
 
-    @FXML private ChoiceBox<String> names;
-    @FXML private ChoiceBox<String> hours;
-    @FXML private ChoiceBox<String> minutes;
-    @FXML private ChoiceBox<String> years;
-    @FXML private ChoiceBox<String> months;
-    @FXML private ChoiceBox<String> days;
-    @FXML private TextField address;
-    @FXML private TextField phone;
-    @FXML private TextField type;
+    @FXML
+    private ChoiceBox<String> names;
+    @FXML
+    private ChoiceBox<String> hours;
+    @FXML
+    private ChoiceBox<String> minutes;
+    @FXML
+    private ChoiceBox<String> years;
+    @FXML
+    private ChoiceBox<String> months;
+    @FXML
+    private ChoiceBox<String> days;
+    @FXML
+    private TextField address;
+    @FXML
+    private TextField phone;
+    @FXML
+    private TextField type;
 
     public void setSaveClicked(ActionEvent event) throws SQLException {
         String customer = names.getValue();

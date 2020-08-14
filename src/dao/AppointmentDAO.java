@@ -71,13 +71,13 @@ public class AppointmentDAO {
         System.out.println("unformatted end: " + end);
         String formattedEnd = formatDateTimeForDB(end);
 
-//        String sqlStatement = "update appointment set start = " + formattedStart + ", set end = " + formattedEnd + " , type = ? where appointmentId = ?";
+        String sqlStatement = "update appointment set start = " + formattedStart + ", set end = " + formattedEnd + " , type = ? where appointmentId = ?";
 
-//        statement.setPreparedStatement(conn, sqlStatement);
-//        statement.getPreparedStatement().setString(1, type);
-//        statement.getPreparedStatement().setInt(2, apptId);
+        statement.setPreparedStatement(conn, sqlStatement);
+        statement.getPreparedStatement().setString(1, type);
+        statement.getPreparedStatement().setInt(2, apptId);
 
-//        statement.getPreparedStatement().execute();
+        statement.getPreparedStatement().execute();
     }
 
     /**

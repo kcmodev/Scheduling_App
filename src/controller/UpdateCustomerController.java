@@ -15,14 +15,20 @@ import java.sql.SQLException;
 public class UpdateCustomerController {
     private WindowManager window = new WindowManager();
     private PopupHandlers popups = new PopupHandlers();
-    Customer temp;
+    private static Customer temp;
 
-    @FXML private TextField name;
-    @FXML private TextField address;
-    @FXML private ChoiceBox<String> city = new ChoiceBox<>();
-    @FXML private TextField zip;
-    @FXML private TextField country;
-    @FXML private TextField phone;
+    @FXML
+    private TextField name;
+    @FXML
+    private TextField address;
+    @FXML
+    private ChoiceBox<String> city = new ChoiceBox<>();
+    @FXML
+    private TextField zip;
+    @FXML
+    private TextField country;
+    @FXML
+    private TextField phone;
 
     public void setSaveClicked(ActionEvent event) throws SQLException {
         CityDAO cityData = new CityDAO();

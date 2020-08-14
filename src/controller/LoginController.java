@@ -51,12 +51,17 @@ public class LoginController implements Initializable {
     private static ResourceBundle languageSetting;
     public static String userName;
 
-    @FXML private TextField userNameTextField;
-    @FXML private PasswordField passwordTextField;
+    @FXML
+    private TextField userNameTextField;
+    @FXML
+    private PasswordField passwordTextField;
 
-    @FXML private Label loginTitleLabel;
-    @FXML private Label loginUserLabel;
-    @FXML private Label loginPasswordLabel;
+    @FXML
+    private Label loginTitleLabel;
+    @FXML
+    private Label loginUserLabel;
+    @FXML
+    private Label loginPasswordLabel;
 
     private static WindowManager window = new WindowManager();
 

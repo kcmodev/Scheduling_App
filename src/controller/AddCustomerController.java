@@ -33,13 +33,20 @@ public class AddCustomerController implements Initializable {
     /**
      * sets variables for the text fields and
      */
-    @FXML private TextField name;
-    @FXML private TextField address;
-    @FXML private ChoiceBox <String> cityDropbox = new ChoiceBox<>();
-    @FXML private TextField zip;
-    @FXML private TextField country;
-    @FXML private TextField phone;
-    @FXML private Button saveButton;
+    @FXML
+    private TextField name;
+    @FXML
+    private TextField address;
+    @FXML
+    private ChoiceBox <String> cityDropbox = new ChoiceBox<>();
+    @FXML
+    private TextField zip;
+    @FXML
+    private TextField country;
+    @FXML
+    private TextField phone;
+    @FXML
+    private Button saveButton;
 
     /**
      * handles save button click
