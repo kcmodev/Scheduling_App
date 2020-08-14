@@ -355,7 +355,7 @@ public class CustomerDAO {
      * @return
      * @throws SQLException
      */
-    public ObservableList<Customer> getAllCustomers() throws SQLException {
+    public static ObservableList<Customer> getAllCustomers() throws SQLException {
         buildCustomerData();
         return allCustomers;
     }
@@ -364,7 +364,7 @@ public class CustomerDAO {
      * returns observable list of all customer names for choice boxes
      * @return
      */
-    public ObservableList<String> getAllCustomerNames() throws SQLException {
+    public static ObservableList<String> getAllCustomerNames() throws SQLException {
         buildCustomerData();
         return allCustomerNames;
     }

@@ -95,7 +95,7 @@ public class AddAppointmentController implements Initializable {
         LocalDate currentDay = LocalDate.now();
 
         try {
-            names.setItems(customerData.getAllCustomerNames());
+            names.setItems(CustomerDAO.getAllCustomerNames());
             hours.setItems(AppointmentDAO.getValidHours());
             minutes.setItems(AppointmentDAO.getValidMinutes());
             years.setItems(AppointmentDAO.getValidYears());

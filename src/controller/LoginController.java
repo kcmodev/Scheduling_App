@@ -48,6 +48,8 @@ public class LoginController implements Initializable {
 
 
     private static final PopupHandlers popups = new PopupHandlers();
+    private static WindowManager window = new WindowManager();
+    private static AppointmentDAO appointmentData = new AppointmentDAO();
     private static UserDAO userData = new UserDAO();
     private static ResourceBundle languageSetting;
     public static String userName;
@@ -63,8 +65,6 @@ public class LoginController implements Initializable {
     @FXML
     private Label loginPasswordLabel;
 
-    private static WindowManager window = new WindowManager();
-
     /**
      * handles clicking log in button
      * @param event
@@ -74,7 +74,7 @@ public class LoginController implements Initializable {
         String enteredPassword = passwordTextField.getText();
 
         window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
-        AppointmentDAO.isAppointmentNearNow();
+        appointmentData.isAppointmentNearNow();
 //        /**
 //         * checks login credentials
 //         */

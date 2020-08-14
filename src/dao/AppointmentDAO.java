@@ -188,10 +188,10 @@ public class AppointmentDAO {
         return appointments;
     }
 
-    public static boolean isAppointmentNearNow() throws SQLException {
+    public void isAppointmentNearNow() throws SQLException {
         StatementHandler statement = new StatementHandler();
         LocalDateTime systemTime = LocalDateTime.now();
-        dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssSS");
+        dateTimeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
         String sqlStatement = "SELECT c.customerName, a.type, a.start, TIME(a.start) startTime FROM appointment a " +
                                  "JOIN customer c ON a.customerId = c.customerId;";
@@ -202,7 +202,6 @@ public class AppointmentDAO {
         while (rs.next()){
             String name = rs.getString("customerName");
             String type = rs.getString("type");
-            String time = rs.getString("startTime");
 
             Timestamp start = rs.getTimestamp("start");
             localDateTime = start.toLocalDateTime();
@@ -212,12 +211,8 @@ public class AppointmentDAO {
             System.out.println("formatted time from query: " + formattedDateTime);
 
             try {
-                System.out.println("found appt time: " + localDateTime.toString() + " || system time: " + systemTime.toString() + " || is after? : "
-                        + localDateTime.isAfter(systemTime));
-                System.out.println("appt before next 15 mins? (crono time): " + localDateTime.isBefore(ChronoLocalDateTime.from(systemTime.plusMinutes(15))) + " || time compared to: "
-                        + ChronoLocalDateTime.from(systemTime.plusMinutes(15)).toString() + " || customer: " + name);
                 if (localDateTime.isAfter(systemTime) && localDateTime.isBefore(ChronoLocalDateTime.from(systemTime.plusMinutes(15))))
-                    throw new AppointmentTimeWarning("You have an appointment coming up at " + time + " with " +
+                    throw new AppointmentTimeWarning("You have an appointment coming up at " + formattedDateTime + " with " +
                             name + " for " + type + ".");
                 System.out.println();
             } catch (AppointmentTimeWarning a){
@@ -227,10 +222,7 @@ public class AppointmentDAO {
                 appointmentSoon.setContentText(a.getLocalizedMessage());
                 appointmentSoon.showAndWait();
             }
-
         }
-
-        return false;
     }
 
 
