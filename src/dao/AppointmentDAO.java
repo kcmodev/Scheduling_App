@@ -1,6 +1,7 @@
 package dao;
 
 import ErrorHandling.AppointmentTimeWarning;
+import ErrorHandling.PopupHandlers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -21,6 +22,7 @@ public class AppointmentDAO {
     private static ZonedDateTime zone;
     private static DateTimeFormatter dateTimeFormat;
     private static Calendar cal = Calendar.getInstance();
+    private static final PopupHandlers popups = new PopupHandlers();
 
     private static final ObservableList<String> VALID_HOURS = FXCollections.observableArrayList();
     private static final ObservableList<String> VALID_MINUTES = FXCollections.observableArrayList();
@@ -46,19 +48,21 @@ public class AppointmentDAO {
         /**
          * formats start and end to be inserted into database as UTC by adding ghe current user's offset
          */
-        System.out.println("unformatted start: " + start);
         String formattedStartDateTime = formatDateTimeForDB(start);
-        System.out.println("unformatted end: " + end);
         String formattedEndDateTime = formatDateTimeForDB(end);
 
-        String sqlStatement = "insert into appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdateBy) " +
-                "values (?, 1, 'not needed', 'not needed', 'not needed', '', ?, 'not needed', " + formattedStartDateTime + ", " + formattedEndDateTime + ", DATE(NOW()), 'admin', 'admin')";
+        if (!isAppointmentTaken(formattedStartDateTime)) {
+            String sqlStatement = "insert into appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdateBy) " +
+                    "values (?, 1, 'not needed', 'not needed', 'not needed', '', ?, 'not needed', " + formattedStartDateTime + ", " + formattedEndDateTime + ", DATE(NOW()), 'admin', 'admin')";
 
-        statement.setPreparedStatement(conn, sqlStatement);
-        statement.getPreparedStatement().setInt(1, custId);
-        statement.getPreparedStatement().setString(2, type);
+            statement.setPreparedStatement(conn, sqlStatement);
+            statement.getPreparedStatement().setInt(1, custId);
+            statement.getPreparedStatement().setString(2, type);
 
-        statement.getPreparedStatement().execute();
+            statement.getPreparedStatement().execute();
+        } else {
+            popups.errorAlert(2, "You already have an appointment at that time");
+        }
 
     }
 
@@ -95,13 +99,17 @@ public class AppointmentDAO {
         String formattedStart = formatDateTimeForDB(start);
         String formattedEnd = formatDateTimeForDB(end);
 
-        String sqlStatement = "UPDATE appointment SET start = " + formattedStart + ", end = " + formattedEnd + " , type = ? where appointmentId = ?";
+        if (!isAppointmentTaken(formattedStart)) {
+            String sqlStatement = "UPDATE appointment SET start = " + formattedStart + ", end = " + formattedEnd + " , type = ? where appointmentId = ?";
 
-        statement.setPreparedStatement(conn, sqlStatement);
-        statement.getPreparedStatement().setString(1, type);
-        statement.getPreparedStatement().setInt(2, apptId);
+            statement.setPreparedStatement(conn, sqlStatement);
+            statement.getPreparedStatement().setString(1, type);
+            statement.getPreparedStatement().setInt(2, apptId);
 
-        statement.getPreparedStatement().execute();
+            statement.getPreparedStatement().execute();
+        } else {
+            popups.errorAlert(2, "You already have an appointment at that time");
+        }
     }
 
     /**
@@ -192,6 +200,26 @@ public class AppointmentDAO {
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
         buildAppointmentDataForTables();
         return appointments;
+    }
+
+    /**
+     * checks if there is a start time and date match in the database
+     * @param start
+     * @return
+     * @throws SQLException
+     */
+    public boolean isAppointmentTaken(String start) throws SQLException{
+        StatementHandler statement = new StatementHandler();
+
+        String sqlStatement = "SELECT a.appointmentId, a.customerId, start FROM appointment a " +
+                                "JOIN customer c ON a.customerId = c.customerId " +
+                                "JOIN address addr ON c.addressId = addr.addressId " +
+                                "WHERE start = " + start + ";";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+        return (rs.next()) ? true : false;
     }
 
     /**

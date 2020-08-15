@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="400.0" stylesheets="@../Stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportGeneratorController">
+   <children>
+      <AnchorPane layoutX="107.0" layoutY="24.0" prefHeight="143.0" prefWidth="186.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#appointmentsByMonth" prefHeight="40.0" prefWidth="186.0" text="Appointments by Month" />
+            <Button layoutY="52.0" mnemonicParsing="false" onAction="#consultantSchedule" prefHeight="40.0" prefWidth="186.0" text="Consultant Schedule" />
+            <Button layoutY="103.0" mnemonicParsing="false" onAction="#appointmentsPerCustomer" prefHeight="40.0" prefWidth="186.0" text="Appointments per Customer" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="29.0" layoutY="200.0" prefHeight="324.0" prefWidth="348.0">
+         <children>
+            <TableView fx:id="reportTable" layoutX="30.0" layoutY="5.0" prefHeight="324.0" prefWidth="286.0">
+              <columns>
+                <TableColumn fx:id="columnLeft" prefWidth="143.0" text="C1" />
+                <TableColumn fx:id="columnRight" prefWidth="142.0" text="C2" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <Button layoutX="281.0" layoutY="546.0" mnemonicParsing="false" onAction="#backButtonClicked" prefHeight="40.0" prefWidth="105.0" text="Back" />
+   </children>
+</AnchorPane>
