@@ -52,7 +52,7 @@
                 </AnchorPane>
             <AnchorPane layoutX="2.0" layoutY="177.0" prefHeight="59.0" prefWidth="373.0">
                <children>
-                  <Label id="subLabel" layoutX="7.0" layoutY="10.0" prefHeight="40.0" prefWidth="117.0" stylesheets="@../Stylesheet.css" text="Time (Hours | Mins)">
+                  <Label id="subLabel" layoutX="14.0" layoutY="11.0" prefHeight="40.0" prefWidth="117.0" stylesheets="@../Stylesheet.css" text="Time (Hours | Mins)">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -63,7 +63,7 @@
             </AnchorPane>
             <AnchorPane layoutY="236.0" prefHeight="59.0" prefWidth="373.0">
                <children>
-                  <Label id="subLabel" layoutY="11.0" prefHeight="40.0" prefWidth="117.0" stylesheets="@../Stylesheet.css" text="Date (yyyymmdd)">
+                  <Label id="subLabel" layoutX="14.0" layoutY="12.0" prefHeight="40.0" prefWidth="117.0" stylesheets="@../Stylesheet.css" text="Date (yyyymmdd)">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

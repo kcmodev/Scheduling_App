@@ -20,7 +20,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.w3c.dom.ls.LSOutput;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.*;
 import java.time.*;
@@ -52,7 +54,6 @@ public class LoginController implements Initializable {
     private static AppointmentDAO appointmentData = new AppointmentDAO();
     private static UserDAO userData = new UserDAO();
     private static ResourceBundle languageSetting;
-    public static String userName;
 
     @FXML
     private TextField userNameTextField;
@@ -70,58 +71,60 @@ public class LoginController implements Initializable {
      * @param event
      */
     public void logInHandler(ActionEvent event) throws SQLException {
-        userName = userNameTextField.getText();
+        appointmentData.isAppointmentNearNow();
+        String enteredUserName = userNameTextField.getText();
         String enteredPassword = passwordTextField.getText();
 
-        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
-        appointmentData.isAppointmentNearNow();
-//        /**
-//         * checks login credentials
-//         */
-//        try {
-//            /**
-//             * checks to make sure user name and/or password are not left blank
-//             */
-//            if (enteredUserName.equals("") || enteredPassword.equals("")){
-//                System.out.println("found a blank field");
-//                throw new LoginError(languageSetting.getString("noInput"));
-//            /**
-//             * checks username for alphanumeric characters and that user exists in database
-//             */
-//            } else {
-//                if (enteredUserName.matches("^[a-zA-Z0-9]*$") && userData.isUser(enteredUserName)) {
-//                    if (enteredPassword.matches("^[a-zA-Z0-9]*$") && userData.passwordMatch(enteredUserName, enteredPassword)) {
-//                        System.out.println("password matches. log in successful");
-//                        FXMLLoader loader = new FXMLLoader();
-//                        loader.setLocation(getClass().getResource("/gui/ManageAppointments.fxml"));
-//                        Parent parent = loader.load();
-//                        Scene appointmentsScene = new Scene(parent);
-//
-//                        ManageAppointmentsController controller = loader.getController();
-//                        controller.setLabel("Schedule appointments for " + enteredUserName);
-//
-//                        Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//                        newWindow.setScene(appointmentsScene);
-//                        newWindow.setResizable(false);
-//                        newWindow.setTitle(WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
-//                        newWindow.show();
-//                    } else {
-//                        throw new LoginError(languageSetting.getString("invalidPass"));
-//                    }
-//                } else {
-//                    throw new LoginError(languageSetting.getString("invalidUser"));
-//                }
-//            }
-//        } catch (LoginError e) {
-//            Alert invalidChoice = new Alert(Alert.AlertType.ERROR);
-//            invalidChoice.setHeaderText(languageSetting.getString("invalidLogin"));
-//            invalidChoice.setTitle(languageSetting.getString("titleLabel"));
-//            invalidChoice.setContentText(e.getLocalizedMessage());
-//            invalidChoice.showAndWait();
-//
-//        } catch (IOException f){
-//
-//        }
+//        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        /**
+         * checks login credentials
+         */
+        try {
+            FileWriter fileWriter = new FileWriter("src/LogData.txt");
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            /**
+             * checks to make sure user name and/or password are not left blank
+             */
+            if (enteredUserName.equals("") || enteredPassword.equals("")){
+                System.out.println("found a blank field");
+                throw new LoginError(languageSetting.getString("noInput"));
+            /**
+             * checks username for alphanumeric characters and that user exists in database
+             */
+            } else {
+                if (enteredUserName.matches("^[a-zA-Z0-9]*$") && userData.isUser(enteredUserName)) {
+                    if (enteredPassword.matches("^[a-zA-Z0-9]*$") && userData.passwordMatch(enteredUserName, enteredPassword)) {
+                        System.out.println("password matches. log in successful");
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/gui/ManageAppointments.fxml"));
+                        Parent parent = loader.load();
+                        Scene appointmentsScene = new Scene(parent);
+
+                        ManageAppointmentsController controller = loader.getController();
+                        controller.setLabel("Schedule appointments for " + enteredUserName);
+
+                        Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        newWindow.setScene(appointmentsScene);
+                        newWindow.setResizable(false);
+                        newWindow.setTitle(WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+                        newWindow.show();
+                    } else {
+                        throw new LoginError(languageSetting.getString("invalidPass"));
+                    }
+                } else {
+                    throw new LoginError(languageSetting.getString("invalidUser"));
+                }
+            }
+        } catch (LoginError e) {
+            Alert invalidChoice = new Alert(Alert.AlertType.ERROR);
+            invalidChoice.setHeaderText(languageSetting.getString("invalidLogin"));
+            invalidChoice.setTitle(languageSetting.getString("titleLabel"));
+            invalidChoice.setContentText(e.getLocalizedMessage());
+            invalidChoice.showAndWait();
+
+        } catch (IOException f){
+
+        }
     }
 
     /**

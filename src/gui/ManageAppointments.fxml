@@ -24,12 +24,12 @@
             <TableColumn fx:id="appointmentTimeCol" prefWidth="96.0" text="Time" />
         </columns>
       </TableView>
-      <AnchorPane layoutX="71.0" layoutY="418.0" prefHeight="40.0" prefWidth="659.0">
+      <AnchorPane layoutX="56.0" layoutY="418.0" prefHeight="40.0" prefWidth="693.0">
          <children>
             <Button id="button" mnemonicParsing="false" onAction="#setAddClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Add" />
             <Button id="button" layoutX="110.0" mnemonicParsing="false" onAction="#setUpdateClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Update" />
             <Button id="button" layoutX="220.0" mnemonicParsing="false" onAction="#deleteClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Delete" />
-            <Button id="button" layoutX="579.0" mnemonicParsing="false" onAction="#setLogOutClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Log Out" />
+            <Button id="button" layoutX="613.0" mnemonicParsing="false" onAction="#setLogOutClicked" prefHeight="43.0" prefWidth="87.0" stylesheets="@../Stylesheet.css" text="Log Out" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="71.0" layoutY="49.0" prefHeight="49.0" prefWidth="446.0">
@@ -42,12 +42,12 @@
                   <ToggleGroup fx:id="filterSelection" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="week" layoutX="140.0" layoutY="35.0" mnemonicParsing="false" onAction="#setViewWeek" text="Week" toggleGroup="$filterSelection">
+            <RadioButton fx:id="week" layoutX="136.0" layoutY="35.0" mnemonicParsing="false" onAction="#setViewWeek" text="This Week" toggleGroup="$filterSelection">
                <font>
                   <Font size="14.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="month" layoutX="223.0" layoutY="35.0" mnemonicParsing="false" onAction="#setViewMonth" text="Month" toggleGroup="$filterSelection">
+            <RadioButton fx:id="month" layoutX="236.0" layoutY="34.0" mnemonicParsing="false" onAction="#setViewMonth" text="This Month" toggleGroup="$filterSelection">
                <font>
                   <Font size="14.0" />
                </font>
@@ -59,6 +59,6 @@
             </Label>
          </children>
       </AnchorPane>
-      <Button layoutX="612.0" layoutY="71.0" mnemonicParsing="false" onAction="#manageCustomersClicked" prefHeight="33.0" prefWidth="135.0" text="Manage Customers" />
+      <Button layoutX="612.0" layoutY="71.0" mnemonicParsing="false" onAction="#manageCustomersClicked" prefHeight="40.0" prefWidth="135.0" text="Manage Customers" />
    </children>
 </AnchorPane>
