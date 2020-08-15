@@ -144,7 +144,7 @@ public class ManageCustomersController implements Initializable {
              * this stream/lambda filters by customer name
              */
             filtered = customer.getAllCustomers().stream()
-                    .filter( x -> x.getName().contains(name))
+                    .filter( x -> x.getName().toLowerCase().contains(name.toLowerCase()))
                     .collect(Collectors.collectingAndThen(
                             Collectors.toList(), y -> FXCollections.observableArrayList(y)));
             customerTableView.setItems(filtered);

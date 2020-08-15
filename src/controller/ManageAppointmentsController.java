@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import models.Appointment;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -97,14 +98,21 @@ public class ManageAppointmentsController implements Initializable {
      */
     public void deleteClicked () throws SQLException {
 
-        String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
-        String type = appointmentTableView.getSelectionModel().getSelectedItem().getType();
+        if (appointmentTableView.getSelectionModel().getSelectedItem() != null) {
+            if (popups.confirmationAlert("delete this appointment")) {
+                String name = appointmentTableView.getSelectionModel().getSelectedItem().getName();
+                String type = appointmentTableView.getSelectionModel().getSelectedItem().getType();
 
-        appointmentData.deleteAppointment(name, type);
+                appointmentData.deleteAppointment(name, type);
 
-        setFilterSelection();
-        appointmentTableView.refresh();
-        appointmentTableView.getSelectionModel().clearSelection();
+                setFilterSelection();
+                appointmentTableView.refresh();
+                appointmentTableView.getSelectionModel().clearSelection();
+            }
+        } else {
+            popups.errorAlert(1, "You must select an appointment to delete");
+        }
+
     }
 
     /**
@@ -161,6 +169,10 @@ public class ManageAppointmentsController implements Initializable {
         window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
     }
 
+    public void reportsButton(ActionEvent event){
+
+    }
+
     public void setTableProperties() {
         appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -187,11 +199,12 @@ public class ManageAppointmentsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setLabel("Schedule for /ADMIN USER/");
+        setLabel("Schedule of appointments for " + LoginController.currentUser);
         setTableProperties();
 
         try {
             setViewAll();
+            appointmentData.isAppointmentNearNow();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,16 +1,17 @@
 package dao;
 
 import ErrorHandling.AppointmentTimeWarning;
-import ErrorHandling.PopupHandlers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import models.Appointment;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.stream.Collectors;
 
 public class AppointmentDAO {
@@ -19,6 +20,8 @@ public class AppointmentDAO {
     private static LocalDateTime localDateTime;
     private static ZonedDateTime zone;
     private static DateTimeFormatter dateTimeFormat;
+    private static Calendar cal = Calendar.getInstance();
+
     private static final ObservableList<String> VALID_HOURS = FXCollections.observableArrayList();
     private static final ObservableList<String> VALID_MINUTES = FXCollections.observableArrayList();
     private static final ObservableList<String> VALID_MONTHS = FXCollections.observableArrayList();
@@ -110,11 +113,12 @@ public class AppointmentDAO {
     public ObservableList<Appointment> setViewAllByWeek() throws SQLException {
         ObservableList<Appointment> filtered = FXCollections.observableArrayList();
         StatementHandler statement = new StatementHandler();
+        dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyyHH:mm");
 
         String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type, start FROM appointment a " +
                 "JOIN customer c ON a.customerId = c.customerId " +
                 "JOIN address addr ON c.addressId = addr.addressId " +
-                "ORDER BY WEEK(start) ASC;";
+                "WHERE WEEK(start) = " + cal.get(Calendar.WEEK_OF_YEAR) + ";";
 
         statement.setPreparedStatement(conn, sqlStatement);
         ResultSet rs = statement.getPreparedStatement().executeQuery();
@@ -148,11 +152,13 @@ public class AppointmentDAO {
     public ObservableList<Appointment> setViewAllByMonth() throws SQLException {
         ObservableList<Appointment> filtered = FXCollections.observableArrayList();
         StatementHandler statement = new StatementHandler();
+        dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyyHH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM");
 
         String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type, start FROM appointment a " +
                 "JOIN customer c ON a.customerId = c.customerId " +
                 "JOIN address addr ON c.addressId = addr.addressId " +
-                "ORDER BY MONTH(start), YEAR(start) ASC;";
+                "WHERE MONTH(start) = " + simpleDateFormat.format(cal.getTime()) + ";";
 
         statement.setPreparedStatement(conn, sqlStatement);
         ResultSet rs = statement.getPreparedStatement().executeQuery();
@@ -245,7 +251,7 @@ public class AppointmentDAO {
             int customerId = rs.getInt("customerId");
             String type = rs.getString("type");
 
-            dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyyHH:mm:ss");
+            dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyyHH:mm");
             Timestamp start = rs.getTimestamp("start");
             localDateTime = start.toLocalDateTime();
             zone = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
@@ -265,7 +271,7 @@ public class AppointmentDAO {
     }
 
     public static final String getTime(String dateTime){
-        String startTime = dateTime.substring(10, 18);
+        String startTime = dateTime.substring(10, 15);
         return startTime;
     }
 
@@ -306,7 +312,7 @@ public class AppointmentDAO {
      * 00, 15, 30, 45
      */
     public static void setValidMinutes() {
-        VALID_MINUTES.add("00");
+        VALID_MINUTES.add("00"); // adds "00" to beginning of list to avoid formatting issues
         for (int i = 15; i <= 45; i += 15)
             VALID_MINUTES.add(Integer.toString(i));
     }

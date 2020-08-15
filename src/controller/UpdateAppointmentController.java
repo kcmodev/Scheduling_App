@@ -5,6 +5,7 @@ import dao.AppointmentDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import models.Appointment;
 
@@ -27,15 +28,15 @@ public class UpdateAppointmentController {
     @FXML
     private TextField phoneNumbers;
     @FXML
-    private ChoiceBox<String> hours;
+    private ComboBox<String> hours;
     @FXML
-    private ChoiceBox<String> minutes;
+    private ComboBox<String> minutes;
     @FXML
-    private ChoiceBox<String> years;
+    private ComboBox<String> years;
     @FXML
-    private ChoiceBox<String> months;
+    private ComboBox<String> months;
     @FXML
-    private ChoiceBox<String> days;
+    private ComboBox<String> days;
     @FXML
     private TextField types;
 
@@ -68,8 +69,6 @@ public class UpdateAppointmentController {
             days.setItems(appointmentData.getValidDays(Integer.parseInt(months.getValue()), Integer.parseInt(years.getValue())));
         }
     }
-
-    public void onYears() { onMonths(); }
 
     public void setTextFields(Appointment appointment) {
         tempAppt = appointment;

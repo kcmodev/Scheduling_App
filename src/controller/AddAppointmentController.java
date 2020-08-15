@@ -89,7 +89,17 @@ public class AddAppointmentController implements Initializable {
         phone.setText(addressData.getPhoneByName(names.getValue()));
     }
 
-    public void onMonths(){ days.setItems(appointmentData.getValidDays(Integer.parseInt(months.getValue()), Integer.parseInt(years.getValue()))); }
+    public void onMonths(){
+        if (months.getSelectionModel().isEmpty())
+            months.setValue("01");
+        if (years.getSelectionModel().isEmpty())
+            years.setValue("2020");
+
+        int month = Integer.parseInt(months.getValue());
+        int year = Integer.parseInt(years.getValue());
+
+        days.setItems(appointmentData.getValidDays(month, year));
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
