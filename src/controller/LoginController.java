@@ -20,9 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.w3c.dom.ls.LSOutput;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.sql.*;
 import java.time.*;
@@ -47,13 +45,16 @@ public class LoginController implements Initializable {
     private static ZoneId userSystemZone = ZoneId.systemDefault();
     private static TimeZone userTimeZone = TimeZone.getTimeZone(userSystemZone);
     private static ZonedDateTime localToZoned = dateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+    private static BufferedWriter writer;
 
 
     private static final PopupHandlers popups = new PopupHandlers();
-    private static WindowManager window = new WindowManager();
     private static AppointmentDAO appointmentData = new AppointmentDAO();
     private static UserDAO userData = new UserDAO();
     private static ResourceBundle languageSetting;
+    public static String currentUser;
+    private static String logText;
+
 
     @FXML
     private TextField userNameTextField;
@@ -66,11 +67,12 @@ public class LoginController implements Initializable {
     @FXML
     private Label loginPasswordLabel;
 
+
     /**
      * handles clicking log in button
      * @param event
      */
-    public void logInHandler(ActionEvent event) throws SQLException {
+    public void logInHandler(ActionEvent event) throws SQLException, IOException {
         appointmentData.isAppointmentNearNow();
         String enteredUserName = userNameTextField.getText();
         String enteredPassword = passwordTextField.getText();
@@ -80,8 +82,7 @@ public class LoginController implements Initializable {
          * checks login credentials
          */
         try {
-            FileWriter fileWriter = new FileWriter("src/LogData.txt");
-            PrintWriter printWriter = new PrintWriter(fileWriter);
+
             /**
              * checks to make sure user name and/or password are not left blank
              */
@@ -92,16 +93,21 @@ public class LoginController implements Initializable {
              * checks username for alphanumeric characters and that user exists in database
              */
             } else {
-                if (enteredUserName.matches("^[a-zA-Z0-9]*$") && userData.isUser(enteredUserName)) {
-                    if (enteredPassword.matches("^[a-zA-Z0-9]*$") && userData.passwordMatch(enteredUserName, enteredPassword)) {
-                        System.out.println("password matches. log in successful");
+                if (enteredUserName.matches("^[a-zA-Z0-9]*$") && userData.isUser(enteredUserName)) { // username exists
+                    if (enteredPassword.matches("^[a-zA-Z0-9]*$") && userData.passwordMatch(enteredUserName, enteredPassword)) { // password matches username
+                        currentUser = enteredUserName;
+                        logText = "user \"" + currentUser + "\" logged in successfully at " + localToZoned.toLocalDateTime() + " hrs" + System.getProperty("line.separator");
+                        writer.write(logText);
+                        writer.flush();
+                        writer.close();
+
                         FXMLLoader loader = new FXMLLoader();
                         loader.setLocation(getClass().getResource("/gui/ManageAppointments.fxml"));
                         Parent parent = loader.load();
                         Scene appointmentsScene = new Scene(parent);
 
                         ManageAppointmentsController controller = loader.getController();
-                        controller.setLabel("Schedule appointments for " + enteredUserName);
+                        controller.setLabel("Schedule appointments for " + currentUser);
 
                         Stage newWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         newWindow.setScene(appointmentsScene);
@@ -109,9 +115,15 @@ public class LoginController implements Initializable {
                         newWindow.setTitle(WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
                         newWindow.show();
                     } else {
+                        logText = "user \"" + enteredUserName + "\" unsuccessful login attempt. Password mismatch at " + localToZoned.toLocalDateTime() + " hrs" + System.getProperty("line.separator");
+                        writer.write(logText);
+                        writer.flush();
                         throw new LoginError(languageSetting.getString("invalidPass"));
                     }
                 } else {
+                    logText = "user \"" + enteredUserName + "\" unsuccessful login attempt. Invalid user at " + localToZoned.toLocalDateTime() + " hrs" + System.getProperty("line.separator");
+                    writer.write(logText);
+                    writer.flush();
                     throw new LoginError(languageSetting.getString("invalidUser"));
                 }
             }
@@ -145,6 +157,18 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        try {
+            File file = new File("LogData.txt");
+            if (!file.exists())
+                file.createNewFile();
+
+            FileWriter fileWriter = new FileWriter(file, true);
+            writer = new BufferedWriter(fileWriter);
+        } catch (IOException e){
+
+        }
+
         System.out.println("user offset: " + userSystemZone.getId() + " || " + userTimeZone.getDisplayName() + " || " + localToZoned.getOffset());
         System.out.println("Current locale: " + userLocale);
 

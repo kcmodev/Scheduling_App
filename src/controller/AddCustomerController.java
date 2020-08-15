@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
@@ -38,7 +39,7 @@ public class AddCustomerController implements Initializable {
     @FXML
     private TextField address;
     @FXML
-    private ChoiceBox <String> cityDropbox = new ChoiceBox<>();
+    private ComboBox<String> cityDropbox;
     @FXML
     private TextField zip;
     @FXML
@@ -107,7 +108,7 @@ public class AddCustomerController implements Initializable {
      * finds chose city's ID and uses that to populate the respective country
      * @throws SQLException
      */
-    public void setCity() throws SQLException {
+    public void citySelected() throws SQLException {
         currentCity = cityDropbox.getValue();
         currentCityId = cityData.getCityId(currentCity);
 

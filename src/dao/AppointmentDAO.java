@@ -188,6 +188,10 @@ public class AppointmentDAO {
         return appointments;
     }
 
+    /**
+     * checks for an appointment within 15 minutes of user's system time
+     * @throws SQLException
+     */
     public void isAppointmentNearNow() throws SQLException {
         StatementHandler statement = new StatementHandler();
         LocalDateTime systemTime = LocalDateTime.now();
@@ -207,8 +211,6 @@ public class AppointmentDAO {
             localDateTime = start.toLocalDateTime();
             zone = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
             String formattedDateTime = zone.toOffsetDateTime().format(dateTimeFormat);
-
-            System.out.println("formatted time from query: " + formattedDateTime);
 
             try {
                 if (localDateTime.isAfter(systemTime) && localDateTime.isBefore(ChronoLocalDateTime.from(systemTime.plusMinutes(15))))

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -23,17 +24,17 @@ public class AddAppointmentController implements Initializable {
     private AddressDAO addressData = new AddressDAO();
 
     @FXML
-    private ChoiceBox<String> names;
+    private ComboBox<String> names;
     @FXML
-    private ChoiceBox<String> hours;
+    private ComboBox<String> hours;
     @FXML
-    private ChoiceBox<String> minutes;
+    private ComboBox<String> minutes;
     @FXML
-    private ChoiceBox<String> years;
+    private ComboBox<String> years;
     @FXML
-    private ChoiceBox<String> months;
+    private ComboBox<String> months;
     @FXML
-    private ChoiceBox<String> days;
+    private ComboBox<String> days;
     @FXML
     private TextField address;
     @FXML
@@ -83,7 +84,7 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
-    public void setNames() throws SQLException {
+    public void setRelated() throws SQLException {
         address.setText(customerData.getAddressByName(names.getValue()));
         phone.setText(addressData.getPhoneByName(names.getValue()));
     }

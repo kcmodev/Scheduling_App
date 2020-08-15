@@ -1,0 +1,10 @@
+user "1234" unsuccessful login attempt. Invalid user at 2020-08-15T09:22:51.604 hrs
+user "test" unsuccessful login attempt. Password mismatch at 2020-08-15T09:22:51.604 hrs
+user "test" logged in successfully at 2020-08-15T09:22:51.604
+user "admin" unsuccessful login attempt. Invalid user at 2020-08-15T09:25:02.404 hrs
+user "test" unsuccessful login attempt. Password mismatch at 2020-08-15T09:25:02.404 hrs
+user "test" logged in successfully at 2020-08-15T09:25:02.404
+user "test" logged in successfully at 2020-08-15T09:43:05.570 hrs
+user "test" logged in successfully at 2020-08-15T09:43:44.963 hrs
+user "test" logged in successfully at 2020-08-15T09:50:04.799 hrs
+user "test" logged in successfully at 2020-08-15T09:54:32.117 hrs
