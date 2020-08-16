@@ -1,10 +1,16 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import ErrorHandling.PopupHandlers;
 import dao.AppointmentDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import models.Appointment;
@@ -13,13 +19,10 @@ import java.sql.SQLException;
 
 
 public class UpdateAppointmentController {
-    Appointment tempAppt;
-    private WindowManager window = new WindowManager();
-    private PopupHandlers popups = new PopupHandlers();
-    private AppointmentDAO appointmentData = new AppointmentDAO();
-
-    private static String yr;
-    private static String mnth;
+    private Appointment tempAppt;
+    private static final WindowManager window = new WindowManager();
+    private static final PopupHandlers popups = new PopupHandlers();
+    private static final AppointmentDAO appointmentData = new AppointmentDAO();
 
     @FXML
     private TextField names;
@@ -40,6 +43,11 @@ public class UpdateAppointmentController {
     @FXML
     private TextField types;
 
+    /**
+     * handles save button clicks
+     * @param event
+     * @throws SQLException
+     */
     public void setSaveClicked(ActionEvent event) throws SQLException {
 
         String newHr = hours.getValue();
@@ -58,18 +66,30 @@ public class UpdateAppointmentController {
         window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
     }
 
+    /**
+     * handles cancel button clicks
+     * @param event
+     */
     public void setCancelClicked(ActionEvent event) {
         if (popups.confirmationAlert("quit and discard unsaved changes")) {
             window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
         }
     }
 
+    /**
+     * sets the correct amount of days in the days combo box based on the month and year
+     */
     public void onMonths() {
         if (months.getValue() != null) {
             days.setItems(appointmentData.getValidDays(Integer.parseInt(months.getValue()), Integer.parseInt(years.getValue())));
         }
     }
 
+    /**
+     * stores a temporary appointment object for comparison use
+     * sets text fields with the data from that appointment
+     * @param appointment
+     */
     public void setTextFields(Appointment appointment) {
         tempAppt = appointment;
         String name = appointment.getName();
@@ -89,19 +109,22 @@ public class UpdateAppointmentController {
         String date = appointment.getStartDate();
         String hr = time.substring(0, 2);
         String min = time.substring(3, 5);
-        mnth = date.substring(0, 2);
+        String mnth = date.substring(0, 2);
         String day = date.substring(3, 5);
-        yr = date.substring(6, 10);
+        String yr = date.substring(6, 10);
 
-        hours.setItems(appointmentData.getValidHours());
-        minutes.setItems(appointmentData.getValidMinutes());
+        /**
+         * populates combo boxes with the appropriate starting data
+         */
+        hours.setItems(AppointmentDAO.getValidHours());
+        minutes.setItems(AppointmentDAO.getValidMinutes());
 
         hours.setValue(hr);
         minutes.setValue(min);
 
-        years.setItems(appointmentData.getValidYears());
-        months.setItems(appointmentData.getValidMonths());
-        days.setItems(appointmentData.getValidDays(Integer.parseInt(mnth), Integer.parseInt(yr)));
+        years.setItems(AppointmentDAO.getValidYears());
+        months.setItems(AppointmentDAO.getValidMonths());
+        days.setItems(AppointmentDAO.getValidDays(Integer.parseInt(mnth), Integer.parseInt(yr)));
 
         years.setValue(yr);
         months.setValue(mnth);

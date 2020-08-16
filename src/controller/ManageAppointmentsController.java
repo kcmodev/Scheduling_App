@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import ErrorHandling.PopupHandlers;
@@ -16,7 +23,6 @@ import javafx.stage.Stage;
 import models.Appointment;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -165,14 +171,25 @@ public class ManageAppointmentsController implements Initializable {
         appointmentTableView.setItems(appointmentData.setViewAllByMonth());
     }
 
+    /**
+     * handles manage customers button clicks
+     * @param event
+     */
     public void manageCustomersClicked(ActionEvent event){
         window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
     }
 
+    /**
+     * handles reports button click
+     * @param event
+     */
     public void reportsButton(ActionEvent event){
         window.windowController(event, "/gui/ReportGenerator.fxml", "Generate reports");
     }
 
+    /**
+     * sets display properties for the appointments table
+     */
     public void setTableProperties() {
         appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -199,7 +216,7 @@ public class ManageAppointmentsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setLabel("Schedule of appointments for " + LoginController.currentUser);
+        setLabel("Schedule of appointments for user: " + LoginController.currentUser);
         setTableProperties();
 
         try {

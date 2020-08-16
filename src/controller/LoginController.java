@@ -1,23 +1,24 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import ErrorHandling.PopupHandlers;
 import ErrorHandling.LoginError;
-import dao.AppointmentDAO;
 import dao.ConnectionHandler;
 
 import dao.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
@@ -34,6 +35,10 @@ public class LoginController implements Initializable {
      * comment first and uncomment second to check locale requirements
      */
     private static final Locale userLocale = Locale.getDefault();
+
+    /**
+     * these two lines can have their commented out status reversed to check different locales
+     */
     private static final WindowManager window = new WindowManager();
 //    private static final Locale userLoc = new Locale("es_CL"); // set to spanish to check locale settings
 
@@ -41,19 +46,18 @@ public class LoginController implements Initializable {
      * gets user timezone
      * comment first and uncomment second to check timezone requirements
      */
-    private static LocalDateTime dateTime = LocalDateTime.now();
-    private static ZoneId userSystemZone = ZoneId.systemDefault();
-    private static TimeZone userTimeZone = TimeZone.getTimeZone(userSystemZone);
-    private static ZonedDateTime localToZoned = dateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+    private static final LocalDateTime dateTime = LocalDateTime.now();
+    private static final ZoneId userSystemZone = ZoneId.systemDefault();
+    private static final TimeZone userTimeZone = TimeZone.getTimeZone(userSystemZone);
+    private static final ZonedDateTime localToZoned = dateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
     private static BufferedWriter writer;
 
 
     private static final PopupHandlers popups = new PopupHandlers();
-    private static AppointmentDAO appointmentData = new AppointmentDAO();
-    private static UserDAO userData = new UserDAO();
+    private static final UserDAO userData = new UserDAO();
     private static ResourceBundle languageSetting;
-    public static String currentUser;
     private static String logText;
+    public static String currentUser;
 
 
     @FXML
@@ -77,7 +81,6 @@ public class LoginController implements Initializable {
         String enteredUserName = userNameTextField.getText();
         String enteredPassword = passwordTextField.getText();
 
-//        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
         /**
          * checks login credentials
          */
@@ -131,7 +134,7 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * handles exit button click
+     * handles exit button click, closes database connection
      */
     public void exitHandler (){
         ConnectionHandler conn = new ConnectionHandler();

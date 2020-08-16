@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import ErrorHandling.PopupHandlers;
@@ -25,8 +32,9 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ManageCustomersController implements Initializable {
-    private WindowManager window = new WindowManager();
-    private PopupHandlers popups = new PopupHandlers();
+    private static final WindowManager window = new WindowManager();
+    private static final PopupHandlers popups = new PopupHandlers();
+    private static final CustomerDAO customerData = new CustomerDAO();
 
     /**
      * sets table values
@@ -89,15 +97,12 @@ public class ManageCustomersController implements Initializable {
     /**
      * method handles delete button click
      * calls method to remove customer from database
-     * @param event
      */
-    public void setDeleteClicked(ActionEvent event){
-        CustomerDAO customer = new CustomerDAO();
-
+    public void setDeleteClicked(){
         try {
             Customer selected = customerTableView.getSelectionModel().getSelectedItem();
-            customer.deleteCustomer(selected);
-            customerTableView.setItems(customer.getAllCustomers());
+            customerData.deleteCustomer(selected);
+            customerTableView.setItems(customerData.getAllCustomers());
         } catch (NullPointerException e){
             popups.errorAlert(1, "You must make a selection");
         } catch (SQLException s){
@@ -119,7 +124,6 @@ public class ManageCustomersController implements Initializable {
      */
     public void setSearchClicked() throws SQLException {
         ObservableList<Customer> filtered;
-        CustomerDAO customer = new CustomerDAO();
 
         /**
          * uses stream and lambda to filter results and assign them
@@ -131,29 +135,26 @@ public class ManageCustomersController implements Initializable {
             /**
              * this stream/lambda filters by customer ID
              */
-            filtered = customer.getAllCustomers().stream()
+            filtered = customerData.getAllCustomers().stream()
                     .filter( x -> x.getCustomerId() == id)
                     .collect(Collectors.collectingAndThen(
                             Collectors.toList(), y -> FXCollections.observableArrayList(y)));
             customerTableView.setItems(filtered);
 
-        } else if (customer.isAlphanumeric(customerSearch.getText()) && !customerSearch.getText().isEmpty()){
+        } else if (customerData.isAlphanumeric(customerSearch.getText()) && !customerSearch.getText().isEmpty()){
             String name = customerSearch.getText();
 
             /**
              * this stream/lambda filters by customer name
              */
-            filtered = customer.getAllCustomers().stream()
+            filtered = customerData.getAllCustomers().stream()
                     .filter( x -> x.getName().toLowerCase().contains(name.toLowerCase()))
                     .collect(Collectors.collectingAndThen(
                             Collectors.toList(), y -> FXCollections.observableArrayList(y)));
             customerTableView.setItems(filtered);
 
         } else {
-            /**
-             * assigns the filtered view to the table view
-             */
-            customerTableView.setItems(customer.getAllCustomers());
+            customerTableView.setItems(customerData.getAllCustomers());
         }
     }
 
@@ -186,10 +187,6 @@ public class ManageCustomersController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        /**
-         * initialize shown data in table
-         */
         try {
             setTableProperties();
         } catch (SQLException e) {

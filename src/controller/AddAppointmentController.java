@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import ErrorHandling.InvalidInput;
@@ -45,6 +52,10 @@ public class AddAppointmentController implements Initializable {
 
     public void setSaveClicked(ActionEvent event) throws SQLException {
         try {
+            /**
+             * checks to see if a selection was made with all of the combo boxes
+             * -1 means it is still on the prompt index
+             */
             if (names.getSelectionModel().getSelectedIndex() == -1)
                 throw new InvalidInput("You must select a customer");
 
@@ -89,17 +100,30 @@ public class AddAppointmentController implements Initializable {
 
     }
 
+    /**
+     * handles cancel button clicks
+     * @param event
+     */
     public void setCancelClicked(ActionEvent event){
         if (popups.confirmationAlert("quit and discard unsaved changes")) {
             window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
         }
     }
 
+    /**
+     * sets the address and phone fields dynamically based on which customer is selected
+     * @throws SQLException
+     */
     public void setRelated() throws SQLException {
         address.setText(customerData.getAddressByName(names.getValue()));
         phone.setText(addressData.getPhoneByName(names.getValue()));
     }
 
+    /**
+     * when month or year combo box is selected it calls the getValidDays method to
+     * set the correct number of days in the days combo box
+     * if nothing has been selected the year and month are automatically set to 2020 and 01 respectively
+     */
     public void onMonths(){
         if (months.getSelectionModel().isEmpty())
             months.setValue("01");
@@ -116,6 +140,9 @@ public class AddAppointmentController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         LocalDate currentDay = LocalDate.now();
 
+        /**
+         * sets all combo box fields
+         */
         try {
             names.setItems(CustomerDAO.getAllCustomerNames());
             hours.setItems(AppointmentDAO.getValidHours());

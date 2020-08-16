@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import javafx.event.ActionEvent;
@@ -8,11 +15,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 public class WindowManager {
 
-    public static final String LOGIN_SCREEN_TITLE = "Christensen Software 2 PA - Login Screen";
+    /**
+     * final strings for title abrs of all windows
+     */
+    public static final String LOGIN_SCREEN_TITLE = "Steven Christensen Software 2 PA - Login Screen";
     public static final String MANAGE_APPOINTMENTS_WINDOW_TITLE = "Scheduled appointments";
     public static final String UPDATE_APPOINTMENT_TITLE = "Update appointment details";
     public static final String ADD_APPOINTMENT_TITLE = "Add new appointment";
@@ -20,6 +29,12 @@ public class WindowManager {
     public static final String UPDATE_CUSTOMER_TITLE = "Update customer info";
     public static final String ADD_CUSTOMER_TITLE = "Add new customer";
 
+    /**
+     * reusable controller to generate new windows
+     * @param event
+     * @param fileName
+     * @param windowTitle
+     */
     public void windowController(ActionEvent event, String fileName, String windowTitle) {
         try {
             Parent parent = FXMLLoader.load(getClass().getResource(fileName));

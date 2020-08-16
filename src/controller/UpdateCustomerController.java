@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import ErrorHandling.InvalidInput;
@@ -8,14 +15,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import models.Customer;
-import org.omg.CORBA.DynAnyPackage.InvalidSeq;
-import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 import java.sql.SQLException;
 
 public class UpdateCustomerController {
-    private WindowManager window = new WindowManager();
-    private PopupHandlers popups = new PopupHandlers();
+    private static final WindowManager window = new WindowManager();
+    private static final PopupHandlers popups = new PopupHandlers();
+    private static final CityDAO cityData = new CityDAO();
+    private static final CustomerDAO customerData = new CustomerDAO();
     private static Customer temp;
 
     @FXML
@@ -23,7 +30,7 @@ public class UpdateCustomerController {
     @FXML
     private TextField address;
     @FXML
-    private ChoiceBox<String> city = new ChoiceBox<>();
+    private ChoiceBox<String> city;
     @FXML
     private TextField zip;
     @FXML
@@ -31,10 +38,11 @@ public class UpdateCustomerController {
     @FXML
     private TextField phone;
 
-    public void setSaveClicked(ActionEvent event) throws SQLException {
-        CityDAO cityData = new CityDAO();
-        CustomerDAO customerData = new CustomerDAO();
-
+    /**
+     * handles save button clicks
+     * @param event
+     */
+    public void setSaveClicked(ActionEvent event) {
         try {
             String fullPhone;
             String newName = name.getText();
@@ -70,25 +78,34 @@ public class UpdateCustomerController {
         } catch (SQLException s){
             s.printStackTrace();
         }
-
     }
 
+    /**
+     * handles cancel button clicks
+     * @param event
+     */
     public void setCancelClicked(ActionEvent event){
         if (popups.confirmationAlert("quit and discard unsaved changes")){
             window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
         }
     }
 
+    /**
+     * uses the selected city combo box to determine the proper country to display
+     * and associate with the saved record
+     * @throws SQLException
+     */
     public void setCity() throws SQLException {
-        CityDAO cityData = new CityDAO();
         setCountry(CountryDAO.getCountryName(cityData.getCityId(city.getValue())));
     }
 
+    /**
+     * sets the proper country in it's text field based on the selected city
+     * @param countryName
+     */
     public void setCountry(String countryName) { country.setText(countryName); }
 
     public void setTextFields(Customer customer) throws SQLException {
-        CustomerDAO customerData = new CustomerDAO();
-        CityDAO cityData = new CityDAO();
         temp = customer; // save initial incoming information to compare before updating
 
         /**

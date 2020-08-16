@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import dao.ReportDAO;
@@ -19,6 +26,12 @@ public class ReportGeneratorController implements Initializable {
     @FXML private TextArea reportArea;
     @FXML private ComboBox<String> consultantList;
 
+    /**
+     * generates report to list out all appointments grouped by their respective months
+     * uses a stream pipeline and lambda expression to append all the generated fields to the text area
+     * which is view only
+     * @throws SQLException
+     */
     public void appointmentsByMonth() throws SQLException {
         reportArea.clear();
         reportData.getAppointmentsPerMonth()
@@ -28,6 +41,12 @@ public class ReportGeneratorController implements Initializable {
 
     }
 
+    /**
+     * generates report to list out all appointments for the selected user
+     * uses a stream pipeline and lambda expression to append all the generated fields to the text area
+     * which is view only
+     * @throws SQLException
+     */
     public void consultantSchedule() throws SQLException {
         System.out.println("combo box clicked");
         if (!consultantList.getValue().equals(consultantList.getPromptText())) {
@@ -38,6 +57,12 @@ public class ReportGeneratorController implements Initializable {
         }
     }
 
+    /**
+     * generates report to list out the number of appointments made by each customer
+     * uses a stream pipeline and lambda expression to append all the generated fields to the text area
+     * which is view only
+     * @throws SQLException
+     */
     public void appointmentsPerCustomer() throws SQLException {
         reportArea.clear();
         reportData.getAppointmentsPerCustomer()
@@ -46,6 +71,10 @@ public class ReportGeneratorController implements Initializable {
         consultantList.setValue(consultantList.getPromptText());
     }
 
+    /**
+     * handles back button clicks
+     * @param event
+     */
     public void backButtonClicked(ActionEvent event){
         window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
     }

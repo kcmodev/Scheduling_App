@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import dao.AppointmentDAO;
@@ -10,12 +17,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 public class Main extends Application {
-    public static final TimeZone userZone = Calendar.getInstance().getTimeZone();
-    private static final AppointmentDAO appointmentData = new AppointmentDAO();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -28,13 +31,16 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws SQLException {
-        CityDAO.buildListOfCities();
 
-        appointmentData.setValidHours();
-        appointmentData.setValidMinutes();
-        appointmentData.setValidYears();
-        appointmentData.setValidMonths();
-        appointmentData.setValidDays();
+        /**
+         * builds static lists of cities and combo box data
+         */
+        CityDAO.buildListOfCities();
+        AppointmentDAO.setValidHours();
+        AppointmentDAO.setValidMinutes();
+        AppointmentDAO.setValidYears();
+        AppointmentDAO.setValidMonths();
+        AppointmentDAO.setValidDays();
 
         launch(args);
         

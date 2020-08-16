@@ -1,9 +1,15 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package controller;
 
 import ErrorHandling.InvalidCustomerData;
 import ErrorHandling.PopupHandlers;
 import dao.CityDAO;
-import dao.ConnectionHandler;
 import dao.CountryDAO;
 import dao.CustomerDAO;
 
@@ -11,25 +17,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
-    private WindowManager window = new WindowManager();
-    private PopupHandlers popups = new PopupHandlers();
-    private static CityDAO cityData = new CityDAO();
-    private static CountryDAO countryData = new CountryDAO();
-    private static CustomerDAO customerData = new CustomerDAO();
+    private static final WindowManager window = new WindowManager();
+    private static final PopupHandlers popups = new PopupHandlers();
+    private static final CityDAO cityData = new CityDAO();
+    private static final CountryDAO countryData = new CountryDAO();
+    private static final CustomerDAO customerData = new CustomerDAO();
 
-    private String currentCity;
-    private String fullPhone;
     private int currentCityId;
 
     /**
@@ -65,6 +66,7 @@ public class AddCustomerController implements Initializable {
              * separated phone number to 3 parts
              * then concats them together with the dashes for the correct syntax
              */
+            String fullPhone;
             if (phone.getText().matches("^[0-9]*$") && phone.getLength() == 10) {
                 String temp1 = phone.getText().substring(0, 3);
                 String temp2 = phone.getText().substring(3, 6);
@@ -107,7 +109,7 @@ public class AddCustomerController implements Initializable {
      * @throws SQLException
      */
     public void citySelected() throws SQLException {
-        currentCity = cityDropbox.getValue();
+        String currentCity = cityDropbox.getValue();
         currentCityId = cityData.getCityId(currentCity);
 
         /**
@@ -115,7 +117,9 @@ public class AddCustomerController implements Initializable {
          */
         setCountry(countryData.getCountryName(currentCityId));
 
-        // enables the save button once a city is chosen
+        /**
+         * enables the save button once a city is chosen
+         */
         saveButton.setDisable(false);
     }
 
