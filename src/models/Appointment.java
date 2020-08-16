@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package models;
 
 import dao.CustomerDAO;
@@ -5,22 +12,27 @@ import dao.CustomerDAO;
 import java.sql.SQLException;
 
 public class Appointment {
-    private CustomerDAO customerData = new CustomerDAO();
+    private static final CustomerDAO customerData = new CustomerDAO();
 
     private int appointmentId;
     private int customerId;
-    private int addressId;
     private int userId;
     private String type;
     private String startTime;
     private String startDate;
-    private String endTime;
-    private String endDate;
     private String name;
     private String address;
     private String phone;
 
-
+    /**
+     * constructor to instantiate appointment objects
+     * @param appointmentId
+     * @param customerId
+     * @param type
+     * @param startDate
+     * @param startTime
+     * @throws SQLException
+     */
     public Appointment(int appointmentId, int customerId, String type, String startDate, String startTime) throws SQLException {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
@@ -32,6 +44,9 @@ public class Appointment {
         this.startTime = startTime;
     }
 
+    /**
+     * getters and setters
+     */
     public int getAppointmentId() {
         return appointmentId;
     }
@@ -39,16 +54,6 @@ public class Appointment {
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
-
-//    public int getCustomerId() { return customerId; }
-//
-//    public void setCustomerId(int customerId) { this.customerId = customerId; }
-//
-//    public int getAddressId() { return addressId; }
-//
-//    public void setAddressId(int addressId) { this.addressId = addressId; }
-//
-//    public int getUserId() { return userId; }
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -69,18 +74,6 @@ public class Appointment {
     public String getStartDate(){
         return startDate;
     }
-
-//    public void setStartTime(String startTime) {
-//        this.startTime = startTime;
-//    }
-//
-//    public String getEndTime() {
-//        return endTime;
-//    }
-//
-//    public void setEndTime(String endTime) {
-//        this.endTime = endTime;
-//    }
 
     public String getName() {
         return name;

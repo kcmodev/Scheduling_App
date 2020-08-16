@@ -32,31 +32,23 @@ import java.util.TimeZone;
 public class LoginController implements Initializable {
     /**
      * gets user locale
-     * comment first and uncomment second to check locale requirements
+     * comment first and uncomment second to check locale requirements with a locale set to chile
+     * triggers spanish resource bundle
      */
     private static final Locale userLocale = Locale.getDefault();
+//    private static final Locale userLocale = new Locale("es_CL"); // set to spanish to check locale settings
 
-    /**
-     * these two lines can have their commented out status reversed to check different locales
-     */
-    private static final WindowManager window = new WindowManager();
-//    private static final Locale userLoc = new Locale("es_CL"); // set to spanish to check locale settings
-
-    /**
-     * gets user timezone
-     * comment first and uncomment second to check timezone requirements
-     */
     private static final LocalDateTime dateTime = LocalDateTime.now();
     private static final ZoneId userSystemZone = ZoneId.systemDefault();
     private static final TimeZone userTimeZone = TimeZone.getTimeZone(userSystemZone);
+
     private static final ZonedDateTime localToZoned = dateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+
+    private static final WindowManager window = new WindowManager();
     private static BufferedWriter writer;
-
-
     private static final PopupHandlers popups = new PopupHandlers();
     private static final UserDAO userData = new UserDAO();
     private static ResourceBundle languageSetting;
-    private static String logText;
     public static String currentUser;
 
 
@@ -76,7 +68,7 @@ public class LoginController implements Initializable {
      * handles clicking log in button
      * @param event
      */
-    public void logInHandler(ActionEvent event) throws SQLException, IOException {
+    public void logInHandler(ActionEvent event) throws SQLException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy/MM/dd HH:mm:ss");
         String enteredUserName = userNameTextField.getText();
         String enteredPassword = passwordTextField.getText();
@@ -96,6 +88,7 @@ public class LoginController implements Initializable {
              * checks username for alphanumeric characters and that user exists in database
              */
             } else {
+                String logText;
                 if (enteredUserName.matches("^[a-zA-Z0-9]*$") && userData.isUser(enteredUserName)) { // username exists
                     if (enteredPassword.matches("^[a-zA-Z0-9]*$") && userData.passwordMatch(enteredUserName, enteredPassword)) { // password matches username
                         currentUser = enteredUserName;
