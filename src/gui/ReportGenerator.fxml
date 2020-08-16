@@ -15,9 +15,9 @@
             <ComboBox fx:id="consultantList" layoutX="62.0" layoutY="52.0" onAction="#consultantSchedule" prefHeight="40.0" prefWidth="186.0" promptText="Consultant Schedule" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="29.0" layoutY="200.0" prefHeight="324.0" prefWidth="348.0">
+      <AnchorPane layoutX="-3.0" layoutY="200.0" prefHeight="324.0" prefWidth="406.0">
          <children>
-            <TextArea fx:id="reportArea" layoutX="13.0" layoutY="12.0" prefHeight="300.0" prefWidth="323.0">
+            <TextArea fx:id="reportArea" layoutX="13.0" layoutY="12.0" prefHeight="300.0" prefWidth="383.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

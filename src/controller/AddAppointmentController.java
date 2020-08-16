@@ -1,5 +1,6 @@
 package controller;
 
+import ErrorHandling.InvalidInput;
 import ErrorHandling.PopupHandlers;
 import dao.AddressDAO;
 import dao.AppointmentDAO;
@@ -7,7 +8,6 @@ import dao.CustomerDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
@@ -42,39 +42,50 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private TextField type;
 
+
     public void setSaveClicked(ActionEvent event) throws SQLException {
-        String customer = names.getValue();
-        String hrs = hours.getValue();
-        String min = minutes.getValue();
-        String yr = years.getValue();
-        String mon = months.getValue();
-        String day = days.getValue();
-        String aptType = type.getText();
+        try {
+            if (names.getSelectionModel().getSelectedIndex() == -1)
+                throw new InvalidInput("You must select a customer");
 
-//        String customer = "test";
-//        String hrs = "09";
-//        String min = "00";
-//        String yr = "2020";
-//        String mon = "01";
-//        String day = "01";
-//        String aptType = "test";
+            if (hours.getSelectionModel().getSelectedIndex() == -1 || minutes.getSelectionModel().getSelectedIndex() == -1)
+                throw new InvalidInput("Must select both hour and minute of appointment time");
 
-        /**
-         * convert date, start, and end time into strings and concat everything into the
-         * correct format for a timestamp
-         */
-        String date = yr + "-" + mon + "-" + day + " ";
-        String startTime = hrs + ":" + min + ":" + "00";
-        String endTime = startTime;
+            if (years.getSelectionModel().getSelectedIndex() == -1 || months.getSelectionModel().getSelectedIndex() == -1
+                    || days.getSelectionModel().getSelectedIndex() == -1)
+                throw new InvalidInput("Month, day, and year must all be selected");
 
-        /**
-         * concat a start and end timestamp for the sql query
-         */
-        String start = date + startTime;
-        String end = date + endTime;
+            if (type.getText().isEmpty())
+                throw new InvalidInput("Appointment type can't be empty");
 
-        appointmentData.addAppointment(customer, start, end, aptType);
-        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+            String customer = names.getValue();
+            String hrs = hours.getValue();
+            String min = minutes.getValue();
+            String yr = years.getValue();
+            String mon = months.getValue();
+            String day = days.getValue();
+            String aptType = type.getText();
+
+            /**
+             * convert date, start, and end time into strings and concat everything into the
+             * correct format for a timestamp
+             */
+            String date = yr + "-" + mon + "-" + day + " ";
+            String startTime = hrs + ":" + min + ":" + "00";
+            String endTime = startTime;
+
+            /**
+             * concat a start and end timestamp for the sql query
+             */
+            String start = date + startTime;
+            String end = date + endTime;
+
+            appointmentData.addAppointment(customer, start, end, aptType);
+            window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+
+        } catch (InvalidInput i) {
+            popups.errorAlert(2, i.getLocalizedMessage());
+        }
 
     }
 

@@ -3,7 +3,12 @@ package dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +65,7 @@ public class ReportDAO {
         List<String> reportList = new ArrayList<>();
 
         String sqlStatement = "SELECT u.userName, a.type, " +
-                "DATE_FORMAT(a.start, '%M %d at %h:%i') date, c.customerName, cty.city FROM user u " +
+                "a.start, c.customerName, cty.city FROM user u " +
                 "JOIN appointment a ON u.userId = a.userId " +
                 "JOIN customer c ON a.customerId = c.customerId " +
                 "JOIN address addr ON c.addressId = addr.addressId " +
@@ -75,13 +80,21 @@ public class ReportDAO {
         reportList.add("Appointments for \"" + user + "\":\n");
 
         while (rs.next()){
-            String userName = rs.getString("userName");
+            Timestamp start = rs.getTimestamp("start");
+            LocalDateTime localTime = start.toLocalDateTime();
+            ZonedDateTime localZone = localTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+
+            DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            String formattedDate = localZone.toOffsetDateTime().format(dateTimeFormat);
+
+            dateTimeFormat = DateTimeFormatter.ofPattern("HH:mm");
+            String formattedTime = localZone.toOffsetDateTime().format(dateTimeFormat);
+
             String customerName = rs.getString("customerName");
             String type = rs.getString("type");
-            String when = rs.getString("date");
             String city = rs.getString("city");
-            reportList.add("\t " + customerName + ": " + when + "\n" +
-                    "\t for " + type + " in " + city + "\n" + System.lineSeparator());
+            reportList.add("\tAppointment with: " + customerName + " on " + formattedDate + " at " + formattedTime + "\n" +
+                    "\tfor \"" + type + "\" in " + city + "\n" + System.lineSeparator());
         }
 
         return reportList;

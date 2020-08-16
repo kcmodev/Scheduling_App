@@ -122,7 +122,7 @@ public class AppointmentDAO {
         String sqlStatement = "SELECT a.appointmentId, a.customerId, a.type, start FROM appointment a " +
                 "JOIN customer c ON a.customerId = c.customerId " +
                 "JOIN address addr ON c.addressId = addr.addressId " +
-                "WHERE WEEK(start) = " + cal.get(Calendar.WEEK_OF_YEAR) + ";";
+                "WHERE WEEK(start) = " + (cal.get(Calendar.WEEK_OF_YEAR) - 1) + ";";
 
         statement.setPreparedStatement(conn, sqlStatement);
         ResultSet rs = statement.getPreparedStatement().executeQuery();
@@ -245,7 +245,7 @@ public class AppointmentDAO {
             try {
                 if (localDateTime.isAfter(systemTime) && localDateTime.isBefore(ChronoLocalDateTime.from(systemTime.plusMinutes(15))))
                     throw new AppointmentTimeWarning("You have an appointment coming up at " + formattedDateTime + " with " +
-                            name + " for " + type + ".");
+                            name + " for \"" + type + "\".");
                 System.out.println();
             } catch (AppointmentTimeWarning a){
                 Alert appointmentSoon = new Alert(Alert.AlertType.INFORMATION);
