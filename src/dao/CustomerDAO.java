@@ -270,13 +270,13 @@ public class CustomerDAO {
      */
     public boolean isValidCustomerInput(String name, String address, String zip) {
         try {
-            if (!isValidInput(name)) {
-                throw new InvalidCustomerData("Invalid name");
-            } else if (!isValidInput(address)) {
-                throw new InvalidCustomerData("Invalid address");
+            if (!isAlphanumeric(name)) {
+                throw new InvalidCustomerData("Invalid name. Alphanumeric characters only");
+            } else if (!isAlphanumeric(address)) {
+                throw new InvalidCustomerData("Invalid address. Alphanumberic characters only");
             } else if (!zip.matches("^[0-9]*$")) {
-                throw new InvalidCustomerData("Invalid zip");
-            } else if (zip.length() > 5 || zip.isEmpty()) {
+                throw new InvalidCustomerData("Invalid zip. Numbers only.");
+            } else if (zip.length() != 5) {
                 throw new InvalidCustomerData("Valid zip code is 5 digits");
             }
         } catch (InvalidCustomerData i){
@@ -295,23 +295,19 @@ public class CustomerDAO {
      */
     public boolean customerExists(String name) throws SQLException {
         StatementHandler statement = new StatementHandler();
-        String sqlStatement = "select customerName from customer\n" +
-                "where customerName = ?;";
 
-        statement.setPreparedStatement(conn, sqlStatement);
-        statement.getPreparedStatement().setString(1, name);
-        ResultSet rs = statement.getPreparedStatement().executeQuery();
+        if (!name.isEmpty()) {
+            String sqlStatement = "select customerName from customer\n" +
+                    "where customerName = ?;";
 
-        if(rs.next()){
-            if (rs.getString("customerName").equals(name)) {
-                popups.errorAlert(2, "Customer with that name already exists.");
-                return true;
-            }
-        } else {
-            return false;
+            statement.setPreparedStatement(conn, sqlStatement);
+            statement.getPreparedStatement().setString(1, name);
+            ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+            if (rs.next())
+                return (rs.getString("customerName").equals(name)) ? true : false;
         }
-
-    return false;
+      return false;
     }
 
     /**
@@ -320,7 +316,7 @@ public class CustomerDAO {
      * @param input
      * @return
      */
-    public boolean isValidInput(String input){
+    public boolean isAlphanumeric(String input){
         return (input.matches("^[a-zA-Z0-9 ]*$") && !input.isEmpty()) ? true : false;
     }
 

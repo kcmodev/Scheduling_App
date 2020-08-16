@@ -1,5 +1,6 @@
 package controller;
 
+import ErrorHandling.InvalidInput;
 import ErrorHandling.PopupHandlers;
 import dao.*;
 import javafx.event.ActionEvent;
@@ -34,64 +35,38 @@ public class UpdateCustomerController {
         CityDAO cityData = new CityDAO();
         CustomerDAO customerData = new CustomerDAO();
 
-        String fullPhone;
-        boolean diffName = true, diffAddr = true, diffCity = true, diffZip = true, diffPhone = true;
-        String newName = name.getText();
-        String newAddress = address.getText();
-        String newZip = zip.getText();
-        String newPhone = phone.getText();
-        int newCityId = cityData.getCityId(city.getValue());
-
         try {
-            /**
-             * checks if any values have changed
-             * throws error if no changes detected
-             * otherwise updates current entry in the database
-             */
-            if (temp.getName().equals(newName))
-                diffName = false;
-            if (customerData.getCustomerAddress(temp.getCustomerId()).equals(newAddress))
-                diffAddr = false;
-            if (customerData.getCustomerCity(temp.getCustomerId()).equals(city.getValue()))
-                diffCity = false;
-            if (customerData.getCustomerZip(temp.getCustomerId()).equals(newZip))
-                diffZip = false;
-            if (customerData.getCustomerPhone(temp.getCustomerId()).equals(newPhone))
-                diffPhone = false;
+            String fullPhone;
+            String newName = name.getText();
+            String newAddress = address.getText();
+            String newZip = zip.getText();
+            int newCityId = cityData.getCityId(city.getValue());
 
             /**
-             * checks for no changes in all field, else runs the update customer method
+             * separates phone number to 3 parts
+             * then concats them together with the dashes for the correct syntax
              */
-            if (!diffName && !diffAddr && !diffCity && !diffZip && !diffPhone) {
-                throw new InvalidValue();
+            if (phone.getText().matches("^[0-9]*$") && phone.getLength() == 10) {
+                String temp1 = phone.getText().substring(0, 3);
+                String temp2 = phone.getText().substring(3, 6);
+                String temp3 = phone.getText().substring(6, 10);
+                fullPhone = temp1 + "-" + temp2 + "-" + temp3;
             } else {
-                /**
-                 * separates phone number to 3 parts
-                 * then concats them together with the dashes for the correct syntax
-                 */
-                if (phone.getText().matches("^[0-9]*$") && phone.getLength() == 10) {
-                    String temp1 = phone.getText().substring(0, 3);
-                    String temp2 = phone.getText().substring(3, 6);
-                    String temp3 = phone.getText().substring(6, 10);
-                    fullPhone = temp1 + "-" + temp2 + "-" + temp3;
-                } else {
-                    throw new InvalidSeq();
-                }
-
-                /**
-                 * validates input from user then calls method to insert record into the database
-                 * returns user to manage customers window
-                 */
-                if (customerData.isValidCustomerInput(newName, newAddress, newZip)) {
-                    customerData.updateCustomer(temp.getCustomerId(), newName, newAddress, newZip, newCityId, fullPhone);
-                    window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
-                }
+                throw new InvalidInput("Invalid phone. Numbers only. Include area code");
             }
 
-        } catch (InvalidValue e){
-            popups.errorAlert(2, "No changes detected");
-        } catch (InvalidSeq q) {
-            popups.errorAlert(2, "Invalid phone. Numbers only. Include area code");
+            /**
+             * validates input from user then calls method to insert record into the database
+             * returns user to manage customers window
+             */
+            if (customerData.isValidCustomerInput(newName, newAddress, newZip)) {
+                customerData.updateCustomer(temp.getCustomerId(), newName, newAddress, newZip, newCityId, fullPhone);
+                window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
+            }
+
+        } catch (InvalidInput i) {
+            popups.errorAlert(2, i.getLocalizedMessage());
+
         } catch (SQLException s){
             s.printStackTrace();
         }

@@ -126,7 +126,7 @@ public class LoginController implements Initializable {
             invalidChoice.showAndWait();
 
         } catch (IOException f){
-
+            f.printStackTrace();
         }
     }
 

@@ -137,7 +137,7 @@ public class ManageCustomersController implements Initializable {
                             Collectors.toList(), y -> FXCollections.observableArrayList(y)));
             customerTableView.setItems(filtered);
 
-        } else if (customer.isValidInput(customerSearch.getText()) && !customerSearch.getText().isEmpty()){
+        } else if (customer.isAlphanumeric(customerSearch.getText()) && !customerSearch.getText().isEmpty()){
             String name = customerSearch.getText();
 
             /**

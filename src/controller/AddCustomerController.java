@@ -26,6 +26,7 @@ public class AddCustomerController implements Initializable {
     private PopupHandlers popups = new PopupHandlers();
     private static CityDAO cityData = new CityDAO();
     private static CountryDAO countryData = new CountryDAO();
+    private static CustomerDAO customerData = new CustomerDAO();
 
     private String currentCity;
     private String fullPhone;
@@ -55,8 +56,6 @@ public class AddCustomerController implements Initializable {
      * @throws SQLException
      */
     public void setSaveClicked(ActionEvent event) {
-        CustomerDAO customer = new CustomerDAO();
-
         String name = this.name.getText();
         String address = this.address.getText();
         String zip = this.zip.getText();
@@ -80,12 +79,11 @@ public class AddCustomerController implements Initializable {
              * calls method to insert record into the database
              * returns user to manage customers window
              */
-            if (customer.isValidCustomerInput(name, address, zip) && !customer.customerExists(name)) {
-                customer.addCustomer(name, address, currentCityId, zip, fullPhone);
+            if (customerData.isValidCustomerInput(name, address, zip) && !customerData.customerExists(name)) {
+                customerData.addCustomer(name, address, currentCityId, zip, fullPhone);
                 window.windowController(event, "/gui/ManageCustomers.fxml", window.MANAGE_CUSTOMERS_TITLE);
-            } else {
-                throw new InvalidCustomerData("Duplicate customer. Please enter alternate information");
             }
+
         } catch (SQLException s) {
             s.getStackTrace();
         } catch (InvalidCustomerData i){

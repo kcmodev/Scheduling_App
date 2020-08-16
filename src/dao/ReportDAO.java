@@ -15,6 +15,12 @@ import java.util.List;
 public class ReportDAO {
     private static Connection conn = ConnectionHandler.startConnection();
 
+    /**
+     * makes database call to count the number of appointments and group them by month
+     * ignores months with 0
+     * @return
+     * @throws SQLException
+     */
     public List getAppointmentsPerMonth() throws SQLException {
         StatementHandler statement = new StatementHandler();
         List<String> reportList = new ArrayList<>();
@@ -37,6 +43,11 @@ public class ReportDAO {
         return reportList;
     }
 
+    /**
+     * makes database call to find and count the number of appointments for every customer
+     * @return
+     * @throws SQLException
+     */
     public List getAppointmentsPerCustomer() throws SQLException {
         StatementHandler statement = new StatementHandler();
         List<String> reportList = new ArrayList<>();
@@ -60,6 +71,12 @@ public class ReportDAO {
         return reportList;
     }
 
+    /**
+     * makes database call to fine and call all appointments for the logged in user
+     * @param user
+     * @return
+     * @throws SQLException
+     */
     public List getAllAppointmentsForUser(String user) throws SQLException {
         StatementHandler statement = new StatementHandler();
         List<String> reportList = new ArrayList<>();
@@ -84,7 +101,7 @@ public class ReportDAO {
             LocalDateTime localTime = start.toLocalDateTime();
             ZonedDateTime localZone = localTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
 
-            DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("MM/dd/yy");
             String formattedDate = localZone.toOffsetDateTime().format(dateTimeFormat);
 
             dateTimeFormat = DateTimeFormatter.ofPattern("HH:mm");
