@@ -23,30 +23,48 @@ public class ReportDAO {
     private static Connection conn = ConnectionHandler.startConnection();
 
     /**
-     * makes database call to count the number of appointments and group them by month
+     * makes database call to count the number of distinct appointment types and group them by month
      * ignores months with 0
      * @return
      * @throws SQLException
      */
-    public List getAppointmentsPerMonth() throws SQLException {
+    public List getAppointmentTypesPerMonth() throws SQLException {
         StatementHandler statement = new StatementHandler();
         List<String> reportList = new ArrayList<>();
-        reportList.add("Number of appointments per month:" + System.lineSeparator());
+        reportList.add("Number of distinct appointment types by month:\n" + System.lineSeparator());
         String month;
         String count;
 
-        String sqlStatement = "SELECT MONTH(a.start) month, COUNT(a.appointmentId) count FROM appointment a " +
-                              "GROUP BY MONTH(a.start);";
+        String sqlStatement = "SELECT MONTH(start) month, " +
+                "COUNT(DISTINCT type) AS distinctType " +
+                "FROM appointment " +
+                "GROUP BY MONTH(start) ASC;";
 
         statement.setPreparedStatement(conn, sqlStatement);
         ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         while (rs.next()){
             month = Month.of(rs.getInt("month")).name();
-            count = rs.getString("count");
-            reportList.add("\t" + month + " has " + count + " appointments." + System.lineSeparator());
-        }
+            count = rs.getString("distinctType");
+            reportList.add("\t" + month + " has " + count + " distinct types of appointments." + System.lineSeparator());
 
+            String findTypes = "SELECT MONTH(start) month, type, " +
+                    "COUNT(DISTINCT type) AS distinctType " +
+                    "FROM appointment " +
+                    "WHERE MONTH(start) = ? " +
+                    "GROUP BY MONTH(start), type ASC;";
+
+            statement.setPreparedStatement(conn, findTypes);
+            statement.getPreparedStatement().setInt(1, rs.getInt("month"));
+            ResultSet nestedRS = statement.getPreparedStatement().executeQuery();
+
+            reportList.add("\tDistinct appointment types for " + month + ": " + System.lineSeparator());
+            while (nestedRS.next()){
+                String type = nestedRS.getString("type");
+                reportList.add("\t\t" + type + "\n");
+            }
+            reportList.add("\n");
+        }
         return reportList;
     }
 

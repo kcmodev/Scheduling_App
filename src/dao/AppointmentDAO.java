@@ -106,13 +106,25 @@ public class AppointmentDAO {
         String formattedStart = formatDateTimeForDB(start);
         String formattedEnd = formatDateTimeForDB(end);
 
-        String updateExisting = "UPDATE appointment SET start = " + formattedStart + ", end = " + formattedEnd + " , type = ? where appointmentId = ?";
+        String checkForConflict = "SELECT start FROM appointment WHERE NOT start = " + formattedStart + ";";
+        statement.setPreparedStatement(conn, checkForConflict);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
 
-        statement.setPreparedStatement(conn, updateExisting);
-        statement.getPreparedStatement().setString(1, type);
-        statement.getPreparedStatement().setInt(2, apptId);
+        try {
+            if (!rs.next()) {
+                String updateExisting = "UPDATE appointment SET start = " + formattedStart + ", end = " + formattedEnd + " , type = ? where appointmentId = ?";
 
-        statement.getPreparedStatement().execute();
+                statement.setPreparedStatement(conn, updateExisting);
+                statement.getPreparedStatement().setString(1, type);
+                statement.getPreparedStatement().setInt(2, apptId);
+
+                statement.getPreparedStatement().execute();
+            } else {
+                throw new AppointmentTimeWarning("An appointment at this time already exists");
+            }
+        } catch (AppointmentTimeWarning a){
+            popups.errorAlert(2, a.getLocalizedMessage());
+        }
     }
 
     /**

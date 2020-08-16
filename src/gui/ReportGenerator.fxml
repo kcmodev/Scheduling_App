@@ -17,7 +17,7 @@
    <children>
       <AnchorPane layoutX="46.0" layoutY="23.0" prefHeight="143.0" prefWidth="309.0">
          <children>
-            <Button layoutX="62.0" mnemonicParsing="false" onAction="#appointmentsByMonth" prefHeight="40.0" prefWidth="186.0" text="Appointments by Month" />
+            <Button layoutX="62.0" mnemonicParsing="false" onAction="#appointmentTypesByMonth" prefHeight="40.0" prefWidth="186.0" text="Appointments by Month" />
             <Button layoutX="62.0" layoutY="103.0" mnemonicParsing="false" onAction="#appointmentsPerCustomer" prefHeight="40.0" prefWidth="186.0" text="Appointments per Customer" />
             <ComboBox fx:id="consultantList" layoutX="62.0" layoutY="52.0" onAction="#consultantSchedule" prefHeight="40.0" prefWidth="186.0" promptText="Consultant Schedule" />
          </children>

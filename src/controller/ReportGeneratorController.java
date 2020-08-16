@@ -32,9 +32,9 @@ public class ReportGeneratorController implements Initializable {
      * which is view only
      * @throws SQLException
      */
-    public void appointmentsByMonth() throws SQLException {
+    public void appointmentTypesByMonth() throws SQLException {
         reportArea.clear();
-        reportData.getAppointmentsPerMonth()
+        reportData.getAppointmentTypesPerMonth()
                 .stream()
                 .forEachOrdered(x -> reportArea.appendText(x.toString()));
         consultantList.setValue(consultantList.getPromptText());

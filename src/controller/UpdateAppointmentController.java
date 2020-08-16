@@ -48,22 +48,26 @@ public class UpdateAppointmentController {
      * @param event
      * @throws SQLException
      */
-    public void setSaveClicked(ActionEvent event) throws SQLException {
+    public void setSaveClicked(ActionEvent event) {
 
-        String newHr = hours.getValue();
-        String newMin = minutes.getValue();
-        String newYr = years.getValue();
-        String newMnth = months.getValue();
-        String newDay = days.getValue();
-        String newType = types.getText();
-        String c = ":";
-        String d = "-";
+        try {
+            String newHr = hours.getValue();
+            String newMin = minutes.getValue();
+            String newYr = years.getValue();
+            String newMnth = months.getValue();
+            String newDay = days.getValue();
+            String newType = types.getText();
+            String c = ":";
+            String d = "-";
 
-        String startDateTime = newYr + d + newMnth + d + newDay + " " + newHr + c + newMin + c + "00"; // trailing zeroes for seconds
-        String endDateTime = startDateTime;
+            String startDateTime = newYr + d + newMnth + d + newDay + " " + newHr + c + newMin + c + "00"; // trailing zeroes for seconds
+            String endDateTime = startDateTime;
 
-        appointmentData.modifyAppointment(tempAppt.getAppointmentId(), startDateTime, endDateTime, newType);
-        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+            appointmentData.modifyAppointment(tempAppt.getAppointmentId(), startDateTime, endDateTime, newType);
+            window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        } catch (SQLException s){
+            s.printStackTrace();
+        }
     }
 
     /**
