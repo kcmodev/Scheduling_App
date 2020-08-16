@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package dao;
 
 import ErrorHandling.AppointmentTimeWarning;
@@ -21,7 +28,7 @@ public class AppointmentDAO {
     private static LocalDateTime localDateTime;
     private static ZonedDateTime zone;
     private static DateTimeFormatter dateTimeFormat;
-    private static Calendar cal = Calendar.getInstance();
+    private static final Calendar cal = Calendar.getInstance();
     private static final PopupHandlers popups = new PopupHandlers();
 
     private static final ObservableList<String> VALID_HOURS = FXCollections.observableArrayList();
@@ -288,11 +295,21 @@ public class AppointmentDAO {
         }
     }
 
+    /**
+     * returns date from string
+     * @param dateTime
+     * @return
+     */
     public static final String getDate(String dateTime){
         String startDate = dateTime.substring(0, 10);
         return startDate;
     }
 
+    /**
+     * returns time from string
+     * @param dateTime
+     * @return
+     */
     public static final String getTime(String dateTime){
         String startTime = dateTime.substring(10, 15);
         return startTime;
@@ -315,6 +332,10 @@ public class AppointmentDAO {
         return formattedDateTime;
     }
 
+    /**
+     * returns list of valid hours for appointment times
+     * @return
+     */
     public static ObservableList<String> getValidHours() { return VALID_HOURS; }
 
     /**
@@ -328,6 +349,10 @@ public class AppointmentDAO {
             VALID_HOURS.add(Integer.toString(i));
     }
 
+    /**
+     * returns list of valid minutes for appointment times
+     * @return
+     */
     public static ObservableList<String> getValidMinutes() { return VALID_MINUTES; }
 
     /**

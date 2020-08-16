@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package dao;
 
 import ErrorHandling.InvalidCustomerData;
@@ -12,8 +19,8 @@ public class CustomerDAO {
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
     private static ObservableList<String> allCustomerNames = FXCollections.observableArrayList();
     private static final Connection conn = ConnectionHandler.startConnection();
-    private PopupHandlers popups = new PopupHandlers();
-    private AddressDAO addressData = new AddressDAO();
+    private static final PopupHandlers popups = new PopupHandlers();
+    private static final AddressDAO addressData = new AddressDAO();
 
     /**
      * adds new customer to database

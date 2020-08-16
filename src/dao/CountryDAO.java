@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package dao;
 
 import java.sql.Connection;
@@ -7,6 +14,12 @@ import java.sql.SQLException;
 public class CountryDAO {
     private static final Connection conn = ConnectionHandler.startConnection();
 
+    /**
+     * returns country name based on city ID
+     * @param cityId
+     * @return
+     * @throws SQLException
+     */
     public static String getCountryName(int cityId) throws SQLException {
         StatementHandler statement = new StatementHandler();
         String sqlStatement = "select cty.cityId, cntry.country from city cty\n" +

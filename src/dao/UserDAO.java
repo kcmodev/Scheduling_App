@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package dao;
 
 import javafx.collections.FXCollections;
@@ -48,6 +55,11 @@ public class UserDAO {
         return (rs.next()) ? true : false;
     }
 
+    /**
+     * returns list of all user names
+     * @return
+     * @throws SQLException
+     */
     public ObservableList<String> getAllUsers() throws SQLException{
         ObservableList<String> userNameList = FXCollections.observableArrayList();
         StatementHandler statement = new StatementHandler();

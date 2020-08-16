@@ -1,3 +1,10 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package dao;
 
 import java.sql.Connection;
@@ -50,6 +57,12 @@ public class AddressDAO {
         return addressId;
     }
 
+    /**
+     * database call to retrieve phone with customer name
+     * @param name
+     * @return
+     * @throws SQLException
+     */
     public String getPhoneByName(String name) throws SQLException {
         StatementHandler statement = new StatementHandler();
 
@@ -78,6 +91,7 @@ public class AddressDAO {
      */
     public boolean isNewAddress(String address, int cityId, String zip, String phone) throws SQLException {
         StatementHandler statement = new StatementHandler();
+
         String sqlStatement = "select address, cityId, postalCode, phone from address\n" +
                         "where address = ? and cityId = ? and postalCode = ? and phone = ?;";
 
@@ -94,6 +108,4 @@ public class AddressDAO {
 
     return true;
     }
-
-    public void deleteUnownedAddresses(int addressId){ }
 }

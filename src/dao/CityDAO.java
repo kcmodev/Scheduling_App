@@ -1,6 +1,12 @@
+/**
+ * Author: Steven Christensen
+ * Email: schr206@wgu.edu
+ * Class: WGU C195 Software 2 Performance Assessment
+ * Date Submitted: 8/16/2020
+ */
+
 package dao;
 
-import controller.WindowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.City;
@@ -12,9 +18,15 @@ import java.sql.SQLException;
 public class CityDAO {
     private static final Connection conn = ConnectionHandler.startConnection();
 
-    private static ObservableList<City> allCities = FXCollections.observableArrayList();
-    private static ObservableList<String> cityNames = FXCollections.observableArrayList();
+    private static final ObservableList<City> allCities = FXCollections.observableArrayList();
+    private static final ObservableList<String> cityNames = FXCollections.observableArrayList();
 
+    /**
+     * returns city id based on city name
+     * @param cityName
+     * @return
+     * @throws SQLException
+     */
     public int getCityId(String cityName) throws SQLException {
         StatementHandler statement = new StatementHandler();
         String sqlStatement = "select cityId, city from city\n" +
@@ -30,10 +42,14 @@ public class CityDAO {
         return 0;
     }
 
+    /**
+     * returns a list containing all city names
+     * @return
+     */
     public ObservableList<String> getCityNames(){ return cityNames; }
 
     /**
-     * build static list of city data
+     * build static list of city data and links it to the appropriate tables
      * @throws SQLException
      */
     public static void buildListOfCities() throws SQLException {
