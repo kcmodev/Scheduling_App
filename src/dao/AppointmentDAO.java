@@ -75,9 +75,9 @@ public class AppointmentDAO {
     public void deleteAppointment(String name, String type) throws SQLException {
         StatementHandler statement = new StatementHandler();
 
-        String sqlStatement = "delete appointment from appointment " +
-                "join customer on customer.customerId = appointment.customerId " +
-                "where customerName = ? and type = ?;";
+        String sqlStatement = "DELETE appointment FROM appointment " +
+                "JOIN customer ON customer.customerId = appointment.customerId " +
+                "WHERE customerName = ? AND type = ?;";
 
         statement.setPreparedStatement(conn, sqlStatement);
         statement.getPreparedStatement().setString(1, name);
@@ -99,17 +99,13 @@ public class AppointmentDAO {
         String formattedStart = formatDateTimeForDB(start);
         String formattedEnd = formatDateTimeForDB(end);
 
-        if (!isAppointmentTaken(formattedStart)) {
-            String sqlStatement = "UPDATE appointment SET start = " + formattedStart + ", end = " + formattedEnd + " , type = ? where appointmentId = ?";
+        String updateExisting = "UPDATE appointment SET start = " + formattedStart + ", end = " + formattedEnd + " , type = ? where appointmentId = ?";
 
-            statement.setPreparedStatement(conn, sqlStatement);
-            statement.getPreparedStatement().setString(1, type);
-            statement.getPreparedStatement().setInt(2, apptId);
+        statement.setPreparedStatement(conn, updateExisting);
+        statement.getPreparedStatement().setString(1, type);
+        statement.getPreparedStatement().setInt(2, apptId);
 
-            statement.getPreparedStatement().execute();
-        } else {
-            popups.errorAlert(2, "You already have an appointment at that time");
-        }
+        statement.getPreparedStatement().execute();
     }
 
     /**
@@ -260,7 +256,6 @@ public class AppointmentDAO {
             }
         }
     }
-
 
     /**
      * clears and builds most recent list of appointments

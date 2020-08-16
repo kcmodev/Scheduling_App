@@ -1,5 +1,8 @@
 package dao;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,5 +46,20 @@ public class UserDAO {
         ResultSet rs = statement.getPreparedStatement().executeQuery();
 
         return (rs.next()) ? true : false;
+    }
+
+    public ObservableList<String> getAllUsers() throws SQLException{
+        ObservableList<String> userNameList = FXCollections.observableArrayList();
+        StatementHandler statement = new StatementHandler();
+
+        String sqlStatement = "SELECT userName FROM user;";
+
+        statement.setPreparedStatement(conn, sqlStatement);
+        ResultSet rs = statement.getPreparedStatement().executeQuery();
+
+        while (rs.next())
+            userNameList.add(rs.getString("userName"));
+
+        return userNameList;
     }
 }

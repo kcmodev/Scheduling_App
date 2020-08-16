@@ -27,3 +27,10 @@ user "test" logged in successfully at 2020/08/15 12:21:37 hrs
 user "test" logged in successfully at 2020/08/15 12:36:59 hrs
 user "test" logged in successfully at 2020/08/15 12:41:59 hrs
 user "test" logged in successfully at 2020/08/15 12:42:58 hrs
+user "admin" unsuccessful login attempt. Invalid user at 2020/08/16 11:49:42 hrs
+user "1=1" unsuccessful login attempt. Invalid user at 2020/08/16 11:49:42 hrs
+user "1" unsuccessful login attempt. Invalid user at 2020/08/16 11:49:42 hrs
+user " " unsuccessful login attempt. Invalid user at 2020/08/16 11:49:42 hrs
+user "password" unsuccessful login attempt. Invalid user at 2020/08/16 11:49:42 hrs
+user "test" logged in successfully at 2020/08/16 11:49:42 hrs
+user "test" logged in successfully at 2020/08/16 11:57:46 hrs

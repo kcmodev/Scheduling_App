@@ -77,57 +77,57 @@ public class LoginController implements Initializable {
         String enteredUserName = userNameTextField.getText();
         String enteredPassword = passwordTextField.getText();
 
-        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
-//        /**
-//         * checks login credentials
-//         */
-//        try {
-//
-//            /**
-//             * checks to make sure user name and/or password are not left blank
-//             */
-//            if (enteredUserName.equals("") || enteredPassword.equals("")){
-//                System.out.println("found a blank field");
-//                throw new LoginError(languageSetting.getString("noInput"));
-//            /**
-//             * checks username for alphanumeric characters and that user exists in database
-//             */
-//            } else {
-//                if (enteredUserName.matches("^[a-zA-Z0-9]*$") && userData.isUser(enteredUserName)) { // username exists
-//                    if (enteredPassword.matches("^[a-zA-Z0-9]*$") && userData.passwordMatch(enteredUserName, enteredPassword)) { // password matches username
-//                        currentUser = enteredUserName;
-//                        logText = "user \"" + currentUser + "\" logged in successfully at " + localToZoned.toLocalDateTime().format(formatter)
-//                                + " hrs" + System.getProperty("line.separator");
-//                        writer.write(logText);
-//                        writer.flush();
-//                        writer.close();
-//
-//                        window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
-//                    } else {
-//                        logText = "user \"" + enteredUserName + "\" unsuccessful login attempt. Password mismatch at " + localToZoned.toLocalDateTime().format(formatter)
-//                                + " hrs" + System.getProperty("line.separator");
-//                        writer.write(logText);
-//                        writer.flush();
-//                        throw new LoginError(languageSetting.getString("invalidPass"));
-//                    }
-//                } else {
-//                    logText = "user \"" + enteredUserName + "\" unsuccessful login attempt. Invalid user at " + localToZoned.toLocalDateTime().format(formatter)
-//                            + " hrs" + System.getProperty("line.separator");
-//                    writer.write(logText);
-//                    writer.flush();
-//                    throw new LoginError(languageSetting.getString("invalidUser"));
-//                }
-//            }
-//        } catch (LoginError e) {
-//            Alert invalidChoice = new Alert(Alert.AlertType.ERROR);
-//            invalidChoice.setHeaderText(languageSetting.getString("invalidLogin"));
-//            invalidChoice.setTitle(languageSetting.getString("titleLabel"));
-//            invalidChoice.setContentText(e.getLocalizedMessage());
-//            invalidChoice.showAndWait();
-//
-//        } catch (IOException f){
-//
-//        }
+//        window.windowController(event, "/gui/ManageAppointments.fxml", window.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+        /**
+         * checks login credentials
+         */
+        try {
+
+            /**
+             * checks to make sure user name and/or password are not left blank
+             */
+            if (enteredUserName.equals("") || enteredPassword.equals("")){
+                System.out.println("found a blank field");
+                throw new LoginError(languageSetting.getString("noInput"));
+            /**
+             * checks username for alphanumeric characters and that user exists in database
+             */
+            } else {
+                if (enteredUserName.matches("^[a-zA-Z0-9]*$") && userData.isUser(enteredUserName)) { // username exists
+                    if (enteredPassword.matches("^[a-zA-Z0-9]*$") && userData.passwordMatch(enteredUserName, enteredPassword)) { // password matches username
+                        currentUser = enteredUserName;
+                        logText = "user \"" + currentUser + "\" logged in successfully at " + localToZoned.toLocalDateTime().format(formatter)
+                                + " hrs" + System.getProperty("line.separator");
+                        writer.write(logText);
+                        writer.flush();
+                        writer.close();
+
+                        window.windowController(event, "/gui/ManageAppointments.fxml", WindowManager.MANAGE_APPOINTMENTS_WINDOW_TITLE);
+                    } else {
+                        logText = "user \"" + enteredUserName + "\" unsuccessful login attempt. Password mismatch at " + localToZoned.toLocalDateTime().format(formatter)
+                                + " hrs" + System.getProperty("line.separator");
+                        writer.write(logText);
+                        writer.flush();
+                        throw new LoginError(languageSetting.getString("invalidPass"));
+                    }
+                } else {
+                    logText = "user \"" + enteredUserName + "\" unsuccessful login attempt. Invalid user at " + localToZoned.toLocalDateTime().format(formatter)
+                            + " hrs" + System.getProperty("line.separator");
+                    writer.write(logText);
+                    writer.flush();
+                    throw new LoginError(languageSetting.getString("invalidUser"));
+                }
+            }
+        } catch (LoginError e) {
+            Alert invalidChoice = new Alert(Alert.AlertType.ERROR);
+            invalidChoice.setHeaderText(languageSetting.getString("invalidLogin"));
+            invalidChoice.setTitle(languageSetting.getString("titleLabel"));
+            invalidChoice.setContentText(e.getLocalizedMessage());
+            invalidChoice.showAndWait();
+
+        } catch (IOException f){
+
+        }
     }
 
     /**

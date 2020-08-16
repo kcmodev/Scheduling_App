@@ -170,7 +170,7 @@ public class ManageAppointmentsController implements Initializable {
     }
 
     public void reportsButton(ActionEvent event){
-
+        window.windowController(event, "/gui/ReportGenerator.fxml", "Generate reports");
     }
 
     public void setTableProperties() {
