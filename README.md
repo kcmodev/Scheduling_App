@@ -1,5 +1,5 @@
 # Scheduling_App
-Program developed to support a global consulting organization that conducts business in multiple languages and time zones and pulls data from a provided MySQL database. The database is used for other systems and therefore its structure cannot be modified. 
+Program developed to support a global consulting organization that conducts business in multiple languages and time zones and pulls data from a provided MySQL database. The database is used for other systems and therefore its structure cannot be modified. Uses JavaFX and SceneBuilder for the GUI portion of the project. MySQL used for the database.
 
 Features:<br/>
 * Login form that can determine the user’s location and translate login and error control messages (e.g., “The username and password did not match.”) into two languages. English and Spanish. The login form then queries the database to verify the user’s credentials.
